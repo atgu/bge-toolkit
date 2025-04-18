@@ -1,0 +1,9 @@
+.idea/**
+bge_toolkit.egg-info/**
+bge_toolkit/__pycache__/**
+bge_toolkit/cli/__pycache__/**
+bge_toolkit/common/__pycache__/**
+bge_toolkit/qc/__pycache__/**
+docs/.DS_Store
+docs/build/**
+notebooks-dev/**
