@@ -22,7 +22,9 @@ napoleon_numpy_docstring = False
 templates_path = ["_templates"]
 exclude_patterns = []
 
-html_theme = "alabaster"
+html_theme = 'sphinx_rtd_theme'
+
+html_baseurl = "https://atgu.github.io/bge-toolkit/"
 
 autodoc_default_options = {
     'docstring': 'short',  # This makes the signature more concise

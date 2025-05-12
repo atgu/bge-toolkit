@@ -1,0 +1,922 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python API Reference &mdash; BGE Toolkit 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=56c4699f" />
+
+  
+    <link rel="canonical" href="https://atgu.github.io/bge-toolkit/api.html" />
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Command-Line Interface" href="cli.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            BGE Toolkit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Command-Line Interface</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Python API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#bge-toolkit-qc">bge_toolkit.qc</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#jointcallset">JointCallSet</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#bge_toolkit.qc.JointCallSet"><code class="docutils literal notranslate"><span class="pre">JointCallSet</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#jointype">JoinType</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#bge_toolkit.qc.JoinType"><code class="docutils literal notranslate"><span class="pre">JoinType</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#selectors">Selectors</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#bge_toolkit.qc.ALL_GROUP"><code class="docutils literal notranslate"><span class="pre">ALL_GROUP</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bge_toolkit.qc.ALL_AGG"><code class="docutils literal notranslate"><span class="pre">ALL_AGG</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#concordance">Concordance</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#bge_toolkit.qc.concordance"><code class="docutils literal notranslate"><span class="pre">concordance()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#concordancetable">ConcordanceTable</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#bge_toolkit.qc.ConcordanceTable"><code class="docutils literal notranslate"><span class="pre">ConcordanceTable</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#concordanceview">ConcordanceView</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#bge_toolkit.qc.ConcordanceView"><code class="docutils literal notranslate"><span class="pre">ConcordanceView</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#statistic">Statistic</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#bge_toolkit.qc.Statistic"><code class="docutils literal notranslate"><span class="pre">Statistic</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#bge-toolkit-common">bge_toolkit.common</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#binning-functions">Binning Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#bge_toolkit.common.mac_bin"><code class="docutils literal notranslate"><span class="pre">mac_bin()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bge_toolkit.common.maf_bin"><code class="docutils literal notranslate"><span class="pre">maf_bin()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bge_toolkit.common.gq_bin"><code class="docutils literal notranslate"><span class="pre">gq_bin()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bge_toolkit.common.dp_bin"><code class="docutils literal notranslate"><span class="pre">dp_bin()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bge_toolkit.common.max_gp_bin"><code class="docutils literal notranslate"><span class="pre">max_gp_bin()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bge_toolkit.common.qual_approx_bin"><code class="docutils literal notranslate"><span class="pre">qual_approx_bin()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bge_toolkit.common.info_score_bin"><code class="docutils literal notranslate"><span class="pre">info_score_bin()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">BGE Toolkit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Python API Reference</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="python-api-reference">
+<span id="sec-api"></span><h1>Python API Reference<a class="headerlink" href="#python-api-reference" title="Link to this heading"></a></h1>
+<p>This is the API documentation for the BGE Toolkit, and provides detailed information
+on the Python programming interface.</p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">bge_toolkit</span></code> to access this functionality.</p>
+<section id="bge-toolkit-qc">
+<h2>bge_toolkit.qc<a class="headerlink" href="#bge-toolkit-qc" title="Link to this heading"></a></h2>
+<section id="jointcallset">
+<h3>JointCallSet<a class="headerlink" href="#jointcallset" title="Link to this heading"></a></h3>
+<p>A <a class="reference internal" href="#bge_toolkit.qc.JointCallSet" title="bge_toolkit.qc.JointCallSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">JointCallSet</span></code></a> is an object that contains operations performed on the
+combination of an exome Hail MatrixTable and an imputation Hail MatrixTable.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="bge_toolkit.qc.JointCallSet">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bge_toolkit.qc.</span></span><span class="sig-name descname"><span class="pre">JointCallSet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imp</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.JointCallSet" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A Python object representing the join between two MatrixTables.</p>
+<p>The JointCallSet supports two operations:</p>
+<ul class="simple">
+<li><p>Concordance</p></li>
+<li><p>Merge (Not Implemented Yet)</p></li>
+</ul>
+<p class="rubric">Examples</p>
+<p># Necessary imports</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">bge_toolkit.qc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ALL_AGG</span><span class="p">,</span> <span class="n">ALL_GROUP</span><span class="p">,</span> <span class="n">Statistic</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">exo</span> <span class="o">=</span> <span class="s1">&#39;gs://my-bucket/exome_joint_called.mt&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">imp</span> <span class="o">=</span> <span class="s1">&#39;gs://my-bucket/imputed_with_glimpse.mt&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">joint_callset</span> <span class="o">=</span> <span class="n">JointCallSet</span><span class="p">(</span><span class="n">exo</span><span class="p">,</span> <span class="n">imp</span><span class="p">)</span>
+</pre></div>
+</div>
+<p># Define a custom binning function</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">mac_bin</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="n">hl</span><span class="o">.</span><span class="n">StructExpression</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">mac_bin</span> <span class="o">=</span> <span class="p">(</span><span class="n">hl</span><span class="o">.</span><span class="n">case</span><span class="p">()</span>
+<span class="gp">... </span>      <span class="o">.</span><span class="n">when</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">AC</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">)</span>
+<span class="gp">... </span>      <span class="o">.</span><span class="n">when</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">AC</span> <span class="o">&lt;=</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;2-5&#39;</span><span class="p">)</span>
+<span class="gp">... </span>      <span class="o">.</span><span class="n">when</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">AC</span> <span class="o">&lt;=</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;6-10&#39;</span><span class="p">)</span>
+<span class="gp">... </span>      <span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="s1">&#39;10+&#39;</span><span class="p">))</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">mac_bin</span>
+</pre></div>
+</div>
+<p># Import a binning function</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">bge_toolkit.common</span><span class="w"> </span><span class="kn">import</span> <span class="n">dp_bin</span>
+</pre></div>
+</div>
+<p># Specify aggregation variables</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">exo_row_group_by_var</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;exo_mac&#39;</span><span class="p">:</span> <span class="n">mac_bin</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">exo_entry_agg_fields</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;DP&#39;</span><span class="p">:</span> <span class="n">dp_bin</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">exo_col_group_by_var</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;pop&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">pop</span><span class="p">}</span>
+</pre></div>
+</div>
+<p># Compute global concordance and make a plot</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">global_conc</span> <span class="o">=</span> <span class="n">joint_callset</span><span class="o">.</span><span class="n">global_concordance</span><span class="p">(</span><span class="n">exo_row_group_by_var</span><span class="o">=</span><span class="n">exo_row_group_by_var</span><span class="p">,</span>
+<span class="gp">... </span>                                               <span class="n">exo_col_group_by_var</span><span class="o">=</span><span class="n">exo_col_group_by_var</span><span class="p">,</span>
+<span class="gp">... </span>                                               <span class="n">exo_entry_agg_fields</span><span class="o">=</span><span class="n">exo_entry_agg_fields</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">global_view</span> <span class="o">=</span> <span class="n">global_conc</span><span class="o">.</span><span class="n">get_view</span><span class="p">(</span><span class="n">group_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;exo_mac&#39;</span><span class="p">,</span> <span class="s1">&#39;pop&#39;</span><span class="p">],</span> <span class="n">agg_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;DP&#39;</span><span class="p">],</span> <span class="n">ordering</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;exo_mac&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;2-5&#39;</span><span class="p">,</span> <span class="s1">&#39;6-10&#39;</span><span class="p">,</span> <span class="s1">&#39;10+&#39;</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">global_view</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">statistic</span><span class="o">=</span><span class="n">Statistic</span><span class="o">.</span><span class="n">NONREF_CONCORDANCE</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">global_df</span> <span class="o">=</span> <span class="n">global_view</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+</pre></div>
+</div>
+<p># Compute variant concordance and export results for a specific variant</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">variant_conc</span> <span class="o">=</span> <span class="n">joint_callset</span><span class="o">.</span><span class="n">variant_concordance</span><span class="p">(</span><span class="n">exo_col_group_by_var</span><span class="o">=</span><span class="n">exo_col_group_by_var</span><span class="p">,</span>
+<span class="gp">... </span>                                                 <span class="n">exo_entry_agg_fields</span><span class="o">=</span><span class="n">exo_entry_agg_fields</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">variant_view</span> <span class="o">=</span> <span class="n">variant_conc</span><span class="o">.</span><span class="n">get_view</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">locus</span><span class="o">=</span><span class="n">hl</span><span class="o">.</span><span class="n">Locus</span><span class="p">(</span><span class="s1">&#39;chr1&#39;</span><span class="p">,</span> <span class="mi">3452452</span><span class="p">,</span> <span class="n">reference_genome</span><span class="o">=</span><span class="s1">&#39;GRCh38&#39;</span><span class="p">),</span> <span class="n">alleles</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">]),</span>
+<span class="gp">... </span>                                     <span class="n">group_names</span><span class="o">=</span><span class="p">[</span><span class="n">ALL_GROUP</span><span class="p">,</span> <span class="s1">&#39;pop&#39;</span><span class="p">],</span>
+<span class="gp">... </span>                                     <span class="n">agg_names</span><span class="o">=</span><span class="p">[</span><span class="n">ALL_AGG</span><span class="p">,</span> <span class="s1">&#39;DP&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">variant_view</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="s1">&#39;gs://my-bucket/results.tsv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p># Compute sample concordance and get the results for all samples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sample_conc</span> <span class="o">=</span> <span class="n">joint_callset</span><span class="o">.</span><span class="n">sample_concordance</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sample_view</span> <span class="o">=</span> <span class="n">sample_conc</span><span class="o">.</span><span class="n">get_view</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sample_view</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+</pre></div>
+</div>
+<p># When done, close to unpersist any cached data</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">joint_callset</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>exo</strong> (<em>hl.MatrixTable</em>) – A MatrixTable that was generated from whole-exome sequencing.</p></li>
+<li><p><strong>imp</strong> (<em>hl.MatrixTable</em>) – A MatrixTable that was generated from imputation.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="bge_toolkit.qc.JointCallSet.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.JointCallSet.close" title="Link to this definition"></a></dt>
+<dd><p>Cleanup any cached datasets before exiting.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bge_toolkit.qc.JointCallSet.full_outer_join">
+<span class="sig-name descname"><span class="pre">full_outer_join</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">join_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">JoinType.outer</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.JointCallSet.full_outer_join" title="Link to this definition"></a></dt>
+<dd><p>Return a Hail MatrixTable with a full outer join.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>join_type</strong> (<a class="reference internal" href="#bge_toolkit.qc.JoinType" title="bge_toolkit.qc.JoinType"><em>JoinType</em></a>) – How to join the two datasets. One of “inner” or “outer”.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Equivalent of running hl.experimental.full_outer_join_mt()</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>hl.MatrixTable</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bge_toolkit.qc.JointCallSet.global_concordance">
+<span class="sig-name descname"><span class="pre">global_concordance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">exo_row_group_by_var</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imp_row_group_by_var</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exo_col_group_by_var</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imp_col_group_by_var</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exo_row_agg_fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imp_row_agg_fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exo_col_agg_fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imp_col_agg_fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exo_entry_agg_fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imp_entry_agg_fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">join_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">JoinType.inner</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.JointCallSet.global_concordance" title="Link to this definition"></a></dt>
+<dd><p>Compute the global concordance with various grouping and aggregation variables.</p>
+<p class="rubric">Examples</p>
+<p># Import shortcuts for ungrouped groupings and aggregations</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">bge_toolkit.qc.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">ALL_AGG</span><span class="p">,</span> <span class="n">ALL_GROUP</span>
+</pre></div>
+</div>
+<p># Define a custom binning function</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">mac_bin</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="n">hl</span><span class="o">.</span><span class="n">StructExpression</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">mac_bin</span> <span class="o">=</span> <span class="p">(</span><span class="n">hl</span><span class="o">.</span><span class="n">case</span><span class="p">()</span>
+<span class="gp">... </span>      <span class="o">.</span><span class="n">when</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">AC</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">)</span>
+<span class="gp">... </span>      <span class="o">.</span><span class="n">when</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">AC</span> <span class="o">&lt;=</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;2-5&#39;</span><span class="p">)</span>
+<span class="gp">... </span>      <span class="o">.</span><span class="n">when</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">AC</span> <span class="o">&lt;=</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;6-10&#39;</span><span class="p">)</span>
+<span class="gp">... </span>      <span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="s1">&#39;10+&#39;</span><span class="p">))</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">mac_bin</span>
+</pre></div>
+</div>
+<p># Or import a binning function</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">bge_toolkit.common</span><span class="w"> </span><span class="kn">import</span> <span class="n">dp_bin</span>
+</pre></div>
+</div>
+<p># Specify aggregation variables</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">exo_row_group_by_var</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;exo_mac&#39;</span><span class="p">:</span> <span class="n">mac_bin</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">exo_entry_agg_fields</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;DP&#39;</span><span class="p">:</span> <span class="n">dp_bin</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">exo_col_group_by_var</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;pop&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">pop</span><span class="p">}</span>
+</pre></div>
+</div>
+<p># Compute global concordance and make a plot</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">global_conc</span> <span class="o">=</span> <span class="n">joint_callset</span><span class="o">.</span><span class="n">global_concordance</span><span class="p">(</span><span class="n">exo_row_group_by_var</span><span class="o">=</span><span class="n">exo_row_group_by_var</span><span class="p">,</span>
+<span class="gp">... </span>                                               <span class="n">exo_col_group_by_var</span><span class="o">=</span><span class="n">exo_col_group_by_var</span><span class="p">,</span>
+<span class="gp">... </span>                                               <span class="n">exo_entry_agg_fields</span><span class="o">=</span><span class="n">exo_entry_agg_fields</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">global_view</span> <span class="o">=</span> <span class="n">global_conc</span><span class="o">.</span><span class="n">get_view</span><span class="p">(</span><span class="n">group_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;exo_mac&#39;</span><span class="p">,</span> <span class="s1">&#39;pop&#39;</span><span class="p">],</span> <span class="n">agg_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;DP&#39;</span><span class="p">,</span> <span class="n">ALL_AGG</span><span class="p">],</span> <span class="n">ordering</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;exo_mac&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;2-5&#39;</span><span class="p">,</span> <span class="s1">&#39;6-10&#39;</span><span class="p">,</span> <span class="s1">&#39;10+&#39;</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">global_view</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<p class="rubric">Notes</p>
+<p>The total ungrouped concordance can be accessed with ALL_GROUP and ALL_AGG.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>exo_row_group_by_var</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>Callable</em><em>[</em><em>[</em><em>hl.StructExpression</em><em>]</em><em>, </em><em>hl.Expression</em><em>]</em><em>]</em><em>]</em>) – An optional mapping from a grouping variable name to a
+function that specifies how to take a struct representing mt.left_row (exome) in a full outer join and convert it to a binned variable for grouping.</p></li>
+<li><p><strong>imp_row_group_by_var</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>Callable</em><em>[</em><em>[</em><em>hl.StructExpression</em><em>]</em><em>, </em><em>hl.Expression</em><em>]</em><em>]</em><em>]</em>) – An optional mapping from a grouping variable name to a
+function that specifies how to take a struct representing mt.right_row (imputation) in a full outer join and convert it to a binned variable for grouping.</p></li>
+<li><p><strong>exo_col_group_by_var</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>Callable</em><em>[</em><em>[</em><em>hl.StructExpression</em><em>]</em><em>, </em><em>hl.Expression</em><em>]</em><em>]</em><em>]</em>) – An optional mapping from a grouping variable name to a
+function that specifies how to take a struct representing mt.left_col (exome) in a full outer join and convert it to a binned variable for grouping.</p></li>
+<li><p><strong>imp_col_group_by_var</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>Callable</em><em>[</em><em>[</em><em>hl.StructExpression</em><em>]</em><em>, </em><em>hl.Expression</em><em>]</em><em>]</em><em>]</em>) – An optional mapping from a grouping variable name to a
+function that specifies how to take a struct representing mt.right_col (imputation) in a full outer join and convert it to a binned variable for grouping.</p></li>
+<li><p><strong>exo_row_agg_fields</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>Callable</em><em>[</em><em>[</em><em>hl.StructExpression</em><em>]</em><em>, </em><em>hl.Expression</em><em>]</em><em>]</em><em>]</em>) – An optional mapping from a grouping variable name to a
+function that specifies how to take a struct representing mt.left_row (exome) in a full outer join and convert it to a binned variable for aggregation.</p></li>
+<li><p><strong>imp_row_agg_fields</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>Callable</em><em>[</em><em>[</em><em>hl.StructExpression</em><em>]</em><em>, </em><em>hl.Expression</em><em>]</em><em>]</em><em>]</em>) – An optional mapping from a grouping variable name to a
+function that specifies how to take a struct representing mt.right_row (imputation) in a full outer join and convert it to a binned variable for aggregation.</p></li>
+<li><p><strong>exo_col_agg_fields</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>Callable</em><em>[</em><em>[</em><em>hl.StructExpression</em><em>]</em><em>, </em><em>hl.Expression</em><em>]</em><em>]</em><em>]</em>) – An optional mapping from a grouping variable name to a
+function that specifies how to take a struct representing mt.left_col (exome) in a full outer join and convert it to a binned variable for aggregation.</p></li>
+<li><p><strong>imp_col_agg_fields</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>Callable</em><em>[</em><em>[</em><em>hl.StructExpression</em><em>]</em><em>, </em><em>hl.Expression</em><em>]</em><em>]</em><em>]</em>) – An optional mapping from a grouping variable name to a
+function that specifies how to take a struct representing mt.right_col (imputation) in a full outer join and convert it to a binned variable for aggregation.</p></li>
+<li><p><strong>exo_entry_agg_fields</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>Callable</em><em>[</em><em>[</em><em>hl.StructExpression</em><em>]</em><em>, </em><em>hl.Expression</em><em>]</em><em>]</em><em>]</em>) – An optional mapping from a grouping variable name to a
+function that specifies how to take a struct representing mt.left_entry (exome) in a full outer join and convert it to a binned variable for aggregation.</p></li>
+<li><p><strong>imp_entry_agg_fields</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>Callable</em><em>[</em><em>[</em><em>hl.StructExpression</em><em>]</em><em>, </em><em>hl.Expression</em><em>]</em><em>]</em><em>]</em>) – An optional mapping from a grouping variable name to a
+function that specifies how to take a struct representing mt.right_entry (imputation) in a full outer join and convert it to a binned variable for aggregation.</p></li>
+<li><p><strong>join_type</strong> (<a class="reference internal" href="#bge_toolkit.qc.JoinType" title="bge_toolkit.qc.JoinType"><em>JoinType</em></a>) – Specify which variants to calculate concordance from. Can be one of “inner” or “outer”. “outer” is substantially more expensive.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A table with the global concordance results.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#bge_toolkit.qc.ConcordanceTable" title="bge_toolkit.qc.ConcordanceTable">ConcordanceTable</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="bge_toolkit.qc.JointCallSet.n_sample_overlaps">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">n_sample_overlaps</span></span><a class="headerlink" href="#bge_toolkit.qc.JointCallSet.n_sample_overlaps" title="Link to this definition"></a></dt>
+<dd><p>Get the number of overlapping samples between the exome and imputation datasets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The number of overlaps.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="bge_toolkit.qc.JointCallSet.n_variant_overlaps">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">n_variant_overlaps</span></span><a class="headerlink" href="#bge_toolkit.qc.JointCallSet.n_variant_overlaps" title="Link to this definition"></a></dt>
+<dd><p>Get the number of overlapping variants between the exome and imputation datasets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The number of overlaps.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bge_toolkit.qc.JointCallSet.sample_concordance">
+<span class="sig-name descname"><span class="pre">sample_concordance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">join_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">JoinType.inner</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.JointCallSet.sample_concordance" title="Link to this definition"></a></dt>
+<dd><p>Compute the global sample concordance.</p>
+<p class="rubric">Examples</p>
+<p># Import shortcuts for ungrouped groupings and aggregations</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">bge_toolkit.qc.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">ALL_AGG</span><span class="p">,</span> <span class="n">ALL_GROUP</span>
+</pre></div>
+</div>
+<p># Compute sample concordance and make a plot for a specific sample</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sample_conc</span> <span class="o">=</span> <span class="n">joint_callset</span><span class="o">.</span><span class="n">sample_concordance</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sample_view</span> <span class="o">=</span> <span class="n">sample_conc</span><span class="o">.</span><span class="n">get_view</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sample_view</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>join_type</strong> (<a class="reference internal" href="#bge_toolkit.qc.JoinType" title="bge_toolkit.qc.JoinType"><em>JoinType</em></a>) – Specify which variants to calculate concordance from. Can be one of “inner” or “outer”.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A table with the concordance results for all samples.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#bge_toolkit.qc.ConcordanceTable" title="bge_toolkit.qc.ConcordanceTable">ConcordanceTable</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bge_toolkit.qc.JointCallSet.sample_overlaps">
+<span class="sig-name descname"><span class="pre">sample_overlaps</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.JointCallSet.sample_overlaps" title="Link to this definition"></a></dt>
+<dd><p>Get a HailTable with the union of all samples along with their membership in each dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A table with all samples with two columns: EXOME and IMPUTATION. Both columns are booleans which represent a sample’s member in each dataset.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>hl.Table</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bge_toolkit.qc.JointCallSet.variant_concordance">
+<span class="sig-name descname"><span class="pre">variant_concordance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">exo_col_group_by_var</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imp_col_group_by_var</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exo_col_agg_fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imp_col_agg_fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exo_entry_agg_fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imp_entry_agg_fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">join_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">JoinType.inner</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.JointCallSet.variant_concordance" title="Link to this definition"></a></dt>
+<dd><p>Compute the variant concordance with various grouping and aggregation variables.</p>
+<p class="rubric">Examples</p>
+<p># Import shortcuts for ungrouped groupings and aggregations</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">bge_toolkit.qc.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">ALL_AGG</span><span class="p">,</span> <span class="n">ALL_GROUP</span>
+</pre></div>
+</div>
+<p># Define a custom binning function</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">dp_bin</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="n">hl</span><span class="o">.</span><span class="n">StructExpression</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">hl</span><span class="o">.</span><span class="n">case</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="o">.</span><span class="n">when</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">DP</span> <span class="o">&lt;=</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="o">.</span><span class="n">when</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">DP</span> <span class="o">&lt;=</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="o">.</span><span class="n">when</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">DP</span> <span class="o">&lt;=</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="o">.</span><span class="n">when</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">DP</span> <span class="o">&lt;=</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="o">.</span><span class="n">when</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">DP</span> <span class="o">&lt;=</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="o">.</span><span class="n">when</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">DP</span> <span class="o">&lt;=</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="o">.</span><span class="n">when</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">DP</span> <span class="o">&lt;=</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">70</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="o">.</span><span class="n">when</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">DP</span> <span class="o">&lt;=</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">80</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="o">.</span><span class="n">when</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">DP</span> <span class="o">&lt;=</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="mi">100</span><span class="p">))</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">x</span>
+</pre></div>
+</div>
+<p># Specify aggregation variables</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">exo_entry_agg_fields</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;DP&#39;</span><span class="p">:</span> <span class="n">dp_bin</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">exo_col_group_by_var</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;pop&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">pop</span><span class="p">}</span>
+</pre></div>
+</div>
+<p># Compute variant concordance and export results for a specific variant</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">variant_conc</span> <span class="o">=</span> <span class="n">joint_callset</span><span class="o">.</span><span class="n">variant_concordance</span><span class="p">(</span><span class="n">exo_col_group_by_var</span><span class="o">=</span><span class="n">exo_col_group_by_var</span><span class="p">,</span>
+<span class="gp">... </span>                                                 <span class="n">exo_entry_agg_fields</span><span class="o">=</span><span class="n">exo_entry_agg_fields</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">variant_view</span> <span class="o">=</span> <span class="n">variant_conc</span><span class="o">.</span><span class="n">get_view</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">locus</span><span class="o">=</span><span class="n">hl</span><span class="o">.</span><span class="n">Locus</span><span class="p">(</span><span class="s1">&#39;chr1&#39;</span><span class="p">,</span> <span class="mi">3452452</span><span class="p">,</span> <span class="n">reference_genome</span><span class="o">=</span><span class="s1">&#39;GRCh38&#39;</span><span class="p">),</span> <span class="n">alleles</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">]),</span>
+<span class="gp">... </span>                                     <span class="n">group_names</span><span class="o">=</span><span class="p">[</span><span class="n">ALL_GROUP</span><span class="p">,</span> <span class="s1">&#39;pop&#39;</span><span class="p">],</span>
+<span class="gp">... </span>                                     <span class="n">agg_names</span><span class="o">=</span><span class="p">[</span><span class="n">ALL_AGG</span><span class="p">,</span> <span class="s1">&#39;DP&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">variant_view</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="s1">&#39;gs://my-bucket/results.tsv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="rubric">Notes</p>
+<p>The total ungrouped concordance can be accessed with ALL_GROUP and ALL_AGG.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>exo_col_group_by_var</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>Callable</em><em>[</em><em>[</em><em>hl.StructExpression</em><em>]</em><em>, </em><em>hl.Expression</em><em>]</em><em>]</em><em>]</em>) – An optional mapping from a grouping variable name to a
+function that specifies how to take a struct representing mt.left_col (exome) in a full outer join and convert it to a binned variable for grouping.</p></li>
+<li><p><strong>imp_col_group_by_var</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>Callable</em><em>[</em><em>[</em><em>hl.StructExpression</em><em>]</em><em>, </em><em>hl.Expression</em><em>]</em><em>]</em><em>]</em>) – An optional mapping from a grouping variable name to a
+function that specifies how to take a struct representing mt.right_col (imputation) in a full outer join and convert it to a binned variable for grouping.</p></li>
+<li><p><strong>exo_col_agg_fields</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>Callable</em><em>[</em><em>[</em><em>hl.StructExpression</em><em>]</em><em>, </em><em>hl.Expression</em><em>]</em><em>]</em><em>]</em>) – An optional mapping from a grouping variable name to a
+function that specifies how to take a struct representing mt.left_col (exome) in a full outer join and convert it to a binned variable for aggregation.</p></li>
+<li><p><strong>imp_col_agg_fields</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>Callable</em><em>[</em><em>[</em><em>hl.StructExpression</em><em>]</em><em>, </em><em>hl.Expression</em><em>]</em><em>]</em><em>]</em>) – An optional mapping from a grouping variable name to a
+function that specifies how to take a struct representing mt.right_col (imputation) in a full outer join and convert it to a binned variable for aggregation.</p></li>
+<li><p><strong>exo_entry_agg_fields</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>Callable</em><em>[</em><em>[</em><em>hl.StructExpression</em><em>]</em><em>, </em><em>hl.Expression</em><em>]</em><em>]</em><em>]</em>) – An optional mapping from a grouping variable name to a
+function that specifies how to take a struct representing mt.left_entry (exome) in a full outer join and convert it to a binned variable for aggregation.</p></li>
+<li><p><strong>imp_entry_agg_fields</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>Callable</em><em>[</em><em>[</em><em>hl.StructExpression</em><em>]</em><em>, </em><em>hl.Expression</em><em>]</em><em>]</em><em>]</em>) – An optional mapping from a grouping variable name to a
+function that specifies how to take a struct representing mt.right_entry (imputation) in a full outer join and convert it to a binned variable for aggregation.</p></li>
+<li><p><strong>join_type</strong> (<a class="reference internal" href="#bge_toolkit.qc.JoinType" title="bge_toolkit.qc.JoinType"><em>JoinType</em></a>) – Specify which variants to calculate concordance from. Can be one of “inner” or “outer”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A table with the concordance results for all variants.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#bge_toolkit.qc.ConcordanceTable" title="bge_toolkit.qc.ConcordanceTable">ConcordanceTable</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bge_toolkit.qc.JointCallSet.variant_overlaps">
+<span class="sig-name descname"><span class="pre">variant_overlaps</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.JointCallSet.variant_overlaps" title="Link to this definition"></a></dt>
+<dd><p>Get a HailTable with all overlapping variants.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A table with all overlapping variants.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>hl.Table</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="jointype">
+<h3>JoinType<a class="headerlink" href="#jointype" title="Link to this heading"></a></h3>
+<p>An Enum that specifies what type of join to do. Inner joins are substantially cheaper
+than outer joins!</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="bge_toolkit.qc.JoinType">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bge_toolkit.qc.</span></span><span class="sig-name descname"><span class="pre">JoinType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.JoinType" title="Link to this definition"></a></dt>
+<dd><p>The join type to use.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="bge_toolkit.qc.JoinType.outer">
+<span class="sig-name descname"><span class="pre">outer</span></span><a class="headerlink" href="#bge_toolkit.qc.JoinType.outer" title="Link to this definition"></a></dt>
+<dd><p>Outer join.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="bge_toolkit.qc.JoinType.inner">
+<span class="sig-name descname"><span class="pre">inner</span></span><a class="headerlink" href="#bge_toolkit.qc.JoinType.inner" title="Link to this definition"></a></dt>
+<dd><p>Inner join.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="selectors">
+<h3>Selectors<a class="headerlink" href="#selectors" title="Link to this heading"></a></h3>
+<dl class="py data">
+<dt class="sig sig-object py" id="bge_toolkit.qc.ALL_GROUP">
+<span class="sig-prename descclassname"><span class="pre">bge_toolkit.qc.</span></span><span class="sig-name descname"><span class="pre">ALL_GROUP</span></span><a class="headerlink" href="#bge_toolkit.qc.ALL_GROUP" title="Link to this definition"></a></dt>
+<dd><p>Use this global variable to select all variants and samples (no grouping).</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="bge_toolkit.qc.ALL_AGG">
+<span class="sig-prename descclassname"><span class="pre">bge_toolkit.qc.</span></span><span class="sig-name descname"><span class="pre">ALL_AGG</span></span><a class="headerlink" href="#bge_toolkit.qc.ALL_AGG" title="Link to this definition"></a></dt>
+<dd><p>Use this global variable to select all variants and samples for aggregation (no grouping).</p>
+</dd></dl>
+
+</section>
+<section id="concordance">
+<h3>Concordance<a class="headerlink" href="#concordance" title="Link to this heading"></a></h3>
+<p>A stand-alone Python function to compute concordance identical to the CLI</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ bge-toolit qc concordance
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="bge_toolkit.qc.concordance">
+<span class="sig-prename descclassname"><span class="pre">bge_toolkit.qc.</span></span><span class="sig-name descname"><span class="pre">concordance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">exome_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imputation_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exome_maf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exome_mac</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imputation_maf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imputation_mac</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info_score</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_gp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qual_approx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variant_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_samples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_variants</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">downsample_samples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">downsample_variants</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">join_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">JoinType.inner</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_variants</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_samples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_global</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hail_init_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_exome_partitions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_imp_partitions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.concordance" title="Link to this definition"></a></dt>
+<dd><p>Run the default implementation of concordance used in the CLI.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>exome_path</strong> (<em>str</em>) – Exome dataset to compare to.</p></li>
+<li><p><strong>imputation_path</strong> (<em>str</em>) – Imputation dataset to compare to.</p></li>
+<li><p><strong>out_dir</strong> (<em>str</em>) – Output directory.</p></li>
+<li><p><strong>exome_maf</strong> (<em>bool</em>) – Bin concordance counts by Exome Minor Allele Frequency.</p></li>
+<li><p><strong>exome_mac</strong> (<em>bool</em>) – Bin concordance counts by Exome Minor Allele Counts.</p></li>
+<li><p><strong>imputation_maf</strong> (<em>bool</em>) – Bin concordance counts by Imputation Minor Allele Frequency.</p></li>
+<li><p><strong>imputation_mac</strong> (<em>bool</em>) – Bin concordance counts by Imputation Minor Allele Counts.</p></li>
+<li><p><strong>info_score</strong> (<em>bool</em>) – Bin concordance counts by imputation INFO score.</p></li>
+<li><p><strong>dp</strong> (<em>bool</em>) – Bin concordance counts by exome genotype DP.</p></li>
+<li><p><strong>gq</strong> (<em>bool</em>) – Bin concordance counts by exome genotype GQ.</p></li>
+<li><p><strong>max_gp</strong> (<em>bool</em>) – Bin concordance counts by maximum value of imputation GP.</p></li>
+<li><p><strong>qual_approx</strong> (<em>bool</em>) – Bin concordance counts by variant Approx Qual Score.</p></li>
+<li><p><strong>sample_list</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Filter to samples listed in the file.</p></li>
+<li><p><strong>variant_list</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Filter to variants listed in the file.</p></li>
+<li><p><strong>contig</strong> (<em>str</em>) – Filter to variants in the contig.</p></li>
+<li><p><strong>n_samples</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – Filter to the first N overlapping samples.</p></li>
+<li><p><strong>n_variants</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – Filter to the first N variants.</p></li>
+<li><p><strong>downsample_samples</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Downsample to X fraction of samples.</p></li>
+<li><p><strong>downsample_variants</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Downsample to X fraction of variants.</p></li>
+<li><p><strong>join_type</strong> (<a class="reference internal" href="#bge_toolkit.qc.JoinType" title="bge_toolkit.qc.JoinType"><em>JoinType</em></a>) – Join type.</p></li>
+<li><p><strong>run_variants</strong> (<em>bool</em>) – Run variant concordance.</p></li>
+<li><p><strong>run_samples</strong> (<em>bool</em>) – Run sample concordance.</p></li>
+<li><p><strong>run_global</strong> (<em>bool</em>) – Run global concordance.</p></li>
+<li><p><strong>log_path</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Log file path to write to.</p></li>
+<li><p><strong>hail_init_kwargs</strong> (<em>Optional</em><em>[</em><em>dict</em><em>]</em>) – Keyword arguments to hl.init().</p></li>
+<li><p><strong>log</strong> (<em>Optional</em><em>[</em><em>logging.Logger</em><em>]</em>) – Logging object to log to.</p></li>
+<li><p><strong>n_exome_partitions</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – Number of partitions to load the exome dataset with if it’s a MatrixTable.</p></li>
+<li><p><strong>n_imp_partitions</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – Number of partitions to load the imputation dataset with if it’s a MatrixTable.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="concordancetable">
+<h3>ConcordanceTable<a class="headerlink" href="#concordancetable" title="Link to this heading"></a></h3>
+<p>A <a class="reference internal" href="#bge_toolkit.qc.ConcordanceTable" title="bge_toolkit.qc.ConcordanceTable"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConcordanceTable</span></code></a> is an object that provides an interface for viewing concordance
+results.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="bge_toolkit.qc.ConcordanceTable">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bge_toolkit.qc.</span></span><span class="sig-name descname"><span class="pre">ConcordanceTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.ConcordanceTable" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Result of running a concordance operation on a JointCallset.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="bge_toolkit.qc.ConcordanceTable.agg_vars">
+<span class="sig-name descname"><span class="pre">agg_vars</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.ConcordanceTable.agg_vars" title="Link to this definition"></a></dt>
+<dd><p>A mapping of the aggregation variable names and their types.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">concordance_table</span><span class="o">.</span><span class="n">group_vars</span><span class="p">()</span>
+<span class="go">{&#39;DP&#39;: hl.tint32, &#39;INFO&#39;: hl.tfloat64}</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dictionary with the aggregation variable names and the corresponding types of their values.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dict[str, HailType]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bge_toolkit.qc.ConcordanceTable.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.ConcordanceTable.close" title="Link to this definition"></a></dt>
+<dd><p>Unpersist any cached views.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bge_toolkit.qc.ConcordanceTable.get_view">
+<span class="sig-name descname"><span class="pre">get_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agg_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ordering</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.ConcordanceTable.get_view" title="Link to this definition"></a></dt>
+<dd><p>Subset the concordance results for a particular key of the concordance results.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">global_view</span> <span class="o">=</span> <span class="n">glob_conc_table</span><span class="o">.</span><span class="n">get_view</span><span class="p">(</span><span class="n">group_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;exo_mac&#39;</span><span class="p">],</span> <span class="n">agg_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;DP&#39;</span><span class="p">,</span> <span class="s1">&#39;GQ&#39;</span><span class="p">],</span> <span class="n">ordering</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;exo_mac&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;2-5&#39;</span><span class="p">,</span> <span class="s1">&#39;6-10&#39;</span><span class="p">,</span> <span class="s1">&#39;10+&#39;</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">global_view</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">global_view</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="s1">&#39;gs://my-bucket/my-file.tsv&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;   &#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">variant_view</span> <span class="o">=</span> <span class="n">variant_conc_table</span><span class="o">.</span><span class="n">get_view</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">locus</span><span class="o">=</span><span class="n">hl</span><span class="o">.</span><span class="n">Locus</span><span class="p">(</span><span class="s1">&#39;chr1&#39;</span><span class="p">,</span> <span class="mi">3423242</span><span class="p">,</span> <span class="n">reference_genome</span><span class="o">=</span><span class="s1">&#39;GRCh38&#39;</span><span class="p">),</span> <span class="n">alleles</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">]))</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sample_view</span> <span class="o">=</span> <span class="n">sample_conc_table</span><span class="o">.</span><span class="n">get_view</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="s2">&quot;NA12878&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>]</em>) – The key to subset the data to. For a global concordance result, this is None. For a variant concordance result, this is the locus and alleles. For sample concordance, this is the sample ID.</p></li>
+<li><p><strong>group_names</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>]</em>) – The group by variables to select. The default is all variants and all samples or no grouping.</p></li>
+<li><p><strong>agg_names</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>]</em>) – The aggregation variables to select. The default is all genotypes.</p></li>
+<li><p><strong>ordering</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>List</em><em>[</em><em>str</em><em>]</em><em>]</em><em>]</em>) – A mapping from group name or agg name to an ordered list of the factors for that variable.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A slice of the data that can be exported or plotted.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#bge_toolkit.qc.ConcordanceView" title="bge_toolkit.qc.ConcordanceView">ConcordanceView</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bge_toolkit.qc.ConcordanceTable.group_vars">
+<span class="sig-name descname"><span class="pre">group_vars</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.ConcordanceTable.group_vars" title="Link to this definition"></a></dt>
+<dd><p>A mapping of the group by variable names and their types.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">concordance_table</span><span class="o">.</span><span class="n">group_vars</span><span class="p">()</span>
+<span class="go">{&#39;exome_mac&#39;: hl.tint32, &#39;exome_maf&#39;: hl.tfloat64}</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dictionary with the group by variable names and the corresponding types of their values.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dict[str, HailType]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bge_toolkit.qc.ConcordanceTable.load">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.ConcordanceTable.load" title="Link to this definition"></a></dt>
+<dd><p>Path to a Hail Table containing the raw concordance output.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">conc_table</span> <span class="o">=</span> <span class="n">ConcordanceTable</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;gs://my-bucket/global-conc.ht&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – The path of the Hail Table to import.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A class for interacting with the results of a concordance operation.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#bge_toolkit.qc.ConcordanceTable" title="bge_toolkit.qc.ConcordanceTable">ConcordanceTable</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bge_toolkit.qc.ConcordanceTable.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.ConcordanceTable.write" title="Link to this definition"></a></dt>
+<dd><p>Write the underlying data to a Hail Table.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">concordance_table</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;/tmp/my-output/my-data.ht&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>output_path</strong> (<em>str</em>) – Output path to write the underlying data to.</p></li>
+<li><p><strong>overwrite</strong> (<em>bool</em>) – Overwrite any existing files.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="concordanceview">
+<h3>ConcordanceView<a class="headerlink" href="#concordanceview" title="Link to this heading"></a></h3>
+<p>A <a class="reference internal" href="#bge_toolkit.qc.ConcordanceView" title="bge_toolkit.qc.ConcordanceView"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConcordanceView</span></code></a> is an object that provides an interface for viewing concordance
+results for a specific grouping and set of aggregation variables.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="bge_toolkit.qc.ConcordanceView">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bge_toolkit.qc.</span></span><span class="sig-name descname"><span class="pre">ConcordanceView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_vars</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agg_vars</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ordering</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.ConcordanceView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="bge_toolkit.qc.ConcordanceView.export">
+<span class="sig-name descname"><span class="pre">export</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.ConcordanceView.export" title="Link to this definition"></a></dt>
+<dd><p>Export the underlying Pandas dataframe to a file.</p>
+<p class="rubric">Notes</p>
+<p>The <cite>**kwargs</cite> are passed to the “to_csv” method of a pandas DataFrame.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">view</span> <span class="o">=</span> <span class="n">conc_table</span><span class="o">.</span><span class="n">get_view</span><span class="p">(</span><span class="n">group_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;exo_mac&#39;</span><span class="p">],</span> <span class="n">agg_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;DP&#39;</span><span class="p">,</span> <span class="s1">&#39;GQ&#39;</span><span class="p">],</span> <span class="n">ordering</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;exo_mac&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;2-5&#39;</span><span class="p">,</span> <span class="s1">&#39;6-10&#39;</span><span class="p">,</span> <span class="s1">&#39;10+&#39;</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">view</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="s1">&#39;gs://my-bucket/results.tsv&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The contents of <cite>results.tsv</cite> contains all combinations of group variables and aggregation variables.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – Path to export results to.</p></li>
+<li><p><strong>fields</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Fields to export along with the new field name.</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em>) – Optional kwargs to pass to “pd.DataFrame.to_csv()”</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bge_toolkit.qc.ConcordanceView.export_all">
+<span class="sig-name descname"><span class="pre">export_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_dir</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.ConcordanceView.export_all" title="Link to this definition"></a></dt>
+<dd><p>Export all possible combinations of group and agg variables.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">view</span> <span class="o">=</span> <span class="n">conc_table</span><span class="o">.</span><span class="n">get_view</span><span class="p">(</span><span class="n">group_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;exo_mac&#39;</span><span class="p">],</span> <span class="n">agg_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;DP&#39;</span><span class="p">,</span> <span class="s1">&#39;GQ&#39;</span><span class="p">],</span> <span class="n">ordering</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;exo_mac&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;2-5&#39;</span><span class="p">,</span> <span class="s1">&#39;6-10&#39;</span><span class="p">,</span> <span class="s1">&#39;10+&#39;</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">view</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="s1">&#39;gs://my-bucket/results/&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;    &quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>There is one table exported for each combination of grouping variable and aggregation variable. The files have the structure “GROUP_AGG.tsv”.
+For example, the view above would generate the following files:</p>
+<ul class="simple">
+<li><p>exo_mac_DP.tsv</p></li>
+<li><p>exo_mac_GQ.tsv</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>output_dir</strong> (<em>str</em>) – Directory to write all files to.</p></li>
+<li><p><strong>fields</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Fields to export along with the new field name</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="bge_toolkit.qc.ConcordanceView.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['concordance_rate',</span> <span class="pre">'nonref_concordance_rate',</span> <span class="pre">'f1_score',</span> <span class="pre">'n_total',</span> <span class="pre">'n_concordant',</span> <span class="pre">'n_discordant,n_hets',</span> <span class="pre">'n_hom_alts',</span> <span class="pre">'het_to_hom_alt',</span> <span class="pre">'hom_ref_to_het',</span> <span class="pre">'het_to_hom_ref',</span> <span class="pre">'MISSING_MISSING',</span> <span class="pre">'MISSING_NOCALL',</span> <span class="pre">'MISSING_HOMREF',</span> <span class="pre">'MISSING_HET',</span> <span class="pre">'MISSING_HOMALT',</span> <span class="pre">'NOCALL_MISSING',</span> <span class="pre">'NOCALL_NOCALL',</span> <span class="pre">'NOCALL_HOMREF',</span> <span class="pre">'NOCALL_HET',</span> <span class="pre">'NOCALL_HOMALT',</span> <span class="pre">'HOMREF_MISSING',</span> <span class="pre">'HOMREF_NOCALL',</span> <span class="pre">'HOMREF_HOMREF',</span> <span class="pre">'HOMREF_HET',</span> <span class="pre">'HOMREF_HOMALT',</span> <span class="pre">'HET_MISSING',</span> <span class="pre">'HET_NOCALL',</span> <span class="pre">'HET_HOMREF',</span> <span class="pre">'HET_HET',</span> <span class="pre">'HET_HOMALT',</span> <span class="pre">'HOMALT_MISSING',</span> <span class="pre">'HOMALT_NOCALL',</span> <span class="pre">'HOMALT_HOMREF',</span> <span class="pre">'HOMALT_HET',</span> <span class="pre">'HOMALT_HOMALT']</span></em><a class="headerlink" href="#bge_toolkit.qc.ConcordanceView.fields" title="Link to this definition"></a></dt>
+<dd><p>A list of all possible fields in the view.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bge_toolkit.qc.ConcordanceView.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">statistic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Statistic.NONREF_CONCORDANCE</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.ConcordanceView.plot" title="Link to this definition"></a></dt>
+<dd><p>Create a plot of the data that features a facet per aggregation variable in the view.</p>
+<p class="rubric">Notes</p>
+<p>Only implemented for one grouping variable in the view. Otherwise, use <cite>plot_all</cite> or create a new view with one grouping variable.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">view</span> <span class="o">=</span> <span class="n">conc_table</span><span class="o">.</span><span class="n">get_view</span><span class="p">(</span><span class="n">group_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;exo_mac&#39;</span><span class="p">],</span> <span class="n">agg_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;DP&#39;</span><span class="p">,</span> <span class="s1">&#39;GQ&#39;</span><span class="p">],</span> <span class="n">ordering</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;exo_mac&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;2-5&#39;</span><span class="p">,</span> <span class="s1">&#39;6-10&#39;</span><span class="p">,</span> <span class="s1">&#39;10+&#39;</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">view</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;plot.png&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – An optional path to write the figure to.</p></li>
+<li><p><strong>statistic</strong> (<a class="reference internal" href="#bge_toolkit.qc.Statistic" title="bge_toolkit.qc.Statistic"><em>Statistic</em></a>) – A statistic to use as the plotting variable. One of Statistic.NONREF_CONCORDANCE and Statistic.F1_SCORE.</p></li>
+<li><p><strong>kwargs</strong> – Pass-through arguments to plotnine.save</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Returns</dt><dd><p>plotnine.ggplot: A plot object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bge_toolkit.qc.ConcordanceView.plot_all">
+<span class="sig-name descname"><span class="pre">plot_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">statistic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Statistic.NONREF_CONCORDANCE</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.ConcordanceView.plot_all" title="Link to this definition"></a></dt>
+<dd><p>Create plots that feature a facet per aggregation variable in the view.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>out_dir</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – An optional directory to save plots to</p></li>
+<li><p><strong>statistic</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="#bge_toolkit.qc.Statistic" title="bge_toolkit.qc.Statistic"><em>Statistic</em></a><em>]</em>) – A statistic to use as the plotting variable.</p></li>
+<li><p><strong>kwargs</strong> – Keyword arguments to pass through to plotnine.save</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Returns</dt><dd><p>Dict[str, plotnine.ggplot]: A dictionary mapping a group name to the corresponding plot object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bge_toolkit.qc.ConcordanceView.result">
+<span class="sig-name descname"><span class="pre">result</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.ConcordanceView.result" title="Link to this definition"></a></dt>
+<dd><p>Generate a pandas DataFrame of the underlying view.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">view</span> <span class="o">=</span> <span class="n">conc_table</span><span class="o">.</span><span class="n">get_view</span><span class="p">(</span><span class="n">group_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;exo_mac&#39;</span><span class="p">],</span> <span class="n">agg_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;DP&#39;</span><span class="p">,</span> <span class="s1">&#39;GQ&#39;</span><span class="p">],</span> <span class="n">ordering</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;exo_mac&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;2-5&#39;</span><span class="p">,</span> <span class="s1">&#39;6-10&#39;</span><span class="p">,</span> <span class="s1">&#39;10+&#39;</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">view</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="statistic">
+<h3>Statistic<a class="headerlink" href="#statistic" title="Link to this heading"></a></h3>
+<p>An Enum that specifies what type of concordance statistic to compute.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="bge_toolkit.qc.Statistic">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bge_toolkit.qc.</span></span><span class="sig-name descname"><span class="pre">Statistic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.Statistic" title="Link to this definition"></a></dt>
+<dd><p>The statistic to use.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="bge_toolkit.qc.Statistic.nonref_concordance_rate">
+<span class="sig-name descname"><span class="pre">nonref_concordance_rate</span></span><a class="headerlink" href="#bge_toolkit.qc.Statistic.nonref_concordance_rate" title="Link to this definition"></a></dt>
+<dd><p>Non-reference concordance rate.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="bge_toolkit.qc.Statistic.concordance_rate">
+<span class="sig-name descname"><span class="pre">concordance_rate</span></span><a class="headerlink" href="#bge_toolkit.qc.Statistic.concordance_rate" title="Link to this definition"></a></dt>
+<dd><p>Concordance rate.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="bge_toolkit.qc.Statistic.f1_score">
+<span class="sig-name descname"><span class="pre">f1_score</span></span><a class="headerlink" href="#bge_toolkit.qc.Statistic.f1_score" title="Link to this definition"></a></dt>
+<dd><p>F1 score.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+<section id="bge-toolkit-common">
+<h2>bge_toolkit.common<a class="headerlink" href="#bge-toolkit-common" title="Link to this heading"></a></h2>
+<section id="binning-functions">
+<span id="binning-func"></span><h3>Binning Functions<a class="headerlink" href="#binning-functions" title="Link to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="bge_toolkit.common.mac_bin">
+<span class="sig-prename descclassname"><span class="pre">bge_toolkit.common.</span></span><span class="sig-name descname"><span class="pre">mac_bin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.common.mac_bin" title="Link to this definition"></a></dt>
+<dd><p>MAC bin function.</p>
+<p>Assumes the field “AC” exists in the input StructExpression.</p>
+<p>Categories: [‘1’, ‘2-5’, ‘6-10’, ‘10+’]</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bge_toolkit.common.maf_bin">
+<span class="sig-prename descclassname"><span class="pre">bge_toolkit.common.</span></span><span class="sig-name descname"><span class="pre">maf_bin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.common.maf_bin" title="Link to this definition"></a></dt>
+<dd><p>MAF bin function.</p>
+<p>Assumes the field “AF” exists in the input StructExpression.</p>
+<p>Categories: [‘&lt;1%’, ‘1-2%’, ‘2-5%’, ‘&gt;5%’]</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bge_toolkit.common.gq_bin">
+<span class="sig-prename descclassname"><span class="pre">bge_toolkit.common.</span></span><span class="sig-name descname"><span class="pre">gq_bin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.common.gq_bin" title="Link to this definition"></a></dt>
+<dd><p>GQ bin function.</p>
+<p>Assumes the field “GQ” exists in the input StructExpression.</p>
+<p>Categories: [‘10’, ‘20’, ‘30’, ‘40’, ‘50’, ‘60’, ‘70’, ‘80’, ‘90’]</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bge_toolkit.common.dp_bin">
+<span class="sig-prename descclassname"><span class="pre">bge_toolkit.common.</span></span><span class="sig-name descname"><span class="pre">dp_bin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.common.dp_bin" title="Link to this definition"></a></dt>
+<dd><p>DP bin function.</p>
+<p>Assumes the field “DP” exists in the input StructExpression.</p>
+<p>Categories: [‘10’, ‘20’, ‘30’, ‘40’, ‘50’, ‘60’, ‘70’, ‘80’, ‘90’]</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bge_toolkit.common.max_gp_bin">
+<span class="sig-prename descclassname"><span class="pre">bge_toolkit.common.</span></span><span class="sig-name descname"><span class="pre">max_gp_bin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.common.max_gp_bin" title="Link to this definition"></a></dt>
+<dd><p>Max GP bin function.</p>
+<p>Assumes the field “MAX_GP” exists in the input StructExpression.</p>
+<p>Categories: [‘0.1’, ‘0.2’, ‘0.3’, ‘0.4’, ‘0.5’, ‘0.6’, ‘0.7’, ‘0.8’, ‘0.9’, ‘0.95’, ‘1.0’]</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bge_toolkit.common.qual_approx_bin">
+<span class="sig-prename descclassname"><span class="pre">bge_toolkit.common.</span></span><span class="sig-name descname"><span class="pre">qual_approx_bin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.common.qual_approx_bin" title="Link to this definition"></a></dt>
+<dd><p>Approx Qual bin function.</p>
+<p>Assumes the field “QUALapprox” exists in the input StructExpression.</p>
+<p>Categories: [‘10’, ‘20’, ‘30’, ‘40’, ‘50’, ‘60’, ‘70’, ‘80’, ‘90’]</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bge_toolkit.common.info_score_bin">
+<span class="sig-prename descclassname"><span class="pre">bge_toolkit.common.</span></span><span class="sig-name descname"><span class="pre">info_score_bin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.common.info_score_bin" title="Link to this definition"></a></dt>
+<dd><p>INFO score bin function.</p>
+<p>Assumes the field “INFO” exists in the input StructExpression.</p>
+<p>Categories: [‘0.1’, ‘0.2’, ‘0.3’, ‘0.4’, ‘0.5’, ‘0.6’, ‘0.7’, ‘0.8’, ‘0.9’, ‘0.95’, ‘1.0’]</p>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="cli.html" class="btn btn-neutral float-left" title="Command-Line Interface" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright .</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
