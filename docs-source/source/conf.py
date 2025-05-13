@@ -46,8 +46,6 @@ def setup(app):
     original_console_init = rich.console.Console.__init__
 
     def patched_console_init(self, *args, **kwargs):
-        if "width" not in kwargs:
-            kwargs["width"] = 120  # or any width that works for your CLI
         kwargs['width'] = 100
         return original_console_init(self, *args, **kwargs)
 
