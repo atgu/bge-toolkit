@@ -1,8 +1,25 @@
 from .concordance import ConcordanceArray, ConcordanceTable, ConcordanceView, Statistic
 from .joint_callset import JointCallSet
 from .utils import ALL_AGG, ALL_GROUP, JoinType
-from .main import concordance
-
+from .main import concordance, sample_qc
+from .qc import (
+    SampleQCResult,
+    calculate_sample_qc_stats,
+    compute_pcs,
+    estimate_call_rate_through_gq_stats,
+    filtering_qc_metrics,
+    filter_chimeric_reads,
+    filter_contamination_rate,
+    filter_genotypes,
+    filter_to_high_quality_common_sites,
+    filter_to_high_quality_exome_intervals,
+    identify_outliers_in_qc_stats,
+    impute_and_check_sex,
+    infer_ancestry,
+    infer_relatedness,
+    prune_variants,
+    select_high_quality_common_sites,
+)
 
 __all__ = [
     'ALL_AGG',
@@ -12,6 +29,23 @@ __all__ = [
     'ConcordanceView',
     'JointCallSet',
     'JoinType',
+    'SampleQCResult',
     'Statistic',
+    'calculate_sample_qc_stats',
+    'compute_pcs',
     'concordance',
+    'estimate_call_rate_through_gq_stats',
+    'filtering_qc_metrics',
+    'filter_chimeric_reads',
+    'filter_contamination_rate',
+    'filter_genotypes',
+    'filter_to_high_quality_common_sites',
+    'filter_to_high_quality_exome_intervals',
+    'identify_outliers_in_qc_stats',
+    'impute_and_check_sex',
+    'infer_ancestry',
+    'infer_relatedness',
+    'prune_variants',
+    'sample_qc',
+    'select_high_quality_common_sites',
     ]

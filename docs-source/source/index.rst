@@ -1,8 +1,9 @@
+===========
 BGE Toolkit
 ===========
 
 Installation
-~~~~~~~~~~~~
+------------
 
 .. code-block::
 
@@ -12,19 +13,19 @@ Installation
 
 
 Documentation
-~~~~~~~~~~~~~
+-------------
 
 This is the documentation for both the Python API and the CLI for the BGE Toolkit.
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 8
    :caption: Contents:
 
    cli
    api
 
 Indices and tables
-~~~~~~~~~~~~~~~~~~
+------------------
 
 * :ref:`genindex`
 * :ref:`modindex`

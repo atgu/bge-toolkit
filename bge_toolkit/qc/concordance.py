@@ -10,7 +10,6 @@ from plotnine import (ggplot, aes, guides, guide_legend, geom_point, geom_line, 
 import pandas as pd
 
 import hail as hl
-from hail import ArrayExpression
 import  hailtop.fs as hfs
 
 from .utils import ALL_AGG, ALL_GROUP, JoinType, full_outer_join

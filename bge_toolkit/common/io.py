@@ -5,7 +5,6 @@ import logging
 
 import hail as hl
 import hailtop.fs as hfs
-from hail.ggplot.utils import n_partitions
 from hailtop.fs.fs_utils import GCSRequesterPaysConfiguration
 
 log = logging.getLogger('concordance')
@@ -157,3 +156,9 @@ def load_input_data(path: str, **kwargs) -> hl.MatrixTable:
     return PlinkInputData(path).load()
 
 
+def load_data(*, path: str, descriptor: str, log: logging.Logger, n_partitions: Optional[int] = None) -> hl.MatrixTable:
+    log.info(f'loading dataset {descriptor}')
+    mt = load_input_data(path, n_partitions=n_partitions)
+    n_variants, n_samples = mt.count()
+    log.info(f'found {n_variants} variants and {n_samples} samples in {descriptor}.')
+    return mt

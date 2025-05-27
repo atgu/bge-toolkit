@@ -1,5 +1,12 @@
 import logging
-from typing import Optional
+import os
+from typing import List, Optional, Tuple
+
+import hail as hl
+import hailtop.fs as hfs
+from hail.backend.service_backend import ServiceBackend
+from plotnine import ggplot
+from tempfile import NamedTemporaryFile
 
 
 def setup_logger(log: Optional[logging.Logger] = None, log_path: Optional[str] = None, log_name: Optional[str] = None) -> logging.Logger:
@@ -24,3 +31,125 @@ def setup_logger(log: Optional[logging.Logger] = None, log_path: Optional[str] =
         log.addHandler(file_handler)
 
     return log
+
+
+def save_ggplot(p: ggplot, path: str, **kwargs):
+    if path is not None:
+        with NamedTemporaryFile(delete=False, suffix='.png') as temp_file:
+            temp_file_name = temp_file.name
+
+        p.draw()
+        p.save(temp_file_name, transparent=False, **kwargs)
+
+        hfs.copy(temp_file_name, path)
+        os.remove(temp_file_name)
+
+
+def setup_logging_and_qob(log_name: str,
+                          log_path: Optional[str] = None,
+                          hail_init_kwargs: Optional[dict] = None,
+                          log: Optional[logging.Logger] = None) -> logging.Logger:
+    log = setup_logger(log, log_path, log_name)
+    if log is None:
+        log = logging.getLogger(log_name)
+        log.setLevel(logging.INFO)
+        log.propagate = False
+
+    bad_logs = ['hailtop.aiocloud.aiogoogle.credentials',
+                'batch_client.aioclient']
+
+    for bad_log in bad_logs:
+        logging.getLogger(bad_log).setLevel(logging.WARNING)
+
+    if hail_init_kwargs:
+        hl.init(**hail_init_kwargs)
+
+    backend = hl.current_backend()
+    assert isinstance(backend, ServiceBackend)
+    backend.disable_progress_bar = False
+
+    return log
+
+
+def apply_filters(*,
+                  mt: hl.MatrixTable,
+                  description: Optional[str] = None,
+                  log: Optional[logging.Logger] = None,
+                  sample_list: Optional[str] = None,
+                  variant_list: Optional[str] = None,
+                  contig: Optional[List[str]] = None,
+                  n_samples: Optional[int] = None,
+                  n_variants: Optional[int] = None,
+                  downsample_samples: Optional[float] = None,
+                  downsample_variants: Optional[float] = None) -> Tuple[hl.MatrixTable, bool]:
+    """Apply filters to MatrixTable.
+
+    Args:
+        mt (MatrixTable): MatrixTable to filter
+        description (Optional[str]): Description of MatrixTable such as the original path.
+        log (Optional[logging.Logger]): A logging object to log to.
+        sample_list (Optional[str]): Filter to samples listed in the file.
+        variant_list (Optional[str]): Filter to variants listed in the file.
+        contig (str): Filter to variants in the contig.
+        n_samples (Optional[int]): Filter to the first N overlapping samples.
+        n_variants (Optional[int]): Filter to the first N variants.
+        downsample_samples (Optional[float]): Downsample to X fraction of samples.
+        downsample_variants (Optional[float]): Downsample to X fraction of variants.
+
+    Returns:
+        A filtered MatrixTable along with a boolean specifying whether the dataset has been downsampled.
+    """
+    downsampled = False
+
+    description = description or '<Unknown Source>'
+
+    if log is None:
+        log = setup_logger(None, None, 'filter_mt')
+
+    if sample_list is not None:
+        samples = hl.import_table(sample_list)
+        samples = samples.key_by('s')
+        mt = mt.semi_join_cols(samples)
+        log.info(f'Subset to samples in {sample_list} for {description}.')
+
+    if variant_list is not None:
+        downsampled = True
+        variants = hl.import_table(variant_list, no_header=True)
+        variants = variants.key_by('v')
+        variants = variants.annotate(variant=hl.parse_variant(variants.v))
+        variants = variants.annotate(locus=variants.variant.locus, alleles=variants.variant.alleles)
+        variants = variants.key_by('locus', 'alleles')
+
+        mt = mt.semi_join_rows(variants)
+
+        log.info(f'Subset to variants in {variant_list} for {description}.')
+
+    if contig is not None:
+        downsampled = True
+        contig_expr = mt.locus.contig == contig[0]
+        for c in contig[1:]:
+            contig_expr |= mt.locus.contig == c
+        mt = mt.filter_rows(contig_expr)
+        log.info(f'Subsetting to variants on {contig} for {description}.')
+
+    if downsample_variants:
+        downsampled = True
+        mt = mt.sample_rows(downsample_variants, seed=10243523)
+        log.info(f'Downsampling variants by {downsample_variants} for {description}.')
+
+    if downsample_samples:
+        downsampled = True
+        mt = mt.sample_cols(downsample_samples, seed=10243523)
+        log.info(f'Downsampling samples by {downsample_samples} for {description}.')
+
+    if n_variants is not None:
+        downsampled = True
+        mt = mt.head(n_rows=n_variants)
+        log.info(f'Selecting the first {n_variants} variants for {description}.')
+
+    if n_samples is not None:
+        downsampled = True
+        mt = mt.head(n_rows=None, n_cols=n_samples)
+        log.info(f'Selecting the first {n_samples} samples for {description}.')
+
+    return (mt, downsampled)

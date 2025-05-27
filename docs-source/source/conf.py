@@ -38,6 +38,12 @@ autodoc_typehints = 'none'
 html_static_path = ['_static']  # Make sure _static exists
 html_css_files = ['custom.css']
 
+html_theme_options = {
+    'collapse_navigation': False,  # Shows all levels of navigation
+    'sticky_navigation': True,
+    'navigation_depth': 5,        # Sets a specific depth if needed
+}
+
 
 def setup(app):
     # Monkeypatch Console before sphinxcontrib.typer uses it

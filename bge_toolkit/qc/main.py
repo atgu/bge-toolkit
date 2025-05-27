@@ -1,14 +1,14 @@
 import logging
-from typing import Optional
+from typing import List, Optional
 
 import hail as hl
-from hail.backend.service_backend import ServiceBackend
 
-from ..common.io import load_input_data
+from ..common.io import load_data
 from ..common.binned_exprs import (mac_bin, maf_bin, max_gp_bin, gq_bin, qual_approx_bin, info_score_bin, dp_bin)
-from ..common.utils import setup_logger
+from ..common.utils import apply_filters, save_ggplot, setup_logging_and_qob, setup_logger
 from .joint_callset import JointCallSet
 from .concordance import Statistic
+from .qc import SampleQCResult, calculate_sample_qc_stats, infer_ancestry, select_high_quality_common_sites
 from .utils import ALL_AGG, ALL_GROUP, JoinType
 
 
@@ -27,7 +27,7 @@ def concordance(*,
                 qual_approx: bool = False,
                 sample_list: Optional[str] = None,
                 variant_list: Optional[str] = None,
-                contig: Optional[str] = None,
+                contig: Optional[List[str]] = None,
                 n_samples: Optional[int] = None,
                 n_variants: Optional[int] = None,
                 downsample_samples: Optional[float] = None,
@@ -58,7 +58,7 @@ def concordance(*,
         qual_approx (bool): Bin concordance counts by variant Approx Qual Score.
         sample_list (Optional[str]): Filter to samples listed in the file.
         variant_list (Optional[str]): Filter to variants listed in the file.
-        contig (str): Filter to variants in the contig.
+        contig (List[str]): Filter to variants in the contig.
         n_samples (Optional[int]): Filter to the first N overlapping samples.
         n_variants (Optional[int]): Filter to the first N variants.
         downsample_samples (Optional[float]): Downsample to X fraction of samples.
@@ -73,35 +73,15 @@ def concordance(*,
         n_exome_partitions (Optional[int]): Number of partitions to load the exome dataset with if it's a MatrixTable.
         n_imp_partitions (Optional[int]): Number of partitions to load the imputation dataset with if it's a MatrixTable.
     """
-    log = setup_logger(log, log_path, 'concordance')
-    if log is None:
-        log = logging.getLogger('concordance')
-        log.propagate = False
+    log = setup_logging_and_qob(log_name='concordance',
+                                log_path=log_path,
+                                hail_init_kwargs=hail_init_kwargs,
+                                log=log)
 
-    bad_logs = ['hailtop.aiocloud.aiogoogle.credentials',
-                'batch_client.aioclient']
-
-    for bad_log in bad_logs:
-        logging.getLogger(bad_log).setLevel(logging.WARNING)
-
-    if hail_init_kwargs:
-        hl.init(**hail_init_kwargs)
+    exome = load_data(path=exome_path, descriptor='exome', log=log, n_partitions=n_exome_partitions)
+    imputation = load_data(path=imputation_path, descriptor='imputation', log=log, n_partitions=n_imp_partitions)
 
     out_dir = out_dir.rstrip('/') + '/'
-
-    backend = hl.current_backend()
-    assert isinstance(backend, ServiceBackend)
-    backend.disable_progress_bar = False
-
-    log.info('loading datasets')
-
-    exome = load_input_data(exome_path, n_partitions=n_exome_partitions)
-    n_exome_variants, n_exome_samples = exome.count()
-    log.info(f'found {n_exome_variants} variants and {n_exome_samples} samples in exome dataset.')
-
-    imputation = load_input_data(imputation_path, n_partitions=n_imp_partitions)
-    n_imp_variants, n_imp_samples = imputation.count()
-    log.info(f'found {n_imp_variants} variants and {n_imp_samples} samples in imputation dataset.')
 
     exo_row_group_by_var = {}
     imp_row_group_by_var = {}
@@ -113,7 +93,6 @@ def concordance(*,
     category_orders = {}
 
     requires_expensive_agg = False
-    downsampled = False
 
     if exome_maf:
         if run_samples:
@@ -206,45 +185,29 @@ def concordance(*,
             imp_entry_agg_fields['MAX_GP'] = max_gp_bin
             log.info('Aggregating by Imputation MAX GP.')
 
-    if contig is not None:
-        downsampled = True
-        exome = exome.filter_rows(exome.locus.contig == contig)
-        imputation = imputation.filter_rows(imputation.locus.contig == contig)
-        log.info(f'Subsetting to variants on {contig}.')
+    exome, downsampled_exome = apply_filters(mt=exome,
+                                             description='exome',
+                                             log=log,
+                                             sample_list=sample_list,
+                                             variant_list=variant_list,
+                                             contig=contig,
+                                             n_samples=None,  # we want to downsample overlapping samples
+                                             n_variants=n_variants,
+                                             downsample_samples=None,  # we want to downsample overlapping samples
+                                             downsample_variants=downsample_variants)
 
-    if downsample_variants:
-        downsampled = True
-        exome = exome.sample_rows(downsample_variants, seed=10243523)
-        imputation = imputation.sample_rows(downsample_variants, seed=10243523)
-        log.info(f'Downsampling variants by {downsample_variants}.')
+    imputation, downsampled_imp = apply_filters(mt=imputation,
+                                                description='imputation',
+                                                log=log,
+                                                sample_list=sample_list,
+                                                variant_list=variant_list,
+                                                contig=contig,
+                                                n_samples=None,  # we want to downsample overlapping samples
+                                                n_variants=n_variants,
+                                                downsample_samples=None,  # we want to downsample overlapping samples
+                                                downsample_variants=downsample_variants)
 
-    if n_variants is not None:
-        downsampled = True
-        exome = exome.head(n_rows=n_variants)
-        imputation = imputation.head(n_rows=n_variants)
-        log.info(f'Selecting the first {n_variants} variants.')
-
-    if sample_list is not None:
-        samples = hl.import_table(sample_list)
-        samples = samples.key_by('s')
-        exome = exome.semi_join_cols(samples)
-        imputation = imputation.semi_join_cols(samples)
-        log.info(f'Subset to samples in {sample_list}.')
-
-    if variant_list is not None:
-        downsampled = True
-        variants = hl.import_table(variant_list, no_header=True)
-        variants = variants.key_by('v')
-        variants = variants.annotate(variant=hl.parse_variant(variants.v))
-        variants = variants.annotate(locus=variants.variant.locus, alleles=variants.variant.alleles)
-        variants = variants.key_by('locus', 'alleles')
-
-        exome = exome.semi_join_rows(variants)
-        imputation = imputation.semi_join_rows(variants)
-
-        log.info(f'Subset to variants in {variant_list}.')
-
-    if requires_expensive_agg and not downsampled:
+    if requires_expensive_agg and (not downsampled_imp or not downsampled_exome):
         log.warning('Extra agregation options are expensive and no downsampling mechanism was selected.')
 
     log.info('Using sample join type "inner"')
@@ -369,3 +332,218 @@ def concordance(*,
             log.info(f'Found {n_samples} samples in total')
             log.info(f'Found concordance is {float(concordance_rate):.2f}%')
             log.info(f'Found nonref concordance is {float(nonref_concordance_rate):.2f}%')
+
+
+def sample_qc(*,
+              mt: hl.MatrixTable,
+              out_dir: str,
+              is_gatk: bool,
+              exome_regions: hl.Table,
+              low_complexity_regions: hl.Table,
+              hq_sites_dp_thresh: int = 10,
+              hq_sites_gq_thresh: int = 20,
+              hq_sites_ab_thresh: float = 0.2,
+              hq_sites_maf_thresh: float = 0.01,
+              hq_sites_mac_thresh: int = 10,
+              hq_sites_call_rate_thresh: float = 0.95,
+              pre_pruned_variants: Optional[hl.Table] = None,
+              r2_thresh: float = 0.2,
+              bp_window_size: int = 1000000,
+              sex_reported_is_female: Optional[hl.BooleanExpression] = None,
+              sex_check_male_fhet_thresh: float = 0.8,
+              sex_check_female_fhet_thresh: float = 0.2,
+              # relatedness_min_kinship: float = 0.125,
+              pcs_k: int = 10,
+              ancestry_pca_loadings: str = 'gs://gcp-public-data--gnomad/release/4.0/pca/gnomad.v4.0.pca_loadings.ht',
+              ancestry_onnx_rf: str = 'gs://gcp-public-data--gnomad/release/4.0/pca/gnomad.v4.0.RF_fit.onnx',
+              ancestry_num_pcs: int = 20,
+              ancestry_min_prob: float = 0.75,
+              chimera_rate: Optional[hl.NumericExpression] = None,
+              chimera_threshold: float = 0.05,
+              contamination_charr_thresh: float = 0.05,
+              contamination_min_af: float = 0.05,
+              contamination_max_af: float = 0.95,
+              contamination_min_dp: int = 10,
+              contamination_max_dp: int = 100,
+              contamination_min_gq: int = 20,
+              contamination_ref_af: Optional[hl.NumericExpression] = None,
+              coverage_gq_thresh: int = 20,
+              coverage_fraction_thresh: float = 0.9,
+              log: Optional[logging.Logger] = None,
+              make_plots: bool = True) -> SampleQCResult:
+    """Run the default implementation of Sample QC.
+
+    Args:
+        mt (Union(MatrixTable, str)): Hail MatrixTable or path to MatrixTable to QC.
+        out_dir (str): Path to output directory to write sample QC results to.
+        is_gatk (bool): True if data was called with GATK.
+        exome_regions (Table): Table of locus intervals specifying valid exome regions.
+        low_complexity_regions (Table): Table of locus intervals specifying low complexity regions to remove.
+        hq_sites_dp_thresh (int): For finding high quality sites, the minimum DP threshold for which a genotype is kept. DP is the sum of AD if ``is_gatk=False``.
+        hq_sites_gq_thresh (int): For finding high quality sites, the minimum GQ threshold for a kept genotype.
+        hq_sites_ab_thresh (float): For finding high quality sites, the allowable allelic balance range for a kept heterozygote genotype.
+        hq_sites_maf_thresh (float): For finding high quality sites, the minimum minor allele frequency as computed by `hl.variant_qc` in order for a variant to be considered to be common.
+        hq_sites_mac_thresh (int): For finding high quality sites, the minimum number of minor alleles observed as computed by `hl.variant_qc` in order for a variant to be considered common.
+        hq_sites_call_rate_thresh (float): For finding high quality sites, the minimum call rate of a variant as computed by `hl.variant_qc` in order for a variant to be considered.
+        pre_pruned_variants (Optional(Table)): For subsetting data to LD pruned sites, the list of pre-pruned variants to use.
+        r2_thresh (float): For subsetting data to LD pruned sites, the R2 threshold to use when running ``hl.ld_prune``.
+        bp_window_size (int): For subsetting data to LD pruned sites, the window for considering variants to prune in base pairs.
+        sex_reported_is_female (Optional(BooleanExpression)): For running a sex check, the reported sex as a Boolean Expression keyed by the Sample ID where ``True`` is Female and ``False`` is Male.
+        sex_check_male_fhet_thresh (float): For running a sex check, the minimum Fstat threshold for calling a sample "Male".
+        sex_check_female_fhet_thresh (float): For running a sex check, the maximum Fstat threshold for calling a sample "Female".
+        pcs_k (int): For computing principal components, the number of principal components to compute.
+        ancestry_pca_loadings (str): For computing ancestry pop labels, path to the gnomAD PCA loadings Hail Table.
+        ancestry_onnx_rf (str): For computing ancestry pop labels, path to the gnomAD random forest model.
+        ancestry_num_pcs (int): For computing ancestry pop labels, number of PCs to use when applying the random forest model. This is dependent on the onnx model.
+        ancestry_min_prob (float): For computing ancestry pop labels, the minimum probability for a predicted population before giving a sample that label.
+        chimera_rate (Optional(NumericExpression)): For filtering samples based on chimera rate, the chimera rate as a NumericExpression keyed by the sample ID.
+        chimera_threshold (float): For filtering samples based on chimera rate, the maximum threshold to use at which a sample is considered passing.
+        contamination_charr_thresh (float): For filtering samples based on contamination rate, the threshold for which a sample is considered to be passing from CHARR.
+        contamination_min_af (float): For filtering samples based on contamination rate, the minimum allele frequency when using the ``compute_charr`` function in Hail.
+        contamination_max_af (float): For filtering samples based on contamination rate, the maximum allele frequency when using the ``compute_charr`` function in Hail.
+        contamination_min_dp (int): For filtering samples based on contamination rate, the minimum depth when using the ``compute_charr`` function in Hail.
+        contamination_max_dp (int): For filtering samples based on contamination rate, the maximum depth when using the ``compute_charr`` function in Hail.
+        contamination_min_gq (int): For filtering samples based on contamination rate, the minimum GQ when using the ``compute_charr`` function in Hail.
+        contamination_ref_af (Optional[NumericExpression]): A float row field on the MatrixTable with the reference allele frequency when using the ``compute_charr`` function in Hail.
+        coverage_gq_thresh (int): For filtering samples based on GQ coverage stats, the minimum GQ for a genotype to be considered passing.
+        coverage_fraction_thresh (float): For filtering samples based on GQ coverage stats, the minimum rate at which GQ is above the minimum threshold.
+        log_path (Optional[str]): Log file path to write to.
+        hail_init_kwargs (Optional[dict]): Keyword arguments to hl.init().
+        log (Optional[logging.Logger]): Logging object to log to.
+        make_plots (bool): Save default QC plots to ``out_dir``.
+
+    Returns:
+        A :class:`.SampleQCResult` object.
+    """
+    out_dir = out_dir.rstrip('/') + '/'
+
+    if log is None:
+        log = setup_logger()
+
+    init_n_variants, init_n_samples = mt.count()
+
+    log.info(f'QC of dataset with {init_n_variants} variants and {init_n_samples} samples.')
+
+    log.info(f'''selecting high quality common sites (`select_high_quality_common_sites`) with parameters:
+is_gatk={is_gatk}
+dp_thresh={hq_sites_dp_thresh}
+gq_thresh={hq_sites_gq_thresh}
+ab_thresh={hq_sites_ab_thresh}
+maf_thresh={hq_sites_maf_thresh}
+mac_thresh={hq_sites_mac_thresh}
+call_rate_thresh={hq_sites_call_rate_thresh}
+''')
+
+    high_qual_sites = select_high_quality_common_sites(mt=mt,
+                                                       is_gatk=is_gatk,
+                                                       exome_regions=exome_regions,
+                                                       low_complexity_regions=low_complexity_regions,
+                                                       dp_thresh=hq_sites_dp_thresh,
+                                                       gq_thresh=hq_sites_gq_thresh,
+                                                       ab_thresh=hq_sites_ab_thresh,
+                                                       maf_thresh=hq_sites_maf_thresh,
+                                                       mac_thresh=hq_sites_mac_thresh,
+                                                       call_rate_thresh=hq_sites_call_rate_thresh)
+
+    high_qual_sites = high_qual_sites.persist()
+
+    log.info(f'''inferring ancestry population labels (`infer_ancestry`) with parameters:
+is_gatk={is_gatk}
+dp_thresh={hq_sites_dp_thresh}
+gq_thresh={hq_sites_gq_thresh}
+ab_thresh={hq_sites_ab_thresh}
+pca_loadings={ancestry_pca_loadings}
+onnx_rf={ancestry_onnx_rf}
+num_pcs={ancestry_num_pcs}
+min_prob={ancestry_min_prob}
+''')
+
+    ancestry_pop_labels = infer_ancestry(mt,
+                                         is_gatk=is_gatk,
+                                         dp_thresh=hq_sites_dp_thresh,
+                                         gq_thresh=hq_sites_gq_thresh,
+                                         ab_thresh=hq_sites_ab_thresh,
+                                         pca_loadings=ancestry_pca_loadings,
+                                         onnx_rf=ancestry_onnx_rf,
+                                         num_pcs=ancestry_num_pcs,
+                                         min_prob=ancestry_min_prob,
+                                         log=log)
+
+    log.info(f'''computing sample qc statistics (`calculate_sample_qc_stats`) with parameters:
+sex_female_fhet_thresh={sex_check_female_fhet_thresh}
+sex_male_fhet_thresh={sex_check_male_fhet_thresh}
+pcs_k={pcs_k}
+chimera_threshold={chimera_threshold},
+contamination_charr_thresh={contamination_charr_thresh}
+contamination_min_af={contamination_min_af}
+contamination_max_af={contamination_max_af}
+contamination_min_dp={contamination_min_dp}
+contamination_max_dp={contamination_max_dp}
+contamination_min_gq={contamination_min_gq}
+coverage_gq_thresh={coverage_gq_thresh}
+coverage_fraction_thresh={coverage_fraction_thresh}
+ld_prune_r2_thresh={r2_thresh}
+ld_prune_bp_window_size={bp_window_size}
+''')
+
+    sample_qc_stats = calculate_sample_qc_stats(mt=mt,
+                                                high_quality_sites=high_qual_sites,
+                                                sex_female_fhet_thresh=sex_check_female_fhet_thresh,
+                                                sex_male_fhet_thresh=sex_check_male_fhet_thresh,
+                                                sex_reported_is_female=sex_reported_is_female,
+                                                # relatedness_min_kinship=relatedness_min_kinship,
+                                                pcs_k=pcs_k,
+                                                chimera_rate=chimera_rate,
+                                                chimera_threshold=chimera_threshold,
+                                                contamination_charr_thresh=contamination_charr_thresh,
+                                                contamination_min_af=contamination_min_af,
+                                                contamination_max_af=contamination_max_af,
+                                                contamination_min_dp=contamination_min_dp,
+                                                contamination_max_dp=contamination_max_dp,
+                                                contamination_min_gq=contamination_min_gq,
+                                                contamination_ref_AF=contamination_ref_af,
+                                                coverage_gq_thresh=coverage_gq_thresh,
+                                                coverage_fraction_thresh=coverage_fraction_thresh,
+                                                ld_prune_r2_thresh=r2_thresh,
+                                                ld_prune_bp_window_size=bp_window_size,
+                                                pre_pruned_variants=pre_pruned_variants,
+                                                ancestry_pop_labels=ancestry_pop_labels,
+                                                log=log)
+
+    sample_qc_stats.write(f'{out_dir}sample_qc_stats.ht', overwrite=True)
+    log.info(f'wrote out raw sample QC statistics to {out_dir}sample_qc_stats.ht')
+
+    sample_qc_stats = SampleQCResult.load(f'{out_dir}sample_qc_stats.ht')
+
+    if make_plots:
+        log.info(f'writing out default plots to {out_dir}')
+
+        pc1_pc2 = sample_qc_stats.plot_pcs(1, 2)
+        save_ggplot(pc1_pc2, f'{out_dir}pcs/pc1_pc2.png')
+
+        pc1_pc3 = sample_qc_stats.plot_pcs(1, 3)
+        save_ggplot(pc1_pc3, f'{out_dir}pcs/pc1_pc3.png')
+
+        pc2_pc3 = sample_qc_stats.plot_pcs(2, 3)
+        save_ggplot(pc2_pc3, f'{out_dir}pcs/pc2_pc3.png')
+
+        box_plots = sample_qc_stats.plot_qc_metric_boxplots()
+        for metric, plot in box_plots.items():
+            save_ggplot(plot, f'{out_dir}qc/{metric}_boxplot.png')
+
+        density_plots = sample_qc_stats.plot_qc_metric_density()
+        for metric, plot in density_plots.items():
+            save_ggplot(plot, f'{out_dir}qc/{metric}_density.png')
+
+        passing_samples = sample_qc_stats.passing_samples()
+        passing_samples.sample_id.export(f'{out_dir}passing_sample_ids.tsv', header=True)
+
+        pass_box_plots = passing_samples.plot_qc_metric_boxplots()
+        for metric, plot in pass_box_plots.items():
+            save_ggplot(plot, f'{out_dir}qc/{metric}_pass_boxplot.png')
+
+        pass_density_plots = passing_samples.plot_qc_metric_density()
+        for metric, plot in pass_density_plots.items():
+            save_ggplot(plot, f'{out_dir}qc/{metric}_pass_density.png')
+
+    return sample_qc_stats

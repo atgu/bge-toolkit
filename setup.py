@@ -11,6 +11,6 @@ setup(
     packages=find_packages(),
     package_dir={'bge_toolkit': 'bge_toolkit'},
     python_requires=">=3.9",
-    install_requires=['hail', 'pandas>=2,<3', 'numpy', 'typer', 'plotnine', 'sphinx', 'sphinxcontrib-typer', 'sphinx_rtd_theme'],
+    install_requires=['hail>=0.2.134', 'pandas>=2,<3', 'numpy', 'typer', 'plotnine', 'sphinx', 'sphinxcontrib-typer', 'sphinx_rtd_theme', 'gnomad==0.8.2'],
     entry_points={'console_scripts': ['bge-toolkit = bge_toolkit.cli.__main__:main']},
 )
