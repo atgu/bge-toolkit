@@ -1,5 +1,5 @@
 import logging
-from typing import Optional
+from typing import Optional, Tuple
 
 import hail as hl
 from hail.backend.service_backend import ServiceBackend
@@ -9,7 +9,100 @@ from ..common.binned_exprs import (mac_bin, maf_bin, max_gp_bin, gq_bin, qual_ap
 from ..common.utils import setup_logger
 from .joint_callset import JointCallSet
 from .concordance import Statistic
+from .sample_qc import calculate_sample_qc_stats, select_high_quality_sites
 from .utils import ALL_AGG, ALL_GROUP, JoinType
+
+
+def setup_logging_and_qob(log_name: str,
+                          log_path: Optional[str] = None,
+                          hail_init_kwargs: Optional[dict] = None,
+                          log: Optional[logging.Logger] = None) -> logging.Logger:
+    log = setup_logger(log, log_path, log_name)
+    if log is None:
+        log = logging.getLogger(log_name)
+        log.propagate = False
+
+    bad_logs = ['hailtop.aiocloud.aiogoogle.credentials',
+                'batch_client.aioclient']
+
+    for bad_log in bad_logs:
+        logging.getLogger(bad_log).setLevel(logging.WARNING)
+
+    if hail_init_kwargs:
+        hl.init(**hail_init_kwargs)
+
+    backend = hl.current_backend()
+    assert isinstance(backend, ServiceBackend)
+    backend.disable_progress_bar = False
+
+    return log
+
+
+def load_data(*, path: str, descriptor: str, log: logging.Logger, n_partitions: Optional[int] = None) -> hl.MatrixTable:
+    log.info(f'loading dataset {descriptor}')
+    mt = load_input_data(path, n_partitions=n_partitions)
+    n_variants, n_samples = mt.count()
+    log.info(f'found {n_variants} variants and {n_samples} samples in {descriptor}.')
+    return mt
+
+
+def apply_filters(*,
+                  mt: hl.MatrixTable,
+                  description: str,
+                  log: logging.Logger,
+                  sample_list: Optional[str] = None,
+                  variant_list: Optional[str] = None,
+                  contig: Optional[str] = None,
+                  n_samples: Optional[int] = None,
+                  n_variants: Optional[int] = None,
+                  downsample_samples: Optional[float] = None,
+                  downsample_variants: Optional[float] = None) -> Tuple[hl.MatrixTable, bool]:
+    downsampled = False
+
+    if contig is not None:
+        downsampled = True
+        mt = mt.filter_rows(mt.locus.contig == contig)
+        log.info(f'Subsetting to variants on {contig} for {description}.')
+
+    if downsample_variants:
+        downsampled = True
+        mt = mt.sample_rows(downsample_variants, seed=10243523)
+        log.info(f'Downsampling variants by {downsample_variants} for {description}.')
+
+    if downsample_samples:
+        downsampled = True
+        mt = mt.sample_cols(downsample_samples, seed=10243523)
+        log.info(f'Downsampling samples by {downsample_samples} for {description}.')
+
+    if n_variants is not None:
+        downsampled = True
+        mt = mt.head(n_rows=n_variants)
+        log.info(f'Selecting the first {n_variants} variants for {description}.')
+
+    if n_samples is not None:
+        downsampled = True
+        mt = mt.head(n_rows=None, n_cols=n_samples)
+        log.info(f'Selecting the first {n_samples} samples for {description}.')
+
+    if sample_list is not None:
+        samples = hl.import_table(sample_list)
+        samples = samples.key_by('s')
+        mt = mt.semi_join_cols(samples)
+        log.info(f'Subset to samples in {sample_list} for {description}.')
+
+    if variant_list is not None:
+        downsampled = True
+        variants = hl.import_table(variant_list, no_header=True)
+        variants = variants.key_by('v')
+        variants = variants.annotate(variant=hl.parse_variant(variants.v))
+        variants = variants.annotate(locus=variants.variant.locus, alleles=variants.variant.alleles)
+        variants = variants.key_by('locus', 'alleles')
+
+        mt = mt.semi_join_rows(variants)
+
+        log.info(f'Subset to variants in {variant_list} for {description}.')
+
+    return (mt, downsampled)
 
 
 def concordance(*,
@@ -73,35 +166,15 @@ def concordance(*,
         n_exome_partitions (Optional[int]): Number of partitions to load the exome dataset with if it's a MatrixTable.
         n_imp_partitions (Optional[int]): Number of partitions to load the imputation dataset with if it's a MatrixTable.
     """
-    log = setup_logger(log, log_path, 'concordance')
-    if log is None:
-        log = logging.getLogger('concordance')
-        log.propagate = False
+    log = setup_logging_and_qob(log_name='concordance',
+                                log_path=log_path,
+                                hail_init_kwargs=hail_init_kwargs,
+                                log=log)
 
-    bad_logs = ['hailtop.aiocloud.aiogoogle.credentials',
-                'batch_client.aioclient']
-
-    for bad_log in bad_logs:
-        logging.getLogger(bad_log).setLevel(logging.WARNING)
-
-    if hail_init_kwargs:
-        hl.init(**hail_init_kwargs)
+    exome = load_data(path=exome_path, descriptor='exome', log=log, n_partitions=n_exome_partitions)
+    imputation = load_data(path=imputation_path, descriptor='imputation', log=log, n_partitions=n_imp_partitions)
 
     out_dir = out_dir.rstrip('/') + '/'
-
-    backend = hl.current_backend()
-    assert isinstance(backend, ServiceBackend)
-    backend.disable_progress_bar = False
-
-    log.info('loading datasets')
-
-    exome = load_input_data(exome_path, n_partitions=n_exome_partitions)
-    n_exome_variants, n_exome_samples = exome.count()
-    log.info(f'found {n_exome_variants} variants and {n_exome_samples} samples in exome dataset.')
-
-    imputation = load_input_data(imputation_path, n_partitions=n_imp_partitions)
-    n_imp_variants, n_imp_samples = imputation.count()
-    log.info(f'found {n_imp_variants} variants and {n_imp_samples} samples in imputation dataset.')
 
     exo_row_group_by_var = {}
     imp_row_group_by_var = {}
@@ -113,7 +186,6 @@ def concordance(*,
     category_orders = {}
 
     requires_expensive_agg = False
-    downsampled = False
 
     if exome_maf:
         if run_samples:
@@ -206,45 +278,29 @@ def concordance(*,
             imp_entry_agg_fields['MAX_GP'] = max_gp_bin
             log.info('Aggregating by Imputation MAX GP.')
 
-    if contig is not None:
-        downsampled = True
-        exome = exome.filter_rows(exome.locus.contig == contig)
-        imputation = imputation.filter_rows(imputation.locus.contig == contig)
-        log.info(f'Subsetting to variants on {contig}.')
+    exome, downsampled_exome = apply_filters(mt=exome,
+                                             description='exome',
+                                             log=log,
+                                             sample_list=sample_list,
+                                             variant_list=variant_list,
+                                             contig=contig,
+                                             n_samples=None,  # we want to downsample overlapping samples
+                                             n_variants=n_variants,
+                                             downsample_samples=None,  # we want to downsample overlapping samples
+                                             downsample_variants=downsample_variants)
 
-    if downsample_variants:
-        downsampled = True
-        exome = exome.sample_rows(downsample_variants, seed=10243523)
-        imputation = imputation.sample_rows(downsample_variants, seed=10243523)
-        log.info(f'Downsampling variants by {downsample_variants}.')
+    imputation, downsampled_imp = apply_filters(mt=imputation,
+                                                description='imputation',
+                                                log=log,
+                                                sample_list=sample_list,
+                                                variant_list=variant_list,
+                                                contig=contig,
+                                                n_samples=None,  # we want to downsample overlapping samples
+                                                n_variants=n_variants,
+                                                downsample_samples=None,  # we want to downsample overlapping samples
+                                                downsample_variants=downsample_variants)
 
-    if n_variants is not None:
-        downsampled = True
-        exome = exome.head(n_rows=n_variants)
-        imputation = imputation.head(n_rows=n_variants)
-        log.info(f'Selecting the first {n_variants} variants.')
-
-    if sample_list is not None:
-        samples = hl.import_table(sample_list)
-        samples = samples.key_by('s')
-        exome = exome.semi_join_cols(samples)
-        imputation = imputation.semi_join_cols(samples)
-        log.info(f'Subset to samples in {sample_list}.')
-
-    if variant_list is not None:
-        downsampled = True
-        variants = hl.import_table(variant_list, no_header=True)
-        variants = variants.key_by('v')
-        variants = variants.annotate(variant=hl.parse_variant(variants.v))
-        variants = variants.annotate(locus=variants.variant.locus, alleles=variants.variant.alleles)
-        variants = variants.key_by('locus', 'alleles')
-
-        exome = exome.semi_join_rows(variants)
-        imputation = imputation.semi_join_rows(variants)
-
-        log.info(f'Subset to variants in {variant_list}.')
-
-    if requires_expensive_agg and not downsampled:
+    if requires_expensive_agg and (not downsampled_imp or not downsampled_exome):
         log.warning('Extra agregation options are expensive and no downsampling mechanism was selected.')
 
     log.info('Using sample join type "inner"')
@@ -369,3 +425,68 @@ def concordance(*,
             log.info(f'Found {n_samples} samples in total')
             log.info(f'Found concordance is {float(concordance_rate):.2f}%')
             log.info(f'Found nonref concordance is {float(nonref_concordance_rate):.2f}%')
+
+
+def sample_qc_gatk(path: str,
+                   out_dir: str,
+                   exome_regions: Optional[str],
+                   low_complexity_regions: Optional[str],
+                   chimeric_read_rate: Optional[Tuple[str, str, str, float]],
+                   relatedness_pi_hat: float,
+                   outlier_z_score: int,
+                   maf: float,
+                   mac: int,
+                   prune_r2: float,
+                   read_depth: Tuple[float, float],
+                   male_f_het: float,
+                   female_f_het: float,
+                   sample_list: Optional[str],
+                   variant_list: Optional[str],
+                   contig: Optional[str],
+                   n_samples: Optional[int],
+                   n_variants: Optional[int],
+                   downsample_samples: Optional[float],
+                   downsample_variants: Optional[float],
+                   log_path: Optional[str],
+                   hail_init_kwargs: Optional[dict],
+                   log: Optional[logging.Logger],
+                   n_partitions: Optional[int],
+                   reference_genome: Optional[str]):
+    log = setup_logging_and_qob(log_name='sample_qc_gatk',
+                                log_path=log_path,
+                                hail_init_kwargs=hail_init_kwargs,
+                                log=log)
+
+    mt = load_data(path=path, descriptor=path, log=log, n_partitions=n_partitions)
+
+    mt, _ = apply_filters(mt=mt,
+                          description=path,
+                          log=log,
+                          sample_list=sample_list,
+                          variant_list=variant_list,
+                          contig=contig,
+                          n_samples=n_samples,
+                          n_variants=n_variants,
+                          downsample_samples=downsample_samples,
+                          downsample_variants=downsample_variants)
+
+    out_dir = out_dir.rstrip('/') + '/'
+
+    exome_regions = hl.import_locus_intervals(exome_regions, reference_genome=reference_genome)
+    low_complexity_regions = hl.import_locus_intervals(low_complexity_regions, reference_genome=reference_genome)
+
+    high_qual_sites = select_high_quality_sites(mt,
+                                                exome_regions=exome_regions,
+                                                low_complexity_regions=low_complexity_regions)
+
+    sample_qc_stats = calculate_sample_qc_stats(mt, high_quality_sites=high_qual_sites)
+
+    # Ultimate QC filter condition based on all of the stats computed
+    passes_qc = ...
+
+    sample_qc_stats = sample_qc_stats.annotate(passes_qc=passes_qc)
+
+    sample_qc_stats.write(f'{out_dir}/sample_qc_stats.ht', overwrite=True)
+
+    passing_samples = sample_qc_stats.filter(sample_qc_stats.passes_qc).select()
+    passing_samples.export(f'{out_dir}/passing_samples.tsv', sep="\t")
