@@ -1,0 +1,1089 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sample QC Reference &mdash; BGE Toolkit 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+
+  
+    <link rel="canonical" href="https://atgu.github.io/bge-toolkit/sample_qc.html" />
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Concordance Reference" href="concordance.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            BGE Toolkit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Command-Line Interface</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#bge-toolkit">bge-toolkit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#bge-toolkit-qc">bge-toolkit qc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#bge-toolkit-qc-concordance">bge-toolkit qc concordance</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.html#aggregations">Aggregations</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli.html#grouping">Grouping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cli.html#aggregation">Aggregation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cli.html#notes">Notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#bge-toolkit-qc-sample-qc">bge-toolkit qc sample-qc</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.html#id1">Examples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.html#id2">Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">Python API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="api.html#bge-toolkit-qc">bge_toolkit.qc</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="concordance.html">Concordance Reference</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="concordance.html#jointcallset">JointCallSet</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.qc.JointCallSet"><code class="docutils literal notranslate"><span class="pre">JointCallSet</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="concordance.html#jointype">JoinType</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.qc.JoinType"><code class="docutils literal notranslate"><span class="pre">JoinType</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="concordance.html#selectors">Selectors</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.qc.ALL_GROUP"><code class="docutils literal notranslate"><span class="pre">ALL_GROUP</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.qc.ALL_AGG"><code class="docutils literal notranslate"><span class="pre">ALL_AGG</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="concordance.html#concordance">Concordance</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.qc.concordance"><code class="docutils literal notranslate"><span class="pre">concordance()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="concordance.html#concordancetable">ConcordanceTable</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.qc.ConcordanceTable"><code class="docutils literal notranslate"><span class="pre">ConcordanceTable</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="concordance.html#concordanceview">ConcordanceView</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.qc.ConcordanceView"><code class="docutils literal notranslate"><span class="pre">ConcordanceView</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="concordance.html#statistic">Statistic</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.qc.Statistic"><code class="docutils literal notranslate"><span class="pre">Statistic</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge-toolkit-common">bge_toolkit.common</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="concordance.html#binning-functions">Binning Functions</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.common.mac_bin"><code class="docutils literal notranslate"><span class="pre">mac_bin()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.common.maf_bin"><code class="docutils literal notranslate"><span class="pre">maf_bin()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.common.gq_bin"><code class="docutils literal notranslate"><span class="pre">gq_bin()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.common.dp_bin"><code class="docutils literal notranslate"><span class="pre">dp_bin()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.common.max_gp_bin"><code class="docutils literal notranslate"><span class="pre">max_gp_bin()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.common.qual_approx_bin"><code class="docutils literal notranslate"><span class="pre">qual_approx_bin()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.common.info_score_bin"><code class="docutils literal notranslate"><span class="pre">info_score_bin()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Sample QC Reference</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sample-qc">sample_qc</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#bge_toolkit.qc.sample_qc"><code class="docutils literal notranslate"><span class="pre">sample_qc()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#high-level-functions">High Level Functions</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#bge_toolkit.qc.select_high_quality_common_sites"><code class="docutils literal notranslate"><span class="pre">select_high_quality_common_sites()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#bge_toolkit.qc.infer_ancestry"><code class="docutils literal notranslate"><span class="pre">infer_ancestry()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#bge_toolkit.qc.calculate_sample_qc_stats"><code class="docutils literal notranslate"><span class="pre">calculate_sample_qc_stats()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#lower-level-functions">Lower Level Functions</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#bge_toolkit.qc.filter_to_high_quality_exome_intervals"><code class="docutils literal notranslate"><span class="pre">filter_to_high_quality_exome_intervals()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#bge_toolkit.qc.filter_contamination_rate"><code class="docutils literal notranslate"><span class="pre">filter_contamination_rate()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#bge_toolkit.qc.filter_chimeric_reads"><code class="docutils literal notranslate"><span class="pre">filter_chimeric_reads()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#bge_toolkit.qc.filter_genotypes"><code class="docutils literal notranslate"><span class="pre">filter_genotypes()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#bge_toolkit.qc.filter_to_high_quality_common_sites"><code class="docutils literal notranslate"><span class="pre">filter_to_high_quality_common_sites()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#bge_toolkit.qc.compute_pcs"><code class="docutils literal notranslate"><span class="pre">compute_pcs()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#bge_toolkit.qc.estimate_call_rate_through_gq_stats"><code class="docutils literal notranslate"><span class="pre">estimate_call_rate_through_gq_stats()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#bge_toolkit.qc.impute_and_check_sex"><code class="docutils literal notranslate"><span class="pre">impute_and_check_sex()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#bge_toolkit.qc.identify_outliers_in_qc_stats"><code class="docutils literal notranslate"><span class="pre">identify_outliers_in_qc_stats()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#sampleqcresult">SampleQCResult</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#bge_toolkit.qc.SampleQCResult"><code class="docutils literal notranslate"><span class="pre">SampleQCResult</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">BGE Toolkit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="api.html">Python API Reference</a></li>
+      <li class="breadcrumb-item active">Sample QC Reference</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/sample_qc.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="sample-qc-reference">
+<span id="sec-sample-qc"></span><h1>Sample QC Reference<a class="headerlink" href="#sample-qc-reference" title="Link to this heading"></a></h1>
+<p>This is the Python API documentation for the concordance component of the BGE Toolkit.</p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">bge_toolkit.qc</span></code> to access this functionality.</p>
+<section id="sample-qc">
+<h2>sample_qc<a class="headerlink" href="#sample-qc" title="Link to this heading"></a></h2>
+<p>If you want to use the default implementation as described in Sealock et. al. “Tutorial: guidelines for quality filtering of whole-exome and whole-genome sequencing data for population-scale association analyses”,
+then you can use the function <a class="reference internal" href="#bge_toolkit.qc.sample_qc" title="bge_toolkit.qc.sample_qc"><code class="xref py py-func docutils literal notranslate"><span class="pre">sample_qc()</span></code></a> with Hail MatrixTable and Table inputs.</p>
+<p>An example of using the Python API is:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">bge_toolkit.qc</span><span class="w"> </span><span class="kn">import</span> <span class="n">sample_qc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">hail</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">hl</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">out_dir</span> <span class="o">=</span> <span class="s2">&quot;gs://my-bucket/my-sample-qc-output/&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">exome_regions_path</span> <span class="o">=</span> <span class="s2">&quot;gs://jigold-batch-tmp-ezxyx/Twist_Alliance_Clinical_Research_Exome_Covered_Targets_hg38-34.9MB.bed&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">low_complexity_regions_path</span> <span class="o">=</span> <span class="s2">&quot;gs://jigold-batch-tmp-ezxyx/LCRFromHengHg38.bed&quot;</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">exome_regions</span> <span class="o">=</span> <span class="n">hl</span><span class="o">.</span><span class="n">import_locus_intervals</span><span class="p">(</span><span class="n">exome_regions_path</span><span class="p">,</span> <span class="n">reference_genome</span><span class="o">=</span><span class="s1">&#39;GRCh38&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">low_complexity_regions</span> <span class="o">=</span> <span class="n">hl</span><span class="o">.</span><span class="n">import_locus_intervals</span><span class="p">(</span><span class="n">low_complexity_regions_path</span><span class="p">,</span> <span class="n">reference_genome</span><span class="o">=</span><span class="s1">&#39;GRCh38&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">exo</span> <span class="o">=</span> <span class="n">hl</span><span class="o">.</span><span class="n">read_matrix_table</span><span class="p">(</span><span class="s2">&quot;gs://my-bucket/my-data.mt&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sample_qc_stats</span> <span class="o">=</span> <span class="n">sample_qc</span><span class="p">(</span><span class="n">mt</span><span class="o">=</span><span class="n">exo</span><span class="p">,</span> <span class="n">out_dir</span><span class="o">=</span><span class="n">out_dir</span><span class="p">,</span> <span class="n">is_gatk</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">exome_regions</span><span class="o">=</span><span class="n">exome_regions</span><span class="p">,</span> <span class="n">low_complexity_regions</span><span class="o">=</span><span class="n">low_complexity_regions</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sample_qc_stats</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">out_dir</span><span class="si">}</span><span class="s1">sample_qc.ht&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sample_qc_stats</span><span class="o">.</span><span class="n">pcs</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">out_dir</span><span class="si">}</span><span class="s1">sample_pcs.tsv&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sample_qc_stats</span><span class="o">.</span><span class="n">plot_pcs</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sample_qc_stats</span><span class="o">.</span><span class="n">plot_gq_fraction_density</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sample_qc_stats</span><span class="o">.</span><span class="n">plot_qc_metric_boxplots</span><span class="p">()[</span><span class="s1">&#39;r_ti_tv&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>The following output files are written to <code class="docutils literal notranslate"><span class="pre">out_dir</span></code>:</p>
+<ul class="simple">
+<li><p>sample_qc_stats.ht (Contains the raw sample qc data that can be loaded in Python with <a class="reference internal" href="#bge_toolkit.qc.SampleQCResult.load" title="bge_toolkit.qc.SampleQCResult.load"><code class="xref py py-meth docutils literal notranslate"><span class="pre">SampleQCResult.load()</span></code></a>)</p></li>
+<li><p>pcs/pc1_pc2.png (Contains a plot of PC1 versus PC2 colored by ancestry population label)</p></li>
+<li><p>pcs/pc1_pc3.png (Contains a plot of PC1 versus PC3 colored by ancestry population label)</p></li>
+<li><p>pcs/pc2_pc3.png (Contains a plot of PC2 versus PC3 colored by ancestry population label)</p></li>
+<li><p>qc/*_boxplot.png (Contains boxplots of different QC metrics stratified by ancestry population label with outliers flagged)</p></li>
+<li><p>qc/*_density.png (Contains density plots of different QC metrics stratified by ancestry population label)</p></li>
+<li><p>passing_sample_ids.tsv (A TSV file containing a list of sample IDs for samples that passed all QC metrics)</p></li>
+<li><p>qc/*_pass_boxplot.png (Contains boxplots of different QC metrics stratified by ancestry population label with outliers flagged for passing samples only)</p></li>
+<li><p>qc/*_pass_density.png (Contains density plots of different QC metrics stratified by ancestry population label for passing samples only)</p></li>
+</ul>
+<p>The structure of <code class="docutils literal notranslate"><span class="pre">sample_qc_stats.ht</span></code> is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>contamination:
+    - charr: The CHARR statistic.
+    - is_passing: ``charr`` is less than the ``charr_thresh``
+
+chimera_reads:
+    - chimera_rate: The rate of chimera reads.
+    - is_passing: The rate of chimera reads is below ``threshold``.
+
+sample_qc_metrics:
+    - is_passing: Passes every statistic.
+    - r_ti_tv: Transition / Transversion ratio.
+    - n_singleton: Number of singletons.
+    - n_insertion: Number of insertions.
+    - n_deletion: Number of deletions.
+    - n_transition: Number of transitions.
+    - n_transversion: Number of transversions.
+    - r_het_hom_var: Ratio of heterozygotes to number of homozygote variants.
+    - r_insertion_deletion: Ratio of insertions to deletions.
+    - fail_r_ti_tv: An outlier in ``r_ti_tv``.
+    - fail_n_singleton: An outlier in ``n_singleton``.
+    - fail_n_insertion: An outlier in ``n_insertion``.
+    - fail_n_deletion: An outlier in ``n_deletion``.
+    - fail_n_transition: An outlier in ``n_transition``.
+    - fail_n_transversion: An outlier in ``n_transversion``.
+    - fail_r_het_hom_var: An outlier in ``r_het_hom_var``.
+    - fail_r_insertion_deletion: An outlier in ``r_insertion_deletion``.
+
+gq_fraction:
+    - gq_fraction: The percentage of genotypes with GQ &gt;= ``gq_thresh``.
+    - is_passing: ``gq_fraction`` is greater than the ``fraction_thresh``
+
+sex_info:
+    - is_female: The imputed sex. ``True`` is for females, ``False`` is for males.
+    - is_passing: Either ``reported sex == imputed sex`` or ``True``.
+    - sex_check: ``reported sex == imputed sex`` or ``Null``.
+    - f_stat: Inbreeding coefficient on the non-PAR X chromosome.
+    - n_called: Number of genotypes considered.
+    - expected_homs: Expected number of homozygotes.
+    - observed_homs: Observed number of heterozygotes.
+
+ancestry:
+    - ancestry_pop: The ancestry population label.
+
+pcs:
+    - scores: An array with the top ``k`` principal components.
+
+s: sample ID
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="bge_toolkit.qc.sample_qc">
+<span class="sig-prename descclassname"><span class="pre">bge_toolkit.qc.</span></span><span class="sig-name descname"><span class="pre">sample_qc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">mt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_gatk</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exome_regions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low_complexity_regions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hq_sites_dp_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hq_sites_gq_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hq_sites_ab_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hq_sites_maf_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hq_sites_mac_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hq_sites_call_rate_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.95</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pre_pruned_variants</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r2_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bp_window_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sex_reported_is_female</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sex_check_male_fhet_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sex_check_female_fhet_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pcs_k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ancestry_pca_loadings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gs://gcp-public-data--gnomad/release/4.0/pca/gnomad.v4.0.pca_loadings.ht'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ancestry_onnx_rf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gs://gcp-public-data--gnomad/release/4.0/pca/gnomad.v4.0.RF_fit.onnx'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ancestry_num_pcs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ancestry_min_prob</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.75</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chimera_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chimera_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contamination_charr_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contamination_min_af</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contamination_max_af</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.95</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contamination_min_dp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contamination_max_dp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contamination_min_gq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contamination_ref_af</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coverage_gq_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coverage_fraction_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">make_plots</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.sample_qc" title="Link to this definition"></a></dt>
+<dd><p>Run the default implementation of Sample QC.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mt</strong> (<em>Union</em><em>(</em><em>MatrixTable</em><em>, </em><em>str</em><em>)</em>) – Hail MatrixTable or path to MatrixTable to QC.</p></li>
+<li><p><strong>out_dir</strong> (<em>str</em>) – Path to output directory to write sample QC results to.</p></li>
+<li><p><strong>is_gatk</strong> (<em>bool</em>) – True if data was called with GATK.</p></li>
+<li><p><strong>exome_regions</strong> (<em>Table</em>) – Table of locus intervals specifying valid exome regions.</p></li>
+<li><p><strong>low_complexity_regions</strong> (<em>Table</em>) – Table of locus intervals specifying low complexity regions to remove.</p></li>
+<li><p><strong>hq_sites_dp_thresh</strong> (<em>int</em>) – For finding high quality sites, the minimum DP threshold for which a genotype is kept. DP is the sum of AD if <code class="docutils literal notranslate"><span class="pre">is_gatk=False</span></code>.</p></li>
+<li><p><strong>hq_sites_gq_thresh</strong> (<em>int</em>) – For finding high quality sites, the minimum GQ threshold for a kept genotype.</p></li>
+<li><p><strong>hq_sites_ab_thresh</strong> (<em>float</em>) – For finding high quality sites, the allowable allelic balance range for a kept heterozygote genotype.</p></li>
+<li><p><strong>hq_sites_maf_thresh</strong> (<em>float</em>) – For finding high quality sites, the minimum minor allele frequency as computed by <cite>hl.variant_qc</cite> in order for a variant to be considered to be common.</p></li>
+<li><p><strong>hq_sites_mac_thresh</strong> (<em>int</em>) – For finding high quality sites, the minimum number of minor alleles observed as computed by <cite>hl.variant_qc</cite> in order for a variant to be considered common.</p></li>
+<li><p><strong>hq_sites_call_rate_thresh</strong> (<em>float</em>) – For finding high quality sites, the minimum call rate of a variant as computed by <cite>hl.variant_qc</cite> in order for a variant to be considered.</p></li>
+<li><p><strong>pre_pruned_variants</strong> (<em>Optional</em><em>(</em><em>Table</em><em>)</em>) – For subsetting data to LD pruned sites, the list of pre-pruned variants to use.</p></li>
+<li><p><strong>r2_thresh</strong> (<em>float</em>) – For subsetting data to LD pruned sites, the R2 threshold to use when running <code class="docutils literal notranslate"><span class="pre">hl.ld_prune</span></code>.</p></li>
+<li><p><strong>bp_window_size</strong> (<em>int</em>) – For subsetting data to LD pruned sites, the window for considering variants to prune in base pairs.</p></li>
+<li><p><strong>sex_reported_is_female</strong> (<em>Optional</em><em>(</em><em>BooleanExpression</em><em>)</em>) – For running a sex check, the reported sex as a Boolean Expression keyed by the Sample ID where <code class="docutils literal notranslate"><span class="pre">True</span></code> is Female and <code class="docutils literal notranslate"><span class="pre">False</span></code> is Male.</p></li>
+<li><p><strong>sex_check_male_fhet_thresh</strong> (<em>float</em>) – For running a sex check, the minimum Fstat threshold for calling a sample “Male”.</p></li>
+<li><p><strong>sex_check_female_fhet_thresh</strong> (<em>float</em>) – For running a sex check, the maximum Fstat threshold for calling a sample “Female”.</p></li>
+<li><p><strong>pcs_k</strong> (<em>int</em>) – For computing principal components, the number of principal components to compute.</p></li>
+<li><p><strong>ancestry_pca_loadings</strong> (<em>str</em>) – For computing ancestry pop labels, path to the gnomAD PCA loadings Hail Table.</p></li>
+<li><p><strong>ancestry_onnx_rf</strong> (<em>str</em>) – For computing ancestry pop labels, path to the gnomAD random forest model.</p></li>
+<li><p><strong>ancestry_num_pcs</strong> (<em>int</em>) – For computing ancestry pop labels, number of PCs to use when applying the random forest model. This is dependent on the onnx model.</p></li>
+<li><p><strong>ancestry_min_prob</strong> (<em>float</em>) – For computing ancestry pop labels, the minimum probability for a predicted population before giving a sample that label.</p></li>
+<li><p><strong>chimera_rate</strong> (<em>Optional</em><em>(</em><em>NumericExpression</em><em>)</em>) – For filtering samples based on chimera rate, the chimera rate as a NumericExpression keyed by the sample ID.</p></li>
+<li><p><strong>chimera_threshold</strong> (<em>float</em>) – For filtering samples based on chimera rate, the maximum threshold to use at which a sample is considered passing.</p></li>
+<li><p><strong>contamination_charr_thresh</strong> (<em>float</em>) – For filtering samples based on contamination rate, the threshold for which a sample is considered to be passing from CHARR.</p></li>
+<li><p><strong>contamination_min_af</strong> (<em>float</em>) – For filtering samples based on contamination rate, the minimum allele frequency when using the <code class="docutils literal notranslate"><span class="pre">compute_charr</span></code> function in Hail.</p></li>
+<li><p><strong>contamination_max_af</strong> (<em>float</em>) – For filtering samples based on contamination rate, the maximum allele frequency when using the <code class="docutils literal notranslate"><span class="pre">compute_charr</span></code> function in Hail.</p></li>
+<li><p><strong>contamination_min_dp</strong> (<em>int</em>) – For filtering samples based on contamination rate, the minimum depth when using the <code class="docutils literal notranslate"><span class="pre">compute_charr</span></code> function in Hail.</p></li>
+<li><p><strong>contamination_max_dp</strong> (<em>int</em>) – For filtering samples based on contamination rate, the maximum depth when using the <code class="docutils literal notranslate"><span class="pre">compute_charr</span></code> function in Hail.</p></li>
+<li><p><strong>contamination_min_gq</strong> (<em>int</em>) – For filtering samples based on contamination rate, the minimum GQ when using the <code class="docutils literal notranslate"><span class="pre">compute_charr</span></code> function in Hail.</p></li>
+<li><p><strong>contamination_ref_af</strong> (<em>Optional</em><em>[</em><em>NumericExpression</em><em>]</em>) – A float row field on the MatrixTable with the reference allele frequency when using the <code class="docutils literal notranslate"><span class="pre">compute_charr</span></code> function in Hail.</p></li>
+<li><p><strong>coverage_gq_thresh</strong> (<em>int</em>) – For filtering samples based on GQ coverage stats, the minimum GQ for a genotype to be considered passing.</p></li>
+<li><p><strong>coverage_fraction_thresh</strong> (<em>float</em>) – For filtering samples based on GQ coverage stats, the minimum rate at which GQ is above the minimum threshold.</p></li>
+<li><p><strong>log_path</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Log file path to write to.</p></li>
+<li><p><strong>hail_init_kwargs</strong> (<em>Optional</em><em>[</em><em>dict</em><em>]</em>) – Keyword arguments to hl.init().</p></li>
+<li><p><strong>log</strong> (<em>Optional</em><em>[</em><em>logging.Logger</em><em>]</em>) – Logging object to log to.</p></li>
+<li><p><strong>make_plots</strong> (<em>bool</em>) – Save default QC plots to <code class="docutils literal notranslate"><span class="pre">out_dir</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A <a class="reference internal" href="#bge_toolkit.qc.SampleQCResult" title="bge_toolkit.qc.SampleQCResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">SampleQCResult</span></code></a> object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="high-level-functions">
+<h2>High Level Functions<a class="headerlink" href="#high-level-functions" title="Link to this heading"></a></h2>
+<p>The <a class="reference internal" href="#bge_toolkit.qc.sample_qc" title="bge_toolkit.qc.sample_qc"><code class="xref py py-func docutils literal notranslate"><span class="pre">sample_qc()</span></code></a> function is implemented in terms of the following three lower-level functions:</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="bge_toolkit.qc.select_high_quality_common_sites">
+<span class="sig-prename descclassname"><span class="pre">bge_toolkit.qc.</span></span><span class="sig-name descname"><span class="pre">select_high_quality_common_sites</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_gatk</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">low_complexity_regions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exome_regions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dp_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gq_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ab_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maf_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mac_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">call_rate_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.95</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.select_high_quality_common_sites" title="Link to this definition"></a></dt>
+<dd><p>Select high quality sites for downstream sample QC.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mt</strong> (<em>MatrixTable</em>) – The MatrixTable to select high quality sites from.</p></li>
+<li><p><strong>is_gatk</strong> (<em>bool</em>) – <code class="docutils literal notranslate"><span class="pre">True</span></code> if the data was called using GATK. <code class="docutils literal notranslate"><span class="pre">False</span></code> if the data was called using DRAGEN.</p></li>
+<li><p><strong>low_complexity_regions</strong> (<em>Table</em>) – A Hail Table with intervals representing regions of the genome to filter out.</p></li>
+<li><p><strong>exome_regions</strong> (<em>Table</em>) – A Hail Table with intervals representing regions of the genome to keep.</p></li>
+<li><p><strong>dp_thresh</strong> (<em>int</em>) – The minimum DP threshold for which a genotype is kept. DP is the sum of AD if <code class="docutils literal notranslate"><span class="pre">is_gatk=False</span></code>.</p></li>
+<li><p><strong>gq_thresh</strong> (<em>int</em>) – The minimum GQ threshold for a kept genotype.</p></li>
+<li><p><strong>ab_thresh</strong> (<em>float</em>) – The allowable allelic balance range for a kept heterozygote genotype.</p></li>
+<li><p><strong>maf_thresh</strong> (<em>float</em>) – The minimum minor allele frequency as computed by <cite>hl.variant_qc</cite> in order for a variant to be considered to be common.</p></li>
+<li><p><strong>mac_thresh</strong> (<em>int</em>) – The minimum number of minor alleles observed as computed by <cite>hl.variant_qc</cite> in order for a variant to be considered common.</p></li>
+<li><p><strong>call_rate_thresh</strong> (<em>float</em>) – The minimum call rate of a variant as computed by <cite>hl.variant_qc</cite> in order for a variant to be considered.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A Table with locus and alleles for common, LD-pruned high quality sites.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bge_toolkit.qc.infer_ancestry">
+<span class="sig-prename descclassname"><span class="pre">bge_toolkit.qc.</span></span><span class="sig-name descname"><span class="pre">infer_ancestry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mt</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_gatk</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dp_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gq_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ab_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pca_loadings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gs://gcp-public-data--gnomad/release/4.0/pca/gnomad.v4.0.pca_loadings.ht'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">onnx_rf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gs://gcp-public-data--gnomad/release/4.0/pca/gnomad.v4.0.RF_fit.onnx'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">requester_pays_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_pcs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_prob</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.75</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.infer_ancestry" title="Link to this definition"></a></dt>
+<dd><p>Use a Random Forest Model derived from gnomAD data to infer ancestry population labels.</p>
+<p>Does basic QC automatically:
+- Removes genotypes that do not meet the DP or GQ threshold
+- Removes hetrozygote genotypes that do not meet the AB threshold
+- Removes variants with low call rates</p>
+<dl class="simple">
+<dt>The result is a Hail Table with the following fields:</dt><dd><ul class="simple">
+<li><p>mt.col_key: The column key of the input MatrixTable</p></li>
+<li><p>ancestry:
+* ancestry_pop: The ancestry population label.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mt</strong> (<em>MatrixTable</em>) – The MatrixTable with the samples to infer ancestry from. This dataset should be filtered to high quality variants.</p></li>
+<li><p><strong>is_gatk</strong> (<em>bool</em>) – True if data was called with GATK.</p></li>
+<li><p><strong>dp_thresh</strong> (<em>int</em>) – The minimum DP threshold for which a genotype is kept. DP is the sum of AD if <code class="docutils literal notranslate"><span class="pre">is_gatk=False</span></code>.</p></li>
+<li><p><strong>gq_thresh</strong> (<em>int</em>) – The minimum GQ threshold for a kept genotype.</p></li>
+<li><p><strong>ab_thresh</strong> (<em>float</em>) – The allowable allelic balance range for a kept heterozygote genotype.</p></li>
+<li><p><strong>pca_loadings</strong> (<em>str</em>) – Path to the gnomAD PCA loadings Hail Table.</p></li>
+<li><p><strong>onnx_rf</strong> (<em>str</em>) – Path to the gnomAD random forest model.</p></li>
+<li><p><strong>num_pcs</strong> (<em>int</em>) – Number of PCs to use when applying the random forest model.</p></li>
+<li><p><strong>min_prob</strong> (<em>float</em>) – The minimum probability for a predicted population before giving a sample that label.</p></li>
+<li><p><strong>log</strong> (<em>Optional</em><em>[</em><em>logging.Logger</em><em>]</em>) – An optional logging object.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>sample ID and a nested struct called <code class="docutils literal notranslate"><span class="pre">ancestry</span></code> with one field <code class="docutils literal notranslate"><span class="pre">ancestry_pop</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A Hail Table with two columns</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bge_toolkit.qc.calculate_sample_qc_stats">
+<span class="sig-prename descclassname"><span class="pre">bge_toolkit.qc.</span></span><span class="sig-name descname"><span class="pre">calculate_sample_qc_stats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">mt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high_quality_sites</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pre_pruned_variants</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ld_prune_r2_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ld_prune_bp_window_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chimera_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chimera_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contamination_charr_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contamination_min_af</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contamination_max_af</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.95</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contamination_min_dp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contamination_max_dp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contamination_min_gq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contamination_ref_AF</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pcs_k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ancestry_pop_labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coverage_gq_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coverage_fraction_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sex_reported_is_female</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sex_male_fhet_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sex_female_fhet_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.calculate_sample_qc_stats" title="Link to this definition"></a></dt>
+<dd><p>Calculate Sample QC statistics from a Hail MatrixTable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mt</strong> (<em>MatrixTable</em>) – A Hail MatrixTable to compute sample QC statistics on.</p></li>
+<li><p><strong>high_quality_sites</strong> (<em>Table</em>) – A Hail Table with the list of high quality sites (common variants, in exome regions, not in low complexity regions).</p></li>
+<li><p><strong>pre_pruned_variants</strong> (<em>Optional</em><em>[</em><em>Table</em><em>]</em>) – The path to a table with LD pruned variants.</p></li>
+<li><p><strong>ld_prune_r2_thresh</strong> (<em>float</em>) – The LD-Prune R2 value when filtering out variants in linkage disequilibrium.</p></li>
+<li><p><strong>ld_prune_bp_window_size</strong> (<em>int</em>) – The window size for LD pruning variants.</p></li>
+<li><p><strong>chimera_rate</strong> (<em>NumericExpression</em>) – A numeric expression containing the chimeric read rate.</p></li>
+<li><p><strong>chimera_threshold</strong> (<em>float</em>) – The maximum threshold for which to consider a sample passing.</p></li>
+<li><p><strong>contamination_charr_thresh</strong> (<em>float</em>) – The threshold for which a sample is considered to be passing.</p></li>
+<li><p><strong>contamination_min_af</strong> (<em>float</em>) – The minimum allele frequency when using the <code class="docutils literal notranslate"><span class="pre">compute_charr</span></code> function in Hail.</p></li>
+<li><p><strong>contamination_max_af</strong> (<em>float</em>) – The maximum allele frequency when using the <code class="docutils literal notranslate"><span class="pre">compute_charr</span></code> function in Hail.</p></li>
+<li><p><strong>contamination_min_dp</strong> (<em>int</em>) – The minimum depth when using the <code class="docutils literal notranslate"><span class="pre">compute_charr</span></code> function in Hail.</p></li>
+<li><p><strong>contamination_max_dp</strong> (<em>int</em>) – The maximum depth when using the <code class="docutils literal notranslate"><span class="pre">compute_charr</span></code> function in Hail.</p></li>
+<li><p><strong>contamination_min_gq</strong> (<em>int</em>) – The minimum GQ when using the <code class="docutils literal notranslate"><span class="pre">compute_charr</span></code> function in Hail.</p></li>
+<li><p><strong>contamination_ref_AF</strong> (<em>Float64Expression</em>) – A float row field on the MatrixTable with the reference allele frequency when using the <code class="docutils literal notranslate"><span class="pre">compute_charr</span></code> function in Hail.</p></li>
+<li><p><strong>pcs_k</strong> (<em>int</em>) – The number of principal components to compute.</p></li>
+<li><p><strong>ancestry_pop_labels</strong> (<em>Optional</em><em>(</em><em>Table</em><em>)</em>) – A Hail Table with ancestry population labels such as projected from gnomAD. There should be a column <code class="docutils literal notranslate"><span class="pre">ancestry</span></code> with one field <code class="docutils literal notranslate"><span class="pre">ancestry_pop</span></code>.</p></li>
+<li><p><strong>coverage_gq_thresh</strong> (<em>int</em>) – The minimum GQ for a genotype to be considered passing.</p></li>
+<li><p><strong>coverage_fraction_thresh</strong> (<em>float</em>) – The minimum rate at which GQ is above the minimum threshold.</p></li>
+<li><p><strong>sex_reported_is_female</strong> (<em>Optional</em><em>[</em><em>hl.BooleanExpression</em><em>]</em>) – A field from a dataset where <code class="docutils literal notranslate"><span class="pre">True</span></code> means the sample is “Female” and <code class="docutils literal notranslate"><span class="pre">False</span></code> means “Male”.</p></li>
+<li><p><strong>sex_male_fhet_thresh</strong> (<em>float</em>) – The minimum Fstat threshold for calling a sample “Male”.</p></li>
+<li><p><strong>sex_female_fhet_thresh</strong> (<em>float</em>) – The maximum Fstat threshold for calling a sample “Female”.</p></li>
+<li><p><strong>log</strong> (<em>Optional</em><em>[</em><em>logging.Logger</em><em>]</em>) – An optional logging object.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A <a class="reference internal" href="#bge_toolkit.qc.SampleQCResult" title="bge_toolkit.qc.SampleQCResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">SampleQCResult</span></code></a> with plotting and exporting functionality.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="lower-level-functions">
+<h2>Lower Level Functions<a class="headerlink" href="#lower-level-functions" title="Link to this heading"></a></h2>
+<p><a class="reference internal" href="#bge_toolkit.qc.select_high_quality_common_sites" title="bge_toolkit.qc.select_high_quality_common_sites"><code class="xref py py-func docutils literal notranslate"><span class="pre">select_high_quality_common_sites()</span></code></a>, <a class="reference internal" href="#bge_toolkit.qc.infer_ancestry" title="bge_toolkit.qc.infer_ancestry"><code class="xref py py-func docutils literal notranslate"><span class="pre">infer_ancestry()</span></code></a>, and <a class="reference internal" href="#bge_toolkit.qc.calculate_sample_qc_stats" title="bge_toolkit.qc.calculate_sample_qc_stats"><code class="xref py py-func docutils literal notranslate"><span class="pre">calculate_sample_qc_stats()</span></code></a>
+are implemented in terms of these lower level functions which you can use to build your own QC pipeline:</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="bge_toolkit.qc.filter_to_high_quality_exome_intervals">
+<span class="sig-prename descclassname"><span class="pre">bge_toolkit.qc.</span></span><span class="sig-name descname"><span class="pre">filter_to_high_quality_exome_intervals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low_complexity_regions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exome_regions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_gatk</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.filter_to_high_quality_exome_intervals" title="Link to this definition"></a></dt>
+<dd><p>Filter a MatrixTable to the exome with no low complexity regions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mt</strong> (<em>MatrixTable</em>) – A Hail MatrixTable to filter the sites.</p></li>
+<li><p><strong>low_complexity_regions</strong> (<em>Table</em>) – A Table of intervals to filter out. Use <cite>import_locus_intervals</cite> from a BED file to generate the table.</p></li>
+<li><p><strong>exome_regions</strong> (<em>Table</em>) – A Table of intervals to filter to. Use <cite>import_locus_intervals</cite> from a BED file to generate the table.</p></li>
+<li><p><strong>is_gatk</strong> (<em>bool</em>) – True if the dataset was called using GATK.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Result:</dt><dd><p>A filtered MatrixTable to only exome regions without the low complexity regions of the genome.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bge_toolkit.qc.filter_contamination_rate">
+<span class="sig-prename descclassname"><span class="pre">bge_toolkit.qc.</span></span><span class="sig-name descname"><span class="pre">filter_contamination_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">mt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charr_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_af</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_af</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.95</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_dp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_dp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_gq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_AF</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.filter_contamination_rate" title="Link to this definition"></a></dt>
+<dd><p>Identify samples with high contamination rates.</p>
+<p>Uses the Hail <code class="docutils literal notranslate"><span class="pre">compute_charr</span></code> function to compute the estimate of contamination rate.</p>
+<dl class="simple">
+<dt>The result is a Hail Table with the following fields:</dt><dd><ul class="simple">
+<li><p>mt.col_key: The column key of the input MatrixTable</p></li>
+<li><p>contamination:
+* charr: The CHARR statistic.
+* is_passing: <code class="docutils literal notranslate"><span class="pre">charr</span></code> is less than the <code class="docutils literal notranslate"><span class="pre">charr_thresh</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mt</strong> (<em>MatrixTable</em>) – A Hail MatrixTable to compute contamination statistics from.</p></li>
+<li><p><strong>charr_thresh</strong> (<em>float</em>) – The threshold for which a sample is considered to be passing.</p></li>
+<li><p><strong>min_af</strong> (<em>float</em>) – The minimum allele frequency when using the <code class="docutils literal notranslate"><span class="pre">compute_charr</span></code> function in Hail.</p></li>
+<li><p><strong>max_af</strong> (<em>float</em>) – The maximum allele frequency when using the <code class="docutils literal notranslate"><span class="pre">compute_charr</span></code> function in Hail.</p></li>
+<li><p><strong>min_dp</strong> (<em>int</em>) – The minimum depth when using the <code class="docutils literal notranslate"><span class="pre">compute_charr</span></code> function in Hail.</p></li>
+<li><p><strong>max_dp</strong> (<em>int</em>) – The maximum depth when using the <code class="docutils literal notranslate"><span class="pre">compute_charr</span></code> function in Hail.</p></li>
+<li><p><strong>min_gq</strong> (<em>int</em>) – The minimum GQ when using the <code class="docutils literal notranslate"><span class="pre">compute_charr</span></code> function in Hail.</p></li>
+<li><p><strong>ref_AF</strong> (<em>Float64Expression</em>) – A float row field on the MatrixTable with the reference allele frequency when using the <code class="docutils literal notranslate"><span class="pre">compute_charr</span></code> function in Hail.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A Hail Table with the contamination statistic in a new column “contamination” that is a struct with one field “charr”.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bge_toolkit.qc.filter_chimeric_reads">
+<span class="sig-prename descclassname"><span class="pre">bge_toolkit.qc.</span></span><span class="sig-name descname"><span class="pre">filter_chimeric_reads</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">chimera_rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.filter_chimeric_reads" title="Link to this definition"></a></dt>
+<dd><p>Determine whether a sample passes based on chimeric read percentages.</p>
+<dl class="simple">
+<dt>The result is a Hail Table with the following fields:</dt><dd><ul class="simple">
+<li><p>ds.col_key: The column key of the input expression.</p></li>
+<li><p>chimera_reads:
+* chimera_rate: The rate of chimera reads.
+* is_passing: The rate of chimera reads is below <code class="docutils literal notranslate"><span class="pre">threshold</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>chimera_rate</strong> (<em>NumericExpression</em>) – A numeric expression containing the chimeric read rate.</p></li>
+<li><p><strong>threshold</strong> (<em>float</em>) – The maximum threshold for which to consider a sample passing.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A Hail Table with the chimeric read data along with an annotation for whether it is passing.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bge_toolkit.qc.filter_genotypes">
+<span class="sig-prename descclassname"><span class="pre">bge_toolkit.qc.</span></span><span class="sig-name descname"><span class="pre">filter_genotypes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_gatk</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">dp_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gq_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ab_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.filter_genotypes" title="Link to this definition"></a></dt>
+<dd><p>Filter genotypes that are of poor quality from an exome dataset.</p>
+<p>If the dataset was called using DRAGEN, <code class="docutils literal notranslate"><span class="pre">DP</span></code> is the sum of <code class="docutils literal notranslate"><span class="pre">AD</span></code> and only heterozygote
+and homozygous alternate calls are subject to the filter on read depth.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mt</strong> (<em>MatrixTable</em>) – A MatrixTable to filter the genotypes of.</p></li>
+<li><p><strong>is_gatk</strong> (<em>bool</em>) – True if the dataset was called using GATK.</p></li>
+<li><p><strong>dp_thresh</strong> (<em>int</em>) – The minimum DP for a kept genotype. DP is computed as the sum of the “AD” field.</p></li>
+<li><p><strong>gq_thresh</strong> (<em>int</em>) – The minimum GQ threshold for a kept genotype.</p></li>
+<li><p><strong>ab_thresh</strong> (<em>float</em>) – The allowable allelic balance range for a kept heterozygote genotype.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A MatrixTable with poor quality genotypes removed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bge_toolkit.qc.filter_to_high_quality_common_sites">
+<span class="sig-prename descclassname"><span class="pre">bge_toolkit.qc.</span></span><span class="sig-name descname"><span class="pre">filter_to_high_quality_common_sites</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mt</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">maf_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mac_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">call_rate_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.95</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.filter_to_high_quality_common_sites" title="Link to this definition"></a></dt>
+<dd><p>Filter a MatrixTable to common, LD pruned sites.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mt</strong> (<em>MatrixTable</em>) – The MatrixTable to subset to filter to common, LD pruned sites.</p></li>
+<li><p><strong>maf_thresh</strong> (<em>float</em>) – The minimum minor allele frequency as computed by <cite>hl.variant_qc</cite> in order for a variant to be considered to be common.</p></li>
+<li><p><strong>mac_thresh</strong> (<em>int</em>) – The minimum number of minor alleles observed as computed by <cite>hl.variant_qc</cite> in order for a variant to be considered common.</p></li>
+<li><p><strong>call_rate_thresh</strong> (<em>float</em>) – The minimum call rate of a variant as computed by <cite>hl.variant_qc</cite> in order for a variant to be considered.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A Hail MatrixTable subsetted to common, LD-pruned sites.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bge_toolkit.qc.compute_pcs">
+<span class="sig-prename descclassname"><span class="pre">bge_toolkit.qc.</span></span><span class="sig-name descname"><span class="pre">compute_pcs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mt</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.compute_pcs" title="Link to this definition"></a></dt>
+<dd><p>Compute principal components.</p>
+<p>Only computed from autosomal variants.</p>
+<dl class="simple">
+<dt>The result is a Hail Table with the following fields:</dt><dd><ul class="simple">
+<li><p>mt.col_key: The column key of the input MatrixTable.</p></li>
+<li><p>pcs:
+* scores: An array with the top <code class="docutils literal notranslate"><span class="pre">k</span></code> principal components.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mt</strong> (<em>MatrixTable</em>) – A Hail MatrixTable to compute principal components from. Should be LD pruned and filtered to high quality common variants.</p></li>
+<li><p><strong>k</strong> (<em>int</em>) – The number of principal components to compute.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A Hail Table with the principal components.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bge_toolkit.qc.estimate_call_rate_through_gq_stats">
+<span class="sig-prename descclassname"><span class="pre">bge_toolkit.qc.</span></span><span class="sig-name descname"><span class="pre">estimate_call_rate_through_gq_stats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gq_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fraction_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.estimate_call_rate_through_gq_stats" title="Link to this definition"></a></dt>
+<dd><p>Flag samples with the proportion of calls with GQ less than a threshold being too low.</p>
+<p>Only computed for autosomal variants.</p>
+<dl class="simple">
+<dt>The result is a Hail Table with the following fields:</dt><dd><ul class="simple">
+<li><p>mt.col_key: The column key of the input MatrixTable</p></li>
+<li><p>gq_fraction:
+* gq_fraction: The percentage of genotypes with GQ &gt;= <code class="docutils literal notranslate"><span class="pre">gq_thresh</span></code>.
+* is_passing: <code class="docutils literal notranslate"><span class="pre">gq_fraction</span></code> is greater than the <code class="docutils literal notranslate"><span class="pre">fraction_thresh</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mt</strong> (<em>MatrixTable</em>) – The MatrixTable to compute GQ stats from.</p></li>
+<li><p><strong>gq_thresh</strong> (<em>int</em>) – The minimum GQ for a genotype to be considered passing.</p></li>
+<li><p><strong>fraction_thresh</strong> (<em>float</em>) – The minimum rate at which GQ is above the minimum threshold.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A Hail Table with the struct <code class="docutils literal notranslate"><span class="pre">gq_fraction</span></code> and <code class="docutils literal notranslate"><span class="pre">include</span></code> in the column <code class="docutils literal notranslate"><span class="pre">gq_fraction</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bge_toolkit.qc.impute_and_check_sex">
+<span class="sig-prename descclassname"><span class="pre">bge_toolkit.qc.</span></span><span class="sig-name descname"><span class="pre">impute_and_check_sex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maf_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">male_fhet_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">female_fhet_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reported_is_female</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.impute_and_check_sex" title="Link to this definition"></a></dt>
+<dd><p>Impute and Check Sex.</p>
+<dl class="simple">
+<dt>The result is a Hail Table with the following fields:</dt><dd><ul class="simple">
+<li><p>mt.col_key: The column key of the input MatrixTable</p></li>
+<li><p>sex_info:
+* is_female: The imputed sex. <code class="docutils literal notranslate"><span class="pre">True</span></code> is for females, <code class="docutils literal notranslate"><span class="pre">False</span></code> is for males.
+* is_passing: Either <code class="docutils literal notranslate"><span class="pre">reported</span> <span class="pre">sex</span> <span class="pre">==</span> <span class="pre">imputed</span> <span class="pre">sex</span></code> or <code class="docutils literal notranslate"><span class="pre">True</span></code>.
+* sex_check: <code class="docutils literal notranslate"><span class="pre">reported</span> <span class="pre">sex</span> <span class="pre">==</span> <span class="pre">imputed</span> <span class="pre">sex</span></code> or <code class="docutils literal notranslate"><span class="pre">Null</span></code>.
+* f_stat: Inbreeding coefficient on the non-PAR X chromosome.
+* n_called: Number of genotypes considered.
+* expected_homs: Expected number of homozygotes.
+* observed_homs: Observed number of heterozygotes.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mt</strong> (<em>MatrixTable</em>) – A Hail MatrixTable to impute sex from.</p></li>
+<li><p><strong>maf_threshold</strong> (<em>float</em>) – The minor allele frequency threshold in order for a variant to be included in the analysis.</p></li>
+<li><p><strong>male_fhet_thresh</strong> (<em>float</em>) – The minimum Fstat threshold for calling a sample “Male”.</p></li>
+<li><p><strong>female_fhet_thresh</strong> (<em>float</em>) – The maximum Fstat threshold for calling a sample “Female”.</p></li>
+<li><p><strong>maf</strong> (<em>Optional</em><em>[</em><em>hl.NumericExpression</em><em>]</em>) – A field defining the alternate allele frequency for each row. If</p></li>
+<li><p><strong>None</strong></p></li>
+<li><p><strong>call.</strong> (<em>AAF will be computed from</em>)</p></li>
+<li><p><strong>reported_is_female</strong> (<em>Optional</em><em>[</em><em>hl.BooleanExpression</em><em>]</em>) – A field from a dataset where <code class="docutils literal notranslate"><span class="pre">True</span></code> means the sample is “Female” and <code class="docutils literal notranslate"><span class="pre">False</span></code> means “Male”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A Hail Table with sex information annotated.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bge_toolkit.qc.identify_outliers_in_qc_stats">
+<span class="sig-prename descclassname"><span class="pre">bge_toolkit.qc.</span></span><span class="sig-name descname"><span class="pre">identify_outliers_in_qc_stats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">mt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ancestry_pop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.identify_outliers_in_qc_stats" title="Link to this definition"></a></dt>
+<dd><p>Identify outliers in QC statistics.</p>
+<p>All statistics computed with <code class="docutils literal notranslate"><span class="pre">hl.sample_qc</span></code>.</p>
+<dl class="simple">
+<dt>The result is a Hail Table with the following fields:</dt><dd><ul class="simple">
+<li><p>mt.col_key: The column key of the input MatrixTable</p></li>
+<li><p>sample_qc_metrics:
+* is_passing: Passes every statistic.
+* r_ti_tv: Transition / Transversion ratio.
+* n_singleton: Number of singletons.
+* n_insertion: Number of insertions.
+* n_deletion: Number of deletions.
+* n_transition: Number of transitions.
+* n_transversion: Number of transversions.
+* r_het_hom_var: Ratio of heterozygotes to number of homozygote variants.
+* r_insertion_deletion: Ratio of insertions to deletions.
+* fail_r_ti_tv: An outlier in <code class="docutils literal notranslate"><span class="pre">r_ti_tv</span></code>.
+* fail_n_singleton: An outlier in <code class="docutils literal notranslate"><span class="pre">n_singleton</span></code>.
+* fail_n_insertion: An outlier in <code class="docutils literal notranslate"><span class="pre">n_insertion</span></code>.
+* fail_n_deletion: An outlier in <code class="docutils literal notranslate"><span class="pre">n_deletion</span></code>.
+* fail_n_transition: An outlier in <code class="docutils literal notranslate"><span class="pre">n_transition</span></code>.
+* fail_n_transversion: An outlier in <code class="docutils literal notranslate"><span class="pre">n_transversion</span></code>.
+* fail_r_het_hom_var: An outlier in <code class="docutils literal notranslate"><span class="pre">r_het_hom_var</span></code>.
+* fail_r_insertion_deletion: An outlier in <code class="docutils literal notranslate"><span class="pre">r_insertion_deletion</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mt</strong> (<em>MatrixTable</em>) – A Hail MatrixTable to compute sample QC statistics on. This should be LD-pruned, high quality variants.</p></li>
+<li><p><strong>ancestry_pop</strong> (<em>Optional</em><em>[</em><em>StringExpression</em><em>]</em>) – A Hail Expression with the ancestry population label for each sample for computing outliers based on ancestry-stratified statistics.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A Hail Table with sample QC statistics as well as outliers flagged for each metric.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="sampleqcresult">
+<h2>SampleQCResult<a class="headerlink" href="#sampleqcresult" title="Link to this heading"></a></h2>
+<p>A <a class="reference internal" href="#bge_toolkit.qc.SampleQCResult" title="bge_toolkit.qc.SampleQCResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">SampleQCResult</span></code></a> is an object that provides a wrapper for interacting
+with the sample QC results by making plots and exploring the metrics.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="bge_toolkit.qc.SampleQCResult">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bge_toolkit.qc.</span></span><span class="sig-name descname"><span class="pre">SampleQCResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.SampleQCResult" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>An interface for working with Sample QC Results.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="bge_toolkit.qc.SampleQCResult.ancestry_pop">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ancestry_pop</span></span><a class="headerlink" href="#bge_toolkit.qc.SampleQCResult.ancestry_pop" title="Link to this definition"></a></dt>
+<dd><p>A HailExpression that contains the imputed ancestry population.</p>
+<p>The result is a StringExpression.</p>
+<p>See <a class="reference internal" href="#bge_toolkit.qc.infer_ancestry" title="bge_toolkit.qc.infer_ancestry"><code class="xref py py-func docutils literal notranslate"><span class="pre">infer_ancestry()</span></code></a> for the implementation and more details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A Hail StringExpression with the ancestry population label.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="bge_toolkit.qc.SampleQCResult.chimera_reads">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">chimera_reads</span></span><a class="headerlink" href="#bge_toolkit.qc.SampleQCResult.chimera_reads" title="Link to this definition"></a></dt>
+<dd><p>A HailExpression that contains the chimeric rate results.</p>
+<p>The result is a StructExpression with the following fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>chimera_rate: The rate of chimera reads.</p></li>
+<li><p>is_passing: The rate of chimera reads is below <code class="docutils literal notranslate"><span class="pre">threshold</span></code>.</p></li>
+</ul>
+</div></blockquote>
+<p>See <a class="reference internal" href="#bge_toolkit.qc.filter_chimeric_reads" title="bge_toolkit.qc.filter_chimeric_reads"><code class="xref py py-func docutils literal notranslate"><span class="pre">filter_chimeric_reads()</span></code></a> for the implementation and more details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A Hail StructExpression with the schema defined above.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bge_toolkit.qc.SampleQCResult.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.SampleQCResult.close" title="Link to this definition"></a></dt>
+<dd><p>Unpersist any temporary tables.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="bge_toolkit.qc.SampleQCResult.contamination">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">contamination</span></span><a class="headerlink" href="#bge_toolkit.qc.SampleQCResult.contamination" title="Link to this definition"></a></dt>
+<dd><p>A HailExpression that contains the contamination results.</p>
+<p>The result is a StructExpression with the following fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>charr: The CHARR statistic.</p></li>
+<li><p>is_passing: <code class="docutils literal notranslate"><span class="pre">charr</span></code> is less than the <code class="docutils literal notranslate"><span class="pre">charr_thresh</span></code></p></li>
+</ul>
+</div></blockquote>
+<p>See <a class="reference internal" href="#bge_toolkit.qc.filter_contamination_rate" title="bge_toolkit.qc.filter_contamination_rate"><code class="xref py py-func docutils literal notranslate"><span class="pre">filter_contamination_rate()</span></code></a> for the implementation and more details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A Hail StructExpression with the schema defined above.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bge_toolkit.qc.SampleQCResult.export">
+<span class="sig-name descname"><span class="pre">export</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exprs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">named_exprs</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">delimiter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'\t'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">missing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'NA'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.SampleQCResult.export" title="Link to this definition"></a></dt>
+<dd><p>Export the sample QC results to a file.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sample_qc_results</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="s1">&#39;gs://my-bucket/analysis/sample_qc.tsv&#39;</span><span class="p">,</span>
+<span class="gp">... </span>                         <span class="n">exprs</span><span class="o">=</span><span class="p">[</span><span class="n">sample_qc_results</span><span class="o">.</span><span class="n">relatedness</span><span class="o">.</span><span class="n">is_passing</span><span class="p">],</span>
+<span class="gp">... </span>                         <span class="n">named_exprs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;r_ti_tv&#39;</span><span class="p">:</span> <span class="n">sample_qc_results</span><span class="o">.</span><span class="n">qc_metrics</span><span class="o">.</span><span class="n">r_ti_tv</span><span class="p">,</span>
+<span class="gp">... </span>                                      <span class="s1">&#39;PC1&#39;</span><span class="p">:</span> <span class="n">sample_qc_results</span><span class="o">.</span><span class="n">pcs</span><span class="o">.</span><span class="n">scores</span><span class="p">[</span><span class="mi">0</span><span class="p">]})</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – The file to export data to.</p></li>
+<li><p><strong>exprs</strong> (<em>List</em><em>[</em><em>hl.Expression</em><em>]</em>) – A list of expressions to export.</p></li>
+<li><p><strong>named_exprs</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>hl.Expression</em><em>]</em>) – Named expressions to export.</p></li>
+<li><p><strong>delimiter</strong> (<em>str</em>) – The delimiter of the resulting exported file.</p></li>
+<li><p><strong>missing</strong> (<em>str</em>) – The value to use for missing values.</p></li>
+<li><p><strong>header</strong> (<em>bool</em>) – Include a header line.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bge_toolkit.qc.SampleQCResult.filter_to">
+<span class="sig-name descname"><span class="pre">filter_to</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.SampleQCResult.filter_to" title="Link to this definition"></a></dt>
+<dd><p>Filter the Sample QC results to a user-specified set of samples based on a BooleanExpression.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filter</strong> (<em>hl.BooleanExpression</em>) – A BooleanExpression using expressions derived from this <a class="reference internal" href="#bge_toolkit.qc.SampleQCResult" title="bge_toolkit.qc.SampleQCResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">SampleQCResult</span></code></a> to identify selected samples.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A <a class="reference internal" href="#bge_toolkit.qc.SampleQCResult" title="bge_toolkit.qc.SampleQCResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">SampleQCResult</span></code></a> with only filtered samples.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="bge_toolkit.qc.SampleQCResult.gq_fraction">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gq_fraction</span></span><a class="headerlink" href="#bge_toolkit.qc.SampleQCResult.gq_fraction" title="Link to this definition"></a></dt>
+<dd><p>A HailExpression that contains the GQ fraction results as a proxy for call rate.</p>
+<p>The result is a StructExpression with the following fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>gq_fraction: The percentage of genotypes with GQ &gt;= <code class="docutils literal notranslate"><span class="pre">gq_thresh</span></code>.</p></li>
+<li><p>is_passing: <code class="docutils literal notranslate"><span class="pre">gq_fraction</span></code> is greater than the <code class="docutils literal notranslate"><span class="pre">fraction_thresh</span></code></p></li>
+</ul>
+</div></blockquote>
+<p>See <a class="reference internal" href="#bge_toolkit.qc.estimate_call_rate_through_gq_stats" title="bge_toolkit.qc.estimate_call_rate_through_gq_stats"><code class="xref py py-func docutils literal notranslate"><span class="pre">estimate_call_rate_through_gq_stats()</span></code></a> for the implementation and more details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A Hail StructExpression with the schema defined above.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bge_toolkit.qc.SampleQCResult.load">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.SampleQCResult.load" title="Link to this definition"></a></dt>
+<dd><p>Load a <a class="reference internal" href="#bge_toolkit.qc.SampleQCResult" title="bge_toolkit.qc.SampleQCResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">SampleQCResult</span></code></a> from a Hail Table on disk.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – The path at which the Hail Table resides.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A <a class="reference internal" href="#bge_toolkit.qc.SampleQCResult" title="bge_toolkit.qc.SampleQCResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">SampleQCResult</span></code></a> object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bge_toolkit.qc.SampleQCResult.passing_samples">
+<span class="sig-name descname"><span class="pre">passing_samples</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">is_passing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.SampleQCResult.passing_samples" title="Link to this definition"></a></dt>
+<dd><p>Filter the Sample QC results to passing samples.</p>
+<dl class="simple">
+<dt>The default implementation for defining a passing sample is if it meets the following criteria:</dt><dd><ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">contamination.is_passing</span></code> is True</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">chimera_reads.is_passing</span></code> is True or is missing.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">relatedness.is_passing</span></code> is True for unrelated samples.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sex_info.is_passing</span></code> is True or is missing.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gq_fraction.is_passing</span></code> is True.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">qc_metrics.is_passing</span></code> is True meaning the sample is not an outlier based on ancestry stratified QC metrics.</p></li>
+</ol>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>is_passing</strong> (<em>hl.BooleanExpression</em>) – A BooleanExpression using expressions derived from this <a class="reference internal" href="#bge_toolkit.qc.SampleQCResult" title="bge_toolkit.qc.SampleQCResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">SampleQCResult</span></code></a>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A <a class="reference internal" href="#bge_toolkit.qc.SampleQCResult" title="bge_toolkit.qc.SampleQCResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">SampleQCResult</span></code></a> with only passing samples.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="bge_toolkit.qc.SampleQCResult.pcs">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pcs</span></span><a class="headerlink" href="#bge_toolkit.qc.SampleQCResult.pcs" title="Link to this definition"></a></dt>
+<dd><p>A HailExpression that contains the principal components.</p>
+<p>The result is a StructExpression with the following fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>scores: An array with the top <code class="docutils literal notranslate"><span class="pre">k</span></code> principal components.</p></li>
+</ul>
+</div></blockquote>
+<p>See <a class="reference internal" href="#bge_toolkit.qc.compute_pcs" title="bge_toolkit.qc.compute_pcs"><code class="xref py py-func docutils literal notranslate"><span class="pre">compute_pcs()</span></code></a> for the implementation and more details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A Hail StructExpression with the schema defined above.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bge_toolkit.qc.SampleQCResult.plot_chimera_reads">
+<span class="sig-name descname"><span class="pre">plot_chimera_reads</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.SampleQCResult.plot_chimera_reads" title="Link to this definition"></a></dt>
+<dd><p>Plot chimera reads as a boxplot.</p>
+<p>Colors samples that fail the threshold as a different color.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A <cite>plotnine</cite> ggplot object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bge_toolkit.qc.SampleQCResult.plot_gq_fraction_density">
+<span class="sig-name descname"><span class="pre">plot_gq_fraction_density</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.SampleQCResult.plot_gq_fraction_density" title="Link to this definition"></a></dt>
+<dd><p>Plot GQ fraction as a density plot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A <cite>plotnine</cite> ggplot object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bge_toolkit.qc.SampleQCResult.plot_pcs">
+<span class="sig-name descname"><span class="pre">plot_pcs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pc_i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pc_j</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.SampleQCResult.plot_pcs" title="Link to this definition"></a></dt>
+<dd><p>Plot principal components.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pc_i</strong> (<em>int</em>) – This is a 1-indexed principal component index. 1=First principal component.</p></li>
+<li><p><strong>pc_j</strong> (<em>int</em>) – This is a 1-indexed principal component index. 1=First principal component.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A <cite>plotnine</cite> ggplot object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bge_toolkit.qc.SampleQCResult.plot_qc_metric_boxplots">
+<span class="sig-name descname"><span class="pre">plot_qc_metric_boxplots</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.SampleQCResult.plot_qc_metric_boxplots" title="Link to this definition"></a></dt>
+<dd><p>Plot QC metrics as boxplots.</p>
+<dl class="simple">
+<dt>Possible metrics:</dt><dd><ul class="simple">
+<li><p>r_ti_tv: Transition / Transversion ratio.</p></li>
+<li><p>n_singleton: Number of singletons.</p></li>
+<li><p>n_insertion: Number of insertions.</p></li>
+<li><p>n_deletion: Number of deletions.</p></li>
+<li><p>n_transition: Number of transitions.</p></li>
+<li><p>n_transversion: Number of transversions.</p></li>
+<li><p>r_het_hom_var: Ratio of heterozygotes to number of homozygote variants.</p></li>
+<li><p>r_insertion_deletion: Ratio of insertions to deletions.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A Dictionary of metric name to <cite>plotnine</cite> ggplot object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bge_toolkit.qc.SampleQCResult.plot_qc_metric_density">
+<span class="sig-name descname"><span class="pre">plot_qc_metric_density</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.SampleQCResult.plot_qc_metric_density" title="Link to this definition"></a></dt>
+<dd><p>Plot QC metrics as density plots.</p>
+<dl class="simple">
+<dt>Possible metrics:</dt><dd><ul class="simple">
+<li><p>r_ti_tv: Transition / Transversion ratio.</p></li>
+<li><p>n_singleton: Number of singletons.</p></li>
+<li><p>n_insertion: Number of insertions.</p></li>
+<li><p>n_deletion: Number of deletions.</p></li>
+<li><p>n_transition: Number of transitions.</p></li>
+<li><p>n_transversion: Number of transversions.</p></li>
+<li><p>r_het_hom_var: Ratio of heterozygotes to number of homozygote variants.</p></li>
+<li><p>r_insertion_deletion: Ratio of insertions to deletions.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A Dictionary of metric name to <cite>plotnine</cite> ggplot object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="bge_toolkit.qc.SampleQCResult.qc_metrics">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">qc_metrics</span></span><a class="headerlink" href="#bge_toolkit.qc.SampleQCResult.qc_metrics" title="Link to this definition"></a></dt>
+<dd><p>A HailExpression that contains the sample qc metrics results with outliers flagged.</p>
+<p>The result is a StructExpression with the following fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>is_passing: Passes every statistic.</p></li>
+<li><p>r_ti_tv: Transition / Transversion ratio.</p></li>
+<li><p>n_singleton: Number of singletons.</p></li>
+<li><p>n_insertion: Number of insertions.</p></li>
+<li><p>n_deletion: Number of deletions.</p></li>
+<li><p>n_transition: Number of transitions.</p></li>
+<li><p>n_transversion: Number of transversions.</p></li>
+<li><p>r_het_hom_var: Ratio of heterozygotes to number of homozygote variants.</p></li>
+<li><p>r_insertion_deletion: Ratio of insertions to deletions.</p></li>
+<li><p>fail_r_ti_tv: An outlier in <code class="docutils literal notranslate"><span class="pre">r_ti_tv</span></code>.</p></li>
+<li><p>fail_n_singleton: An outlier in <code class="docutils literal notranslate"><span class="pre">n_singleton</span></code>.</p></li>
+<li><p>fail_n_insertion: An outlier in <code class="docutils literal notranslate"><span class="pre">n_insertion</span></code>.</p></li>
+<li><p>fail_n_deletion: An outlier in <code class="docutils literal notranslate"><span class="pre">n_deletion</span></code>.</p></li>
+<li><p>fail_n_transition: An outlier in <code class="docutils literal notranslate"><span class="pre">n_transition</span></code>.</p></li>
+<li><p>fail_n_transversion: An outlier in <code class="docutils literal notranslate"><span class="pre">n_transversion</span></code>.</p></li>
+<li><p>fail_r_het_hom_var: An outlier in <code class="docutils literal notranslate"><span class="pre">r_het_hom_var</span></code>.</p></li>
+<li><p>fail_r_insertion_deletion: An outlier in <code class="docutils literal notranslate"><span class="pre">r_insertion_deletion</span></code>.</p></li>
+</ul>
+</div></blockquote>
+<p>See <a class="reference internal" href="#bge_toolkit.qc.identify_outliers_in_qc_stats" title="bge_toolkit.qc.identify_outliers_in_qc_stats"><code class="xref py py-func docutils literal notranslate"><span class="pre">identify_outliers_in_qc_stats()</span></code></a> for the implementation and more details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A Hail StructExpression with the schema defined above.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="bge_toolkit.qc.SampleQCResult.sample_id">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sample_id</span></span><a class="headerlink" href="#bge_toolkit.qc.SampleQCResult.sample_id" title="Link to this definition"></a></dt>
+<dd><p>A HailExpression that contains the key of the sample qc results.</p>
+<p>The key in most cases is a single field <cite>s</cite> with the sample ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A Hail StructExpression with the key of the sample QC results.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="bge_toolkit.qc.SampleQCResult.sex_info">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sex_info</span></span><a class="headerlink" href="#bge_toolkit.qc.SampleQCResult.sex_info" title="Link to this definition"></a></dt>
+<dd><p>A HailExpression that contains the imputed sex and sex check results.</p>
+<p>The result is a StructExpression with the following fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>is_female: The imputed sex. <code class="docutils literal notranslate"><span class="pre">True</span></code> is for females, <code class="docutils literal notranslate"><span class="pre">False</span></code> is for males.</p></li>
+<li><p>is_passing: Either <code class="docutils literal notranslate"><span class="pre">reported</span> <span class="pre">sex</span> <span class="pre">==</span> <span class="pre">imputed</span> <span class="pre">sex</span></code> or <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p>sex_check: <code class="docutils literal notranslate"><span class="pre">reported</span> <span class="pre">sex</span> <span class="pre">==</span> <span class="pre">imputed</span> <span class="pre">sex</span></code> or <code class="docutils literal notranslate"><span class="pre">Null</span></code>.</p></li>
+<li><p>f_stat: Inbreeding coefficient on the non-PAR X chromosome.</p></li>
+<li><p>n_called: Number of genotypes considered.</p></li>
+<li><p>expected_homs: Expected number of homozygotes.</p></li>
+<li><p>observed_homs: Observed number of heterozygotes.</p></li>
+</ul>
+</div></blockquote>
+<p>See <a class="reference internal" href="#bge_toolkit.qc.impute_and_check_sex" title="bge_toolkit.qc.impute_and_check_sex"><code class="xref py py-func docutils literal notranslate"><span class="pre">impute_and_check_sex()</span></code></a> for the implementation and more details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A Hail StructExpression with the schema defined above.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="bge_toolkit.qc.SampleQCResult.table">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">table</span></span><a class="headerlink" href="#bge_toolkit.qc.SampleQCResult.table" title="Link to this definition"></a></dt>
+<dd><p>Underlying Hail Table containing the Sample QC statistics.</p>
+<p>Examples:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">qc_result</span><span class="o">.</span><span class="n">table</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">my_field</span><span class="o">=...</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A Hail Table with Sample QC statistics.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bge_toolkit.qc.SampleQCResult.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bge_toolkit.qc.SampleQCResult.write" title="Link to this definition"></a></dt>
+<dd><p>Write the underlying table to disk.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – The path to write the Hail Table to.</p></li>
+<li><p><strong>overwrite</strong> (<em>bool</em>) – Whether to overwrite the file if it already exists.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="concordance.html" class="btn btn-neutral float-left" title="Concordance Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright .</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

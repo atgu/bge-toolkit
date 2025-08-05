@@ -9,7 +9,7 @@
   <title>BGE Toolkit &mdash; BGE Toolkit 0.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
-      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=56c4699f" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css" />
 
   
     <link rel="canonical" href="https://atgu.github.io/bge-toolkit/index.html" />
@@ -45,8 +45,104 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="cli.html">Command-Line Interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.html">Python API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Command-Line Interface</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#bge-toolkit">bge-toolkit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#bge-toolkit-qc">bge-toolkit qc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#bge-toolkit-qc-concordance">bge-toolkit qc concordance</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.html#aggregations">Aggregations</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli.html#grouping">Grouping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cli.html#aggregation">Aggregation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cli.html#notes">Notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#bge-toolkit-qc-sample-qc">bge-toolkit qc sample-qc</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.html#id1">Examples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.html#id2">Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">Python API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.html#bge-toolkit-qc">bge_toolkit.qc</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="concordance.html">Concordance Reference</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="concordance.html#jointcallset">JointCallSet</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.qc.JointCallSet"><code class="docutils literal notranslate"><span class="pre">JointCallSet</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="concordance.html#jointype">JoinType</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.qc.JoinType"><code class="docutils literal notranslate"><span class="pre">JoinType</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="concordance.html#selectors">Selectors</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.qc.ALL_GROUP"><code class="docutils literal notranslate"><span class="pre">ALL_GROUP</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.qc.ALL_AGG"><code class="docutils literal notranslate"><span class="pre">ALL_AGG</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="concordance.html#concordance">Concordance</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.qc.concordance"><code class="docutils literal notranslate"><span class="pre">concordance()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="concordance.html#concordancetable">ConcordanceTable</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.qc.ConcordanceTable"><code class="docutils literal notranslate"><span class="pre">ConcordanceTable</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="concordance.html#concordanceview">ConcordanceView</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.qc.ConcordanceView"><code class="docutils literal notranslate"><span class="pre">ConcordanceView</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="concordance.html#statistic">Statistic</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.qc.Statistic"><code class="docutils literal notranslate"><span class="pre">Statistic</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge-toolkit-common">bge_toolkit.common</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="concordance.html#binning-functions">Binning Functions</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.common.mac_bin"><code class="docutils literal notranslate"><span class="pre">mac_bin()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.common.maf_bin"><code class="docutils literal notranslate"><span class="pre">maf_bin()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.common.gq_bin"><code class="docutils literal notranslate"><span class="pre">gq_bin()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.common.dp_bin"><code class="docutils literal notranslate"><span class="pre">dp_bin()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.common.max_gp_bin"><code class="docutils literal notranslate"><span class="pre">max_gp_bin()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.common.qual_approx_bin"><code class="docutils literal notranslate"><span class="pre">qual_approx_bin()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.common.info_score_bin"><code class="docutils literal notranslate"><span class="pre">info_score_bin()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="sample_qc.html">Sample QC Reference</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="sample_qc.html#sample-qc">sample_qc</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.sample_qc"><code class="docutils literal notranslate"><span class="pre">sample_qc()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="sample_qc.html#high-level-functions">High Level Functions</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.select_high_quality_common_sites"><code class="docutils literal notranslate"><span class="pre">select_high_quality_common_sites()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.infer_ancestry"><code class="docutils literal notranslate"><span class="pre">infer_ancestry()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.calculate_sample_qc_stats"><code class="docutils literal notranslate"><span class="pre">calculate_sample_qc_stats()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="sample_qc.html#lower-level-functions">Lower Level Functions</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.filter_to_high_quality_exome_intervals"><code class="docutils literal notranslate"><span class="pre">filter_to_high_quality_exome_intervals()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.filter_contamination_rate"><code class="docutils literal notranslate"><span class="pre">filter_contamination_rate()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.filter_chimeric_reads"><code class="docutils literal notranslate"><span class="pre">filter_chimeric_reads()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.filter_genotypes"><code class="docutils literal notranslate"><span class="pre">filter_genotypes()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.filter_to_high_quality_common_sites"><code class="docutils literal notranslate"><span class="pre">filter_to_high_quality_common_sites()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.compute_pcs"><code class="docutils literal notranslate"><span class="pre">compute_pcs()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.estimate_call_rate_through_gq_stats"><code class="docutils literal notranslate"><span class="pre">estimate_call_rate_through_gq_stats()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.impute_and_check_sex"><code class="docutils literal notranslate"><span class="pre">impute_and_check_sex()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.identify_outliers_in_qc_stats"><code class="docutils literal notranslate"><span class="pre">identify_outliers_in_qc_stats()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="sample_qc.html#sampleqcresult">SampleQCResult</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.SampleQCResult"><code class="docutils literal notranslate"><span class="pre">SampleQCResult</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 
         </div>
@@ -93,26 +189,154 @@ $ pip3 install .
 <li class="toctree-l2"><a class="reference internal" href="cli.html#bge-toolkit">bge-toolkit</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cli.html#bge-toolkit-qc">bge-toolkit qc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cli.html#bge-toolkit-qc-concordance">bge-toolkit qc concordance</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="cli.html#aggregations">Aggregations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.html#aggregations">Aggregations</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli.html#grouping">Grouping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cli.html#aggregation">Aggregation</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="cli.html#notes">Notes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="cli.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#bge-toolkit-qc-sample-qc">bge-toolkit qc sample-qc</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.html#id1">Examples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.html#id2">Notes</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">Python API Reference</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="api.html#bge-toolkit-qc">bge_toolkit.qc</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api.html#jointcallset">JointCallSet</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api.html#jointype">JoinType</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api.html#selectors">Selectors</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api.html#concordance">Concordance</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api.html#concordancetable">ConcordanceTable</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api.html#concordanceview">ConcordanceView</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api.html#statistic">Statistic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="concordance.html">Concordance Reference</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="concordance.html#jointcallset">JointCallSet</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.qc.JointCallSet"><code class="docutils literal notranslate"><span class="pre">JointCallSet</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="concordance.html#bge_toolkit.qc.JointCallSet.close"><code class="docutils literal notranslate"><span class="pre">JointCallSet.close()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="concordance.html#bge_toolkit.qc.JointCallSet.full_outer_join"><code class="docutils literal notranslate"><span class="pre">JointCallSet.full_outer_join()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="concordance.html#bge_toolkit.qc.JointCallSet.global_concordance"><code class="docutils literal notranslate"><span class="pre">JointCallSet.global_concordance()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="concordance.html#bge_toolkit.qc.JointCallSet.n_sample_overlaps"><code class="docutils literal notranslate"><span class="pre">JointCallSet.n_sample_overlaps</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="concordance.html#bge_toolkit.qc.JointCallSet.n_variant_overlaps"><code class="docutils literal notranslate"><span class="pre">JointCallSet.n_variant_overlaps</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="concordance.html#bge_toolkit.qc.JointCallSet.sample_concordance"><code class="docutils literal notranslate"><span class="pre">JointCallSet.sample_concordance()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="concordance.html#bge_toolkit.qc.JointCallSet.sample_overlaps"><code class="docutils literal notranslate"><span class="pre">JointCallSet.sample_overlaps()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="concordance.html#bge_toolkit.qc.JointCallSet.variant_concordance"><code class="docutils literal notranslate"><span class="pre">JointCallSet.variant_concordance()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="concordance.html#bge_toolkit.qc.JointCallSet.variant_overlaps"><code class="docutils literal notranslate"><span class="pre">JointCallSet.variant_overlaps()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#bge-toolkit-common">bge_toolkit.common</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api.html#binning-functions">Binning Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="concordance.html#jointype">JoinType</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.qc.JoinType"><code class="docutils literal notranslate"><span class="pre">JoinType</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="concordance.html#bge_toolkit.qc.JoinType.outer"><code class="docutils literal notranslate"><span class="pre">JoinType.outer</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="concordance.html#bge_toolkit.qc.JoinType.inner"><code class="docutils literal notranslate"><span class="pre">JoinType.inner</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="concordance.html#selectors">Selectors</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.qc.ALL_GROUP"><code class="docutils literal notranslate"><span class="pre">ALL_GROUP</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.qc.ALL_AGG"><code class="docutils literal notranslate"><span class="pre">ALL_AGG</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="concordance.html#concordance">Concordance</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.qc.concordance"><code class="docutils literal notranslate"><span class="pre">concordance()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="concordance.html#concordancetable">ConcordanceTable</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.qc.ConcordanceTable"><code class="docutils literal notranslate"><span class="pre">ConcordanceTable</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="concordance.html#bge_toolkit.qc.ConcordanceTable.agg_vars"><code class="docutils literal notranslate"><span class="pre">ConcordanceTable.agg_vars()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="concordance.html#bge_toolkit.qc.ConcordanceTable.close"><code class="docutils literal notranslate"><span class="pre">ConcordanceTable.close()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="concordance.html#bge_toolkit.qc.ConcordanceTable.get_view"><code class="docutils literal notranslate"><span class="pre">ConcordanceTable.get_view()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="concordance.html#bge_toolkit.qc.ConcordanceTable.group_vars"><code class="docutils literal notranslate"><span class="pre">ConcordanceTable.group_vars()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="concordance.html#bge_toolkit.qc.ConcordanceTable.load"><code class="docutils literal notranslate"><span class="pre">ConcordanceTable.load()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="concordance.html#bge_toolkit.qc.ConcordanceTable.write"><code class="docutils literal notranslate"><span class="pre">ConcordanceTable.write()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="concordance.html#concordanceview">ConcordanceView</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.qc.ConcordanceView"><code class="docutils literal notranslate"><span class="pre">ConcordanceView</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="concordance.html#bge_toolkit.qc.ConcordanceView.export"><code class="docutils literal notranslate"><span class="pre">ConcordanceView.export()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="concordance.html#bge_toolkit.qc.ConcordanceView.export_all"><code class="docutils literal notranslate"><span class="pre">ConcordanceView.export_all()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="concordance.html#bge_toolkit.qc.ConcordanceView.fields"><code class="docutils literal notranslate"><span class="pre">ConcordanceView.fields</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="concordance.html#bge_toolkit.qc.ConcordanceView.plot"><code class="docutils literal notranslate"><span class="pre">ConcordanceView.plot()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="concordance.html#bge_toolkit.qc.ConcordanceView.plot_all"><code class="docutils literal notranslate"><span class="pre">ConcordanceView.plot_all()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="concordance.html#bge_toolkit.qc.ConcordanceView.result"><code class="docutils literal notranslate"><span class="pre">ConcordanceView.result()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="concordance.html#statistic">Statistic</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.qc.Statistic"><code class="docutils literal notranslate"><span class="pre">Statistic</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="concordance.html#bge_toolkit.qc.Statistic.nonref_concordance_rate"><code class="docutils literal notranslate"><span class="pre">Statistic.nonref_concordance_rate</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="concordance.html#bge_toolkit.qc.Statistic.concordance_rate"><code class="docutils literal notranslate"><span class="pre">Statistic.concordance_rate</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="concordance.html#bge_toolkit.qc.Statistic.f1_score"><code class="docutils literal notranslate"><span class="pre">Statistic.f1_score</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge-toolkit-common">bge_toolkit.common</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="concordance.html#binning-functions">Binning Functions</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.common.mac_bin"><code class="docutils literal notranslate"><span class="pre">mac_bin()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.common.maf_bin"><code class="docutils literal notranslate"><span class="pre">maf_bin()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.common.gq_bin"><code class="docutils literal notranslate"><span class="pre">gq_bin()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.common.dp_bin"><code class="docutils literal notranslate"><span class="pre">dp_bin()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.common.max_gp_bin"><code class="docutils literal notranslate"><span class="pre">max_gp_bin()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.common.qual_approx_bin"><code class="docutils literal notranslate"><span class="pre">qual_approx_bin()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="concordance.html#bge_toolkit.common.info_score_bin"><code class="docutils literal notranslate"><span class="pre">info_score_bin()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="sample_qc.html">Sample QC Reference</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="sample_qc.html#sample-qc">sample_qc</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.sample_qc"><code class="docutils literal notranslate"><span class="pre">sample_qc()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="sample_qc.html#high-level-functions">High Level Functions</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.select_high_quality_common_sites"><code class="docutils literal notranslate"><span class="pre">select_high_quality_common_sites()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.infer_ancestry"><code class="docutils literal notranslate"><span class="pre">infer_ancestry()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.calculate_sample_qc_stats"><code class="docutils literal notranslate"><span class="pre">calculate_sample_qc_stats()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="sample_qc.html#lower-level-functions">Lower Level Functions</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.filter_to_high_quality_exome_intervals"><code class="docutils literal notranslate"><span class="pre">filter_to_high_quality_exome_intervals()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.filter_contamination_rate"><code class="docutils literal notranslate"><span class="pre">filter_contamination_rate()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.filter_chimeric_reads"><code class="docutils literal notranslate"><span class="pre">filter_chimeric_reads()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.filter_genotypes"><code class="docutils literal notranslate"><span class="pre">filter_genotypes()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.filter_to_high_quality_common_sites"><code class="docutils literal notranslate"><span class="pre">filter_to_high_quality_common_sites()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.compute_pcs"><code class="docutils literal notranslate"><span class="pre">compute_pcs()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.estimate_call_rate_through_gq_stats"><code class="docutils literal notranslate"><span class="pre">estimate_call_rate_through_gq_stats()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.impute_and_check_sex"><code class="docutils literal notranslate"><span class="pre">impute_and_check_sex()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.identify_outliers_in_qc_stats"><code class="docutils literal notranslate"><span class="pre">identify_outliers_in_qc_stats()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="sample_qc.html#sampleqcresult">SampleQCResult</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.SampleQCResult"><code class="docutils literal notranslate"><span class="pre">SampleQCResult</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.SampleQCResult.ancestry_pop"><code class="docutils literal notranslate"><span class="pre">SampleQCResult.ancestry_pop</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.SampleQCResult.chimera_reads"><code class="docutils literal notranslate"><span class="pre">SampleQCResult.chimera_reads</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.SampleQCResult.close"><code class="docutils literal notranslate"><span class="pre">SampleQCResult.close()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.SampleQCResult.contamination"><code class="docutils literal notranslate"><span class="pre">SampleQCResult.contamination</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.SampleQCResult.export"><code class="docutils literal notranslate"><span class="pre">SampleQCResult.export()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.SampleQCResult.filter_to"><code class="docutils literal notranslate"><span class="pre">SampleQCResult.filter_to()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.SampleQCResult.gq_fraction"><code class="docutils literal notranslate"><span class="pre">SampleQCResult.gq_fraction</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.SampleQCResult.load"><code class="docutils literal notranslate"><span class="pre">SampleQCResult.load()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.SampleQCResult.passing_samples"><code class="docutils literal notranslate"><span class="pre">SampleQCResult.passing_samples()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.SampleQCResult.pcs"><code class="docutils literal notranslate"><span class="pre">SampleQCResult.pcs</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.SampleQCResult.plot_chimera_reads"><code class="docutils literal notranslate"><span class="pre">SampleQCResult.plot_chimera_reads()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.SampleQCResult.plot_gq_fraction_density"><code class="docutils literal notranslate"><span class="pre">SampleQCResult.plot_gq_fraction_density()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.SampleQCResult.plot_pcs"><code class="docutils literal notranslate"><span class="pre">SampleQCResult.plot_pcs()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.SampleQCResult.plot_qc_metric_boxplots"><code class="docutils literal notranslate"><span class="pre">SampleQCResult.plot_qc_metric_boxplots()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.SampleQCResult.plot_qc_metric_density"><code class="docutils literal notranslate"><span class="pre">SampleQCResult.plot_qc_metric_density()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.SampleQCResult.qc_metrics"><code class="docutils literal notranslate"><span class="pre">SampleQCResult.qc_metrics</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.SampleQCResult.sample_id"><code class="docutils literal notranslate"><span class="pre">SampleQCResult.sample_id</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.SampleQCResult.sex_info"><code class="docutils literal notranslate"><span class="pre">SampleQCResult.sex_info</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.SampleQCResult.table"><code class="docutils literal notranslate"><span class="pre">SampleQCResult.table</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="sample_qc.html#bge_toolkit.qc.SampleQCResult.write"><code class="docutils literal notranslate"><span class="pre">SampleQCResult.write()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
