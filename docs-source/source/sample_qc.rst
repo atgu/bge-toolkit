@@ -130,6 +130,7 @@ are implemented in terms of these lower level functions which you can use to bui
 .. autofunction:: estimate_call_rate_through_gq_stats
 .. autofunction:: impute_and_check_sex
 .. autofunction:: identify_outliers_in_qc_stats
+.. autofunction:: select_passing_variants_from_filters
 
 
 SampleQCResult

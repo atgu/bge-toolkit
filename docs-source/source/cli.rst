@@ -139,7 +139,7 @@ Examples
 .. code-block::
 
     $ bge-toolkit qc sample-qc \
-        --exome "gs://MY-BUCKET/data.mt" \
+        --dataset "gs://MY-BUCKET/data.mt" \
         --output-dir "gs://MY-BUCKET/test-sample-qc/080525-v2/" \
         --exome-regions "gs://MY-BUCKET/Twist_Alliance_Clinical_Research_Exome_Covered_Targets_hg38-34.9MB.bed" \
         --low-complexity-regions "gs://MY-BUCKET/LCRFromHengHg38.bed" \

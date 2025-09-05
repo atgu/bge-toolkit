@@ -1,5 +1,5 @@
 import logging
-from typing import List, Optional
+from typing import List, Optional, Union
 
 import hail as hl
 
@@ -8,7 +8,7 @@ from ..common.binned_exprs import (mac_bin, maf_bin, max_gp_bin, gq_bin, qual_ap
 from ..common.utils import apply_filters, save_ggplot, setup_logging_and_qob, setup_logger
 from .joint_callset import JointCallSet
 from .concordance import Statistic
-from .qc import SampleQCResult, calculate_sample_qc_stats, infer_ancestry, select_high_quality_common_sites
+from .qc import SampleQCResult, calculate_sample_qc_stats, infer_ancestry, select_high_quality_common_sites, select_passing_variants_from_filters
 from .utils import ALL_AGG, ALL_GROUP, JoinType
 
 
@@ -335,11 +335,12 @@ def concordance(*,
 
 
 def sample_qc(*,
-              mt: hl.MatrixTable,
+              dataset: Union[hl.MatrixTable, hl.vds.VariantDataset],
               out_dir: str,
               is_gatk: bool,
               exome_regions: hl.Table,
               low_complexity_regions: hl.Table,
+              passing_variants: Optional[hl.Table] = None,
               hq_sites_dp_thresh: int = 10,
               hq_sites_gq_thresh: int = 20,
               hq_sites_ab_thresh: float = 0.2,
@@ -374,11 +375,12 @@ def sample_qc(*,
     """Run the default implementation of Sample QC.
 
     Args:
-        mt (Union(MatrixTable, str)): Hail MatrixTable or path to MatrixTable to QC.
+        dataset (Union(MatrixTable, VariantDataset)): Hail MatrixTable or VariantDataset to QC.
         out_dir (str): Path to output directory to write sample QC results to.
         is_gatk (bool): True if data was called with GATK.
         exome_regions (Table): Table of locus intervals specifying valid exome regions.
         low_complexity_regions (Table): Table of locus intervals specifying low complexity regions to remove.
+        passing_variants (Optional[Table]): Table of passing variants from filters or VQSR.
         hq_sites_dp_thresh (int): For finding high quality sites, the minimum DP threshold for which a genotype is kept. DP is the sum of AD if ``is_gatk=False``.
         hq_sites_gq_thresh (int): For finding high quality sites, the minimum GQ threshold for a kept genotype.
         hq_sites_ab_thresh (float): For finding high quality sites, the allowable allelic balance range for a kept heterozygote genotype.
@@ -420,9 +422,17 @@ def sample_qc(*,
     if log is None:
         log = setup_logger()
 
-    init_n_variants, init_n_samples = mt.count()
+    if isinstance(dataset, hl.MatrixTable):
+        init_n_variants, init_n_samples = mt.count()
+    else:
+        assert isinstance(dataset, hl.vds.VariantDataset)
+        init_n_variants, init_n_samples = dataset.variant_data.count()
 
     log.info(f'QC of dataset with {init_n_variants} variants and {init_n_samples} samples.')
+
+    if passing_variants is None:
+        log.info(f'selecting passing variants based on filters')
+        passing_variants = select_passing_variants_from_filters(dataset)
 
     log.info(f'''selecting high quality common sites (`select_high_quality_common_sites`) with parameters:
 is_gatk={is_gatk}
@@ -434,10 +444,11 @@ mac_thresh={hq_sites_mac_thresh}
 call_rate_thresh={hq_sites_call_rate_thresh}
 ''')
 
-    high_qual_sites = select_high_quality_common_sites(mt=mt,
+    high_qual_sites = select_high_quality_common_sites(dataset=mt,
                                                        is_gatk=is_gatk,
                                                        exome_regions=exome_regions,
                                                        low_complexity_regions=low_complexity_regions,
+                                                       passing_variants=passing_variants,
                                                        dp_thresh=hq_sites_dp_thresh,
                                                        gq_thresh=hq_sites_gq_thresh,
                                                        ab_thresh=hq_sites_ab_thresh,

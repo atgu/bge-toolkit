@@ -97,10 +97,11 @@ def concordance(ctx: typer.Context,
 
 @sample_qc_app.callback()
 def sample_qc(ctx: typer.Context,
-              exome_path: Ann[str, Opt('--exome', help='Exome dataset called with GATK to filter out low quality samples.')],
+              dataset_path: Ann[str, Opt('--dataset', help='Path to MatrixTable or VariantDataset.')],
               out_dir: Ann[str, Opt('--output-dir', help='Output directory.')],
               exome_regions: Ann[str, Opt('--exome-regions', help='BED file with list of exome intervals.')],
               low_complexity_regions: Ann[str, Opt('--low-complexity-regions', help='BED file with list of exome intervals.')],
+              passing_variants: Ann[str, Opt('--passing-variants', help='Path to Hail Table with list of passing variants from VQSR if available')] = None,
               gatk: Ann[bool, Opt('--gatk', help='GATK was used to generate the callset.')] = False,
               dragen: Ann[bool, Opt('--dragen', help='DRAGEN was used to generate the callset.')] = False,
               hq_sites_dp_thresh: Ann[int, Opt('--hq-sites-dp-thresh', help='DP threshold for marking a genotype high quality.')] = 10,
@@ -179,30 +180,34 @@ def sample_qc(ctx: typer.Context,
     else:
         contamination_ref_af = None
 
-    mt = load_data(path=exome_path, descriptor='exome', log=log, n_partitions=n_partitions)
+    if passing_variants is not None:
+        passing_variants = hl.read_table(passing_variants)
 
-    mt, _ = apply_filters(mt=mt,
-                          description=exome_path,
-                          log=log,
-                          sample_list=sample_list,
-                          variant_list=variant_list,
-                          contig=contig,
-                          n_samples=n_samples,
-                          n_variants=n_variants,
-                          downsample_samples=downsample_samples,
-                          downsample_variants=downsample_variants)
+    dataset = load_data(path=dataset_path, descriptor='dataset', log=log, n_partitions=n_partitions)
+
+    dataset, _ = apply_filters(dataset=dataset_path,
+                               description=dataset_path,
+                               log=log,
+                               sample_list=sample_list,
+                               variant_list=variant_list,
+                               contig=contig,
+                               n_samples=n_samples,
+                               n_variants=n_variants,
+                               downsample_samples=downsample_samples,
+                               downsample_variants=downsample_variants)
 
     if reference_genome is None:
-        reference_genome = mt.locus.dtype.reference_genome
+        reference_genome = dataset.locus.dtype.reference_genome
 
     exome_regions = hl.import_locus_intervals(exome_regions, reference_genome=reference_genome)
     low_complexity_regions = hl.import_locus_intervals(low_complexity_regions, reference_genome=reference_genome, skip_invalid_intervals=True)
 
-    _sample_qc(mt=mt,
+    _sample_qc(dataset=dataset,
                out_dir=out_dir,
                is_gatk=gatk,
                exome_regions=exome_regions,
                low_complexity_regions=low_complexity_regions,
+               passing_variants=passing_variants,
                hq_sites_dp_thresh=hq_sites_dp_thresh,
                hq_sites_gq_thresh=hq_sites_gq_thresh,
                hq_sites_ab_thresh=hq_sites_ab_thresh,

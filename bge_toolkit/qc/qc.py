@@ -29,26 +29,32 @@ filtering_qc_metrics = ['r_ti_tv',
                         ]
 
 
-def filter_to_high_quality_exome_intervals(mt: hl.MatrixTable,
+def filter_to_high_quality_exome_intervals(dataset: Union[hl.MatrixTable, hl.vds.VariantDataset],
                                            low_complexity_regions: hl.Table,
                                            exome_regions: hl.Table,
+                                           passing_variants: hl.Table,
                                            is_gatk: bool = True) -> hl.MatrixTable:
     """Filter a MatrixTable to the exome with no low complexity regions.
 
     Args:
-        mt (MatrixTable): A Hail MatrixTable to filter the sites.
+        dataset (MatrixTable, VariantDataset): A Hail MatrixTable or VariantDataset to filter the sites.
         low_complexity_regions (Table): A Table of intervals to filter out. Use `import_locus_intervals` from a BED file to generate the table.
         exome_regions (Table): A Table of intervals to filter to. Use `import_locus_intervals` from a BED file to generate the table.
+        passing_variants (Table): A Table of variants to filter to that pass VQSR or filters
         is_gatk (bool): True if the dataset was called using GATK.
     Result:
         A filtered MatrixTable to only exome regions without the low complexity regions of the genome.
     """
-
-    if not is_gatk:
-        mt = mt.filter_rows(mt.filters == hl.empty_set(hl.tstr), keep=True)
-    mt = mt.filter_rows(hl.is_missing(low_complexity_regions[mt.locus]))
-    mt = mt.filter_rows(hl.is_defined(exome_regions[mt.locus]))
-    return mt
+    if isinstance(dataset, hl.MatrixTable):
+        dataset = dataset.filter_rows(hl.is_missing(low_complexity_regions[dataset.locus]))
+        dataset = dataset.filter_rows(hl.is_defined(exome_regions[dataset.locus]))
+        dataset = dataset.filter_rows(hl.is_defined(passing_variants[dataset.locus]))
+    else:
+        assert isinstance(dataset, hl.vds.VariantDataset)
+        dataset = hl.vds.filter_intervals(dataset, exome_regions, keep=True)
+        dataset = hl.vds.filter_intervals(dataset, low_complexity_regions, keep=False)
+        dataset = hl.vds.filter_variants(dataset, passing_variants, keep=True)
+    return dataset
 
 
 def filter_contamination_rate(*,
@@ -440,11 +446,12 @@ def identify_outliers_in_qc_stats(*,
     return stratified_metrics
 
 
-def select_high_quality_common_sites(mt: hl.MatrixTable,
+def select_high_quality_common_sites(dataset: Union[hl.MatrixTable, hl.vds.VariantDataset],
                                      is_gatk: bool,
                                      *,
                                      low_complexity_regions: hl.Table,
                                      exome_regions: hl.Table,
+                                     passing_variants: hl.Table,
                                      dp_thresh: int = 10,
                                      gq_thresh: int = 20,
                                      ab_thresh: float = 0.2,
@@ -454,10 +461,11 @@ def select_high_quality_common_sites(mt: hl.MatrixTable,
     """Select high quality sites for downstream sample QC.
 
     Args:
-        mt (MatrixTable): The MatrixTable to select high quality sites from.
+        dataset (MatrixTable): The MatrixTable to select high quality sites from.
         is_gatk (bool): ``True`` if the data was called using GATK. ``False`` if the data was called using DRAGEN.
         low_complexity_regions (Table): A Hail Table with intervals representing regions of the genome to filter out.
         exome_regions (Table): A Hail Table with intervals representing regions of the genome to keep.
+        passing_variants (Table): A Hail Table with VQSR passing variants (or based on filters) to keep.
         dp_thresh (int): The minimum DP threshold for which a genotype is kept. DP is the sum of AD if ``is_gatk=False``.
         gq_thresh (int): The minimum GQ threshold for a kept genotype.
         ab_thresh (float): The allowable allelic balance range for a kept heterozygote genotype.
@@ -468,22 +476,40 @@ def select_high_quality_common_sites(mt: hl.MatrixTable,
     Returns:
           A Table with locus and alleles for common, LD-pruned high quality sites.
     """
-    mt = filter_to_high_quality_exome_intervals(mt,
-                                                low_complexity_regions=low_complexity_regions,
-                                                exome_regions=exome_regions,
-                                                is_gatk=is_gatk)
+    dataset = filter_to_high_quality_exome_intervals(dataset,
+                                                     low_complexity_regions=low_complexity_regions,
+                                                     exome_regions=exome_regions,
+                                                     passing_variants=passing_variants,
+                                                     is_gatk=is_gatk)
 
-    mt = filter_genotypes(mt, is_gatk=is_gatk, dp_thresh=dp_thresh, gq_thresh=gq_thresh, ab_thresh=ab_thresh)
+    if isinstance(dataset, hl.vds.VariantDataset):
+        variant_data = dataset.variant_data
 
-    mt = filter_to_high_quality_common_sites(mt,
-                                             maf_thresh=maf_thresh,
-                                             mac_thresh=mac_thresh,
-                                             call_rate_thresh=call_rate_thresh)
+        variant_data = variant_data.annotate_entries(GT=hl.coalesce(variant_data.GT, hl.call(0, 0)),
+                                                     GT_backup=dataset.GT)
 
-    return mt.rows().select()
+        variant_data = filter_to_high_quality_common_sites(variant_data,
+                                                           maf_thresh=0,
+                                                           mac_thresh=mac_thresh,
+                                                           call_rate_thresh=call_rate_thresh)
+
+        variant_data = variant_data.transmute_entries(GT=variant_data.GT_backup)
+
+        dataset = hl.vds.VariantDataset(dataset.reference_data, variant_data)
+
+        dataset = hl.vds.to_dense_mt(dataset)
+
+    dataset = filter_genotypes(dataset, is_gatk=is_gatk, dp_thresh=dp_thresh, gq_thresh=gq_thresh, ab_thresh=ab_thresh)
+
+    dataset = filter_to_high_quality_common_sites(dataset,
+                                                  maf_thresh=maf_thresh,
+                                                  mac_thresh=mac_thresh,
+                                                  call_rate_thresh=call_rate_thresh)
+
+    return dataset.rows().select()
 
 
-def infer_ancestry(mt: hl.MatrixTable,
+def infer_ancestry(dataset: Union[hl.MatrixTable, hl.vds.VariantDataset],
                    *,
                    is_gatk: bool = True,
                    dp_thresh: int = 10,
@@ -509,7 +535,7 @@ def infer_ancestry(mt: hl.MatrixTable,
         * ancestry_pop: The ancestry population label.
 
     Args:
-        mt (MatrixTable): The MatrixTable with the samples to infer ancestry from. This dataset should be filtered to high quality variants.
+        dataset (MatrixTable, VariantDataset): The MatrixTable with the samples to infer ancestry from. This dataset should be filtered to high quality variants.
         is_gatk (bool): True if data was called with GATK.
         dp_thresh (int): The minimum DP threshold for which a genotype is kept. DP is the sum of AD if ``is_gatk=False``.
         gq_thresh (int): The minimum GQ threshold for a kept genotype.
@@ -532,23 +558,28 @@ def infer_ancestry(mt: hl.MatrixTable,
 
     loadings_ht = hl.read_table(pca_loadings)
 
-    mt = filter_genotypes(mt, is_gatk=is_gatk, ab_thresh=ab_thresh, dp_thresh=dp_thresh, gq_thresh=gq_thresh)
-    mt = filter_to_high_quality_common_sites(mt, maf_thresh=0, mac_thresh=0)
+    if isinstance(dataset, hl.MatrixTable):
+        dataset = dataset.semi_join_rows(loadings_ht)
+    else:
+        assert isinstance(dataset, hl.vds.VariantDataset)
+        dataset = hl.vds.filter_variants(loadings_ht)
+        dataset = hl.vds.to_dense_mt(dataset)
 
-    mt = mt.semi_join_rows(loadings_ht)
+    dataset = filter_genotypes(dataset, is_gatk=is_gatk, ab_thresh=ab_thresh, dp_thresh=dp_thresh, gq_thresh=gq_thresh)
+    dataset = filter_to_high_quality_common_sites(dataset, maf_thresh=0, mac_thresh=0)
 
-    mt = mt.select_cols().select_rows().select_entries('GT')
+    dataset = dataset.select_cols().select_rows().select_entries('GT')
 
-    mt = mt.persist()
+    dataset = dataset.persist()
 
-    n_variants = mt.count_rows()
+    n_variants = dataset.count_rows()
     n_loadings = loadings_ht.count()
 
     log.info(f'Using {n_variants} variants for PC projection from {n_loadings} possible loading variants.')
 
     # Project new genotypes onto loadings.
     pcs_ht = hl.experimental.pc_project(
-        mt.GT, loadings_ht.loadings, loadings_ht.pca_af,
+        dataset.GT, loadings_ht.loadings, loadings_ht.pca_af,
     )
 
     n_missing = pcs_ht.filter(hl.is_missing(pcs_ht.scores)).count()
@@ -568,9 +599,9 @@ def infer_ancestry(mt: hl.MatrixTable,
 
     ancestry_pops = ancestry_pops.select(ancestry=hl.struct(ancestry_pop=ancestry_pops.ancestry_pop))
 
-    ancestry_pops = mt.cols().join(ancestry_pops, how='left')
+    ancestry_pops = dataset.cols().join(ancestry_pops, how='left')
 
-    mt.unpersist()
+    dataset.unpersist()
 
     return ancestry_pops.annotate(ancestry=hl.struct(ancestry_pop=hl.coalesce(ancestry_pops.ancestry.ancestry_pop, 'unknown')))
 
@@ -603,8 +634,52 @@ def prune_variants(*,
     return mt.persist()
 
 
+def select_passing_variants_from_filters(dataset: Union[hl.MatrixTable, hl.vds.VariantDataset]) -> hl.Table:
+    """Select passing variants based on filters.
+
+    Notes:
+
+    This function supports the following cases:
+    - If the filters is a boolean, treat as "PASS"
+    - If the filters is "PASS", treat as "PASS"
+    - If the filters is an empty array or set, treat as "PASS"
+
+    Args:
+        dataset (MatrixTable, VariantDataset) A Hail Matrix Table or VariantDataset to select passing variants.
+
+    Returns:
+        A Hail Table with just passing variants and no row annotations.
+    """
+
+    if isinstance(dataset, hl.vds.VariantDataset):
+        dataset = dataset.variant_data
+
+    if 'filters' not in dataset.row:
+        dataset = dataset.annotate_rows(filters=hl.empty_set(hl.tstr))
+
+    if dataset.row.filters.dtype != hl.tset(hl.tstr):
+        dataset = dataset.annotate_rows(
+            filters=hl.bind(
+                lambda f: hl.case()
+                .when(hl.is_missing(f), hl.empty_set(hl.tstr))
+                .when(hl.is_defined(f) & (f.dtype == hl.tbool),
+                      hl.empty_set(hl.tstr))  # treat any bool as PASS
+                .when(hl.is_defined(f) & (f.dtype == hl.tstr),
+                      hl.cond(f == 'PASS', hl.empty_set(hl.tstr), hl.set([f])))
+                .when(hl.is_defined(f) & (f.dtype == hl.tarray(hl.tstr)),
+                      hl.set(f))
+                .default(hl.empty_set(hl.tstr)),
+                dataset.filters
+            )
+        )
+
+    dataset = dataset.filter_rows(dataset.filters == hl.empty_set(hl.tstr), keep=True)
+
+    return dataset.select_rows().rows()
+
+
 def calculate_sample_qc_stats(*,
-                              mt: hl.MatrixTable,
+                              dataset: Union[hl.MatrixTable, hl.vds.VariantDataset],
                               high_quality_sites: hl.Table,
                               pre_pruned_variants: Optional[hl.Table] = None,
                               ld_prune_r2_thresh: Optional[float] = 0.2,
@@ -633,7 +708,7 @@ def calculate_sample_qc_stats(*,
     """Calculate Sample QC statistics from a Hail MatrixTable.
 
     Args:
-        mt (MatrixTable): A Hail MatrixTable to compute sample QC statistics on.
+        dataset (MatrixTable, VariantDataset): A Hail MatrixTable or VariantDataset to compute sample QC statistics on.
         high_quality_sites (Table): A Hail Table with the list of high quality sites (common variants, in exome regions, not in low complexity regions).
         pre_pruned_variants (Optional[Table]): The path to a table with LD pruned variants.
         ld_prune_r2_thresh (float): The LD-Prune R2 value when filtering out variants in linkage disequilibrium.
@@ -663,12 +738,26 @@ def calculate_sample_qc_stats(*,
     if log is None:
         log = logging.getLogger()
 
-    if 'DP' not in mt.entry:
-        mt = mt.annotate_entries(DP=hl.sum(mt.AD))
-
     log.info('subsetting the data to high quality sites')
 
-    hq_mt = mt.semi_join_rows(high_quality_sites).select_rows().select_entries('GT', 'AD', 'GQ', 'DP')
+    if isinstance(dataset, hl.MatrixTable):
+        if 'DP' not in mt.entry:
+            dataset = dataset.annotate_entries(DP=hl.sum(mt.AD))
+
+        hq_mt = dataset.semi_join_rows(high_quality_sites).select_rows().select_entries('GT', 'AD', 'GQ', 'DP')
+    else:
+        assert isinstance(dataset, hl.vds.VariantDataset)
+        hq_vds = hl.vds.filter_variants(dataset, high_quality_sites, keep=True)
+        hq_vds_variant_data = hq_vds.variant_data
+
+        if 'DP' not in hq_vds_variant_data.entry:
+            hq_vds_variant_data = hq_vds_variant_data.annotate_entries(DP=hl.sum(mt.AD))
+            hq_vds_variant_data = hq_vds_variant_data.select_entries('GT', 'AD', 'GQ', 'DP')
+            hq_vds_variant_data = hq_vds_variant_data.select_rows()
+
+        hq_vds = hl.vds.VariantDataset(hq_vds.reference_data, hq_vds_variant_data)
+
+        hq_mt = hl.vds.to_dense_mt(hq_vds)
 
     hq_mt = hq_mt.persist()
 
