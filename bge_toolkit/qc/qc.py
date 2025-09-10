@@ -1,6 +1,7 @@
 from typing import Dict, List, Optional, Union
 import logging
 import hail as hl
+from bge_toolkit.common.utils import setup_logger
 from hailtop.aiocloud.aiogoogle import GCSRequesterPaysConfiguration
 import hailtop.fs as hfs
 from gnomad.sample_qc.filtering import compute_stratified_metrics_filter
@@ -45,15 +46,31 @@ def filter_to_high_quality_exome_intervals(dataset: Union[hl.MatrixTable, hl.vds
     Result:
         A filtered MatrixTable to only exome regions without the low complexity regions of the genome.
     """
+    log = setup_logger()
+
     if isinstance(dataset, hl.MatrixTable):
         dataset = dataset.filter_rows(hl.is_missing(low_complexity_regions[dataset.locus]))
         dataset = dataset.filter_rows(hl.is_defined(exome_regions[dataset.locus]))
         dataset = dataset.filter_rows(hl.is_defined(passing_variants[dataset.locus]))
     else:
         assert isinstance(dataset, hl.vds.VariantDataset)
-        dataset = hl.vds.filter_intervals(dataset, exome_regions, keep=True)
-        dataset = hl.vds.filter_intervals(dataset, low_complexity_regions, keep=False)
-        dataset = hl.vds.filter_variants(dataset, passing_variants, keep=True)
+        log.info('filtering intervals for exome regions')
+        variant_data = dataset.variant_data
+        variant_data = variant_data.filter_rows(hl.is_defined(exome_regions[variant_data.locus]))
+        dataset = hl.vds.VariantDataset(dataset.reference_data, variant_data)
+        # dataset = hl.vds.filter_intervals(dataset, exome_regions, keep=True)
+
+        log.info('filtering intervals for LCR')
+        variant_data = dataset.variant_data
+        variant_data = variant_data.filter_rows(hl.is_missing(low_complexity_regions[variant_data.locus]))
+        dataset = hl.vds.VariantDataset(dataset.reference_data, variant_data)
+        # dataset = hl.vds.filter_intervals(dataset, low_complexity_regions, keep=False)
+
+        log.info('filtering variants to passing variants')
+        variant_data = dataset.variant_data
+        variant_data = variant_data.semi_join_rows(passing_variants)
+        dataset = hl.vds.VariantDataset(dataset.reference_data, variant_data)
+        # dataset = hl.vds.filter_variants(dataset, passing_variants, keep=True)
     return dataset
 
 
@@ -364,7 +381,8 @@ def impute_and_check_sex(mt: hl.MatrixTable,
 
 def identify_outliers_in_qc_stats(*,
                                   mt: hl.MatrixTable,
-                                  ancestry_pop: Optional[hl.StringExpression] = None) -> hl.Table:
+                                  ancestry_pop: Optional[hl.StringExpression] = None,
+                                  ) -> hl.Table:
     """Identify outliers in QC statistics.
 
     All statistics computed with ``hl.sample_qc``.
@@ -485,8 +503,21 @@ def select_high_quality_common_sites(dataset: Union[hl.MatrixTable, hl.vds.Varia
     if isinstance(dataset, hl.vds.VariantDataset):
         variant_data = dataset.variant_data
 
+        if 'GT' not in variant_data.entry and 'LGT' in variant_data.entry and 'LA' in variant_data.entry:
+            variant_data = variant_data.annotate_entries(
+                GT=hl.vds.lgt_to_gt(variant_data.LGT, variant_data.LA)
+            )
+            
+        if 'AD' not in variant_data.entry and 'LAD' in variant_data.entry and 'LA' in variant_data.entry:
+            variant_data = variant_data.annotate_entries(AD=hl.vds.local_to_global(
+                variant_data.LAD,
+                variant_data.LA,
+                n_alleles=hl.len(variant_data.alleles),
+                fill_value=0,
+                number='R'))   
+
         variant_data = variant_data.annotate_entries(GT=hl.coalesce(variant_data.GT, hl.call(0, 0)),
-                                                     GT_backup=dataset.GT)
+                                                     GT_backup=variant_data.GT)
 
         variant_data = filter_to_high_quality_common_sites(variant_data,
                                                            maf_thresh=0,
@@ -562,8 +593,25 @@ def infer_ancestry(dataset: Union[hl.MatrixTable, hl.vds.VariantDataset],
         dataset = dataset.semi_join_rows(loadings_ht)
     else:
         assert isinstance(dataset, hl.vds.VariantDataset)
-        dataset = hl.vds.filter_variants(loadings_ht)
+        variant_data = dataset.variant_data
+        variant_data = variant_data.semi_join_rows(loadings_ht)
+        # dataset = hl.vds.filter_variants(loadings_ht)
+        
+        dataset = hl.vds.VariantDataset(dataset.reference_data, variant_data)
         dataset = hl.vds.to_dense_mt(dataset)
+
+    if 'GT' not in dataset.entry and 'LGT' in dataset.entry and 'LA' in dataset.entry:
+        dataset = dataset.annotate_entries(
+            GT=hl.vds.lgt_to_gt(dataset.LGT, dataset.LA)
+        )
+
+    if 'AD' not in dataset.entry and 'LAD' in dataset.entry and 'LA' in dataset.entry:
+        dataset = dataset.annotate_entries(AD=hl.vds.local_to_global(
+            dataset.LAD,
+            dataset.LA,
+            n_alleles=hl.len(dataset.alleles),
+            fill_value=0,
+            number='R'))
 
     dataset = filter_genotypes(dataset, is_gatk=is_gatk, ab_thresh=ab_thresh, dp_thresh=dp_thresh, gq_thresh=gq_thresh)
     dataset = filter_to_high_quality_common_sites(dataset, maf_thresh=0, mac_thresh=0)
@@ -741,23 +789,43 @@ def calculate_sample_qc_stats(*,
     log.info('subsetting the data to high quality sites')
 
     if isinstance(dataset, hl.MatrixTable):
-        if 'DP' not in mt.entry:
-            dataset = dataset.annotate_entries(DP=hl.sum(mt.AD))
+        if 'DP' not in dataset.entry:
+            dataset = dataset.annotate_entries(DP=hl.sum(dataset.AD))
 
         hq_mt = dataset.semi_join_rows(high_quality_sites).select_rows().select_entries('GT', 'AD', 'GQ', 'DP')
+        mt = dataset
     else:
         assert isinstance(dataset, hl.vds.VariantDataset)
-        hq_vds = hl.vds.filter_variants(dataset, high_quality_sites, keep=True)
+        variant_data = dataset.variant_data
+        variant_data = variant_data.semi_join_rows(high_quality_sites)
+        hq_vds = hl.vds.VariantDataset(dataset.reference_data, variant_data)
+        # hq_vds = hl.vds.filter_variants(dataset, high_quality_sites, keep=True)
         hq_vds_variant_data = hq_vds.variant_data
-
-        if 'DP' not in hq_vds_variant_data.entry:
-            hq_vds_variant_data = hq_vds_variant_data.annotate_entries(DP=hl.sum(mt.AD))
-            hq_vds_variant_data = hq_vds_variant_data.select_entries('GT', 'AD', 'GQ', 'DP')
-            hq_vds_variant_data = hq_vds_variant_data.select_rows()
 
         hq_vds = hl.vds.VariantDataset(hq_vds.reference_data, hq_vds_variant_data)
 
         hq_mt = hl.vds.to_dense_mt(hq_vds)
+
+        if 'GT' not in hq_mt.entry and 'LGT' in hq_mt.entry and 'LA' in hq_mt.entry:
+            hq_mt = hq_mt.annotate_entries(
+                GT=hl.vds.lgt_to_gt(hq_mt.LGT, hq_mt.LA)
+            )
+
+        if 'AD' not in hq_mt.entry and 'LAD' in hq_mt.entry and 'LA' in hq_mt.entry:
+            hq_mt = hq_mt.annotate_entries(AD=hl.vds.local_to_global(
+                hq_mt.LAD,
+                hq_mt.LA,
+                n_alleles=hl.len(hq_mt.alleles),
+                fill_value=0,
+                number='R'))
+
+        if 'DP' not in hq_mt.entry:
+            hq_mt = hq_mt.annotate_entries(DP=hl.sum(hq_mt.AD))
+            
+        hq_mt = hq_mt.select_entries('GT', 'AD', 'GQ', 'DP')
+        hq_mt = hq_mt.select_rows()
+
+        mt = variant_data
 
     hq_mt = hq_mt.persist()
 
@@ -828,9 +896,9 @@ def calculate_sample_qc_stats(*,
     log.info('identifying outliers in QC statistics')
 
     if ancestry_pop_labels is not None:
-        outliers = identify_outliers_in_qc_stats(mt=autosomal_hq_mt, ancestry_pop=ancestry_pop_labels.ancestry.ancestry_pop)
+        outliers = identify_outliers_in_qc_stats(mt=mt, ancestry_pop=ancestry_pop_labels.ancestry.ancestry_pop)
     else:
-        outliers = identify_outliers_in_qc_stats(mt=autosomal_hq_mt)
+        outliers = identify_outliers_in_qc_stats(mt=mt)
 
     log.info('imputing and checking sex.')
 

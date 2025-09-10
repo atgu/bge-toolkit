@@ -9,26 +9,36 @@ from plotnine import ggplot
 from tempfile import NamedTemporaryFile
 
 
-def setup_logger(log: Optional[logging.Logger] = None, log_path: Optional[str] = None, log_name: Optional[str] = None) -> logging.Logger:
-    if log is None:
-        log = logging.getLogger(log_name)
-        log.setLevel(logging.DEBUG)
-        log.propagate = False  # Prevent messages from being logged twice
+def setup_logger(
+    log_name: str = __name__,  # Use __name__ for a unique, standard logger name
+    log_path: Optional[str] = None,
+    level: int = logging.DEBUG
+) -> logging.Logger:
+    """
+    Sets up a logger with a stream handler and an optional file handler.
+    This function is idempotent and safe for use in a library.
+    """
+    log = logging.getLogger(log_name)
 
-    # Only set this once to avoid re-adding handlers on repeated calls
-    if not any(isinstance(h, logging.StreamHandler) for h in log.handlers):
+    # Only configure if the logger hasn't been configured yet
+    if not log.hasHandlers():
+        print("configuring loggers")
+        log.setLevel(level)
+        log.propagate = False
+
+        # Create and add the stream handler for console output
         stream_handler = logging.StreamHandler()
-        stream_handler.setLevel(logging.INFO)
+        stream_handler.setLevel(level)
         formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
         stream_handler.setFormatter(formatter)
         log.addHandler(stream_handler)
 
-    if log_path and not any(isinstance(h, logging.FileHandler) for h in log.handlers):
-        file_handler = logging.FileHandler(log_path, mode='w')
-        file_handler.setLevel(logging.INFO)
-        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-        file_handler.setFormatter(formatter)
-        log.addHandler(file_handler)
+        # Optionally create and add the file handler
+        if log_path:
+            file_handler = logging.FileHandler(log_path, mode='w')
+            file_handler.setLevel(level)
+            file_handler.setFormatter(formatter)
+            log.addHandler(file_handler)
 
     return log
 
@@ -128,7 +138,10 @@ def apply_filters(*,
             dataset = dataset.semi_join_rows(variants)
         else:
             assert isinstance(dataset, hl.vds.VariantDataset)
-            dataset = hl.vds.filter_variants(dataset, variants, keep=True)
+            variant_data = dataset.variant_data
+            variant_data = variant_data.semi_join_rows(variants)
+            dataset = hl.vds.VariantDataset(dataset.reference_data, variant_data)
+            # dataset = hl.vds.filter_variants(dataset, variants, keep=True)
 
         log.info(f'Subset to variants in {variant_list} for {description}.')
 

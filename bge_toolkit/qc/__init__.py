@@ -19,6 +19,7 @@ from .qc import (
     infer_relatedness,
     prune_variants,
     select_high_quality_common_sites,
+    select_passing_variants_from_filters,
 )
 
 __all__ = [
@@ -48,4 +49,5 @@ __all__ = [
     'prune_variants',
     'sample_qc',
     'select_high_quality_common_sites',
+    'select_passing_variants_from_filters',
     ]

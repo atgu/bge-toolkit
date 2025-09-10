@@ -444,7 +444,7 @@ mac_thresh={hq_sites_mac_thresh}
 call_rate_thresh={hq_sites_call_rate_thresh}
 ''')
 
-    high_qual_sites = select_high_quality_common_sites(dataset=mt,
+    high_qual_sites = select_high_quality_common_sites(dataset=dataset,
                                                        is_gatk=is_gatk,
                                                        exome_regions=exome_regions,
                                                        low_complexity_regions=low_complexity_regions,
@@ -469,7 +469,7 @@ num_pcs={ancestry_num_pcs}
 min_prob={ancestry_min_prob}
 ''')
 
-    ancestry_pop_labels = infer_ancestry(mt,
+    ancestry_pop_labels = infer_ancestry(dataset=dataset,
                                          is_gatk=is_gatk,
                                          dp_thresh=hq_sites_dp_thresh,
                                          gq_thresh=hq_sites_gq_thresh,
@@ -497,7 +497,7 @@ ld_prune_r2_thresh={r2_thresh}
 ld_prune_bp_window_size={bp_window_size}
 ''')
 
-    sample_qc_stats = calculate_sample_qc_stats(mt=mt,
+    sample_qc_stats = calculate_sample_qc_stats(dataset=dataset,
                                                 high_quality_sites=high_qual_sites,
                                                 sex_female_fhet_thresh=sex_check_female_fhet_thresh,
                                                 sex_male_fhet_thresh=sex_check_male_fhet_thresh,

@@ -1,6 +1,6 @@
 import abc
 import os
-from typing import Optional
+from typing import Optional, Tuple, Union
 import logging
 
 import hail as hl
@@ -152,7 +152,7 @@ class VariantDatasetInputData(InputData):
         self.n_partitions = n_partitions
         self._dataset = None
 
-    def load(self) -> hl.VariantDataset:
+    def load(self) -> hl.vds.VariantDataset:
         if self._dataset is None:
             data = hl.vds.read_vds(self.path, n_partitions=self.n_partitions)
 
@@ -162,6 +162,14 @@ class VariantDatasetInputData(InputData):
                 variant_data = variant_data.annotate_entries(
                     GT=hl.vds.lgt_to_gt(variant_data.LGT, variant_data.LA)
                 )
+
+            if 'AD' not in variant_data.entry and 'LAD' in variant_data.entry and 'LA' in variant_data.entry:
+                variant_data = variant_data.annotate_entries(AD=hl.vds.local_to_global(
+                    variant_data.LAD,
+                    variant_data.LA,
+                    n_alleles=hl.len(variant_data.alleles),
+                    fill_value=0,
+                    number='R'))
 
             data = hl.vds.VariantDataset(data.reference_data, variant_data)
 
