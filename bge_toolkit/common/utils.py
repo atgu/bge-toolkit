@@ -22,7 +22,6 @@ def setup_logger(
 
     # Only configure if the logger hasn't been configured yet
     if not log.hasHandlers():
-        print("configuring loggers")
         log.setLevel(level)
         log.propagate = False
 
@@ -141,7 +140,6 @@ def apply_filters(*,
             variant_data = dataset.variant_data
             variant_data = variant_data.semi_join_rows(variants)
             dataset = hl.vds.VariantDataset(dataset.reference_data, variant_data)
-            # dataset = hl.vds.filter_variants(dataset, variants, keep=True)
 
         log.info(f'Subset to variants in {variant_list} for {description}.')
 
